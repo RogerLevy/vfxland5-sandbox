@@ -57,11 +57,11 @@ dungeon.tmj "objects" load-to-stage
         layer0.tm draw
         layer1.tm draw
         layer2.tm draw
+        m{ 
+            scrollx 2@ 2negate 2p>f 1e 1e 0e transform
+            sprites
+        m}
         {{
-            m{ 
-                scrollx 2@ 2negate 2p>f 1e 1e 0e transform
-                sprites
-            m}
             gamew gameh 2 2 2/ at blobby.png put
         }}
         layer3.tm draw 
