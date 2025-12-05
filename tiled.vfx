@@ -79,8 +79,11 @@ class;
     0 tmjSrc "layers" j@ [: j@ dup zname jnamed? if nip else drop then ;] jeach
     ?dup 0= if -1 zname f" Layer '%z' not found" .abort then ;
 
+: ?find-layer ( tmj zlayer-name - jlayer|0 )
+    ['] find-layer catch if 2drop 0 then ;
+
 : load-to-stage ( tmj zlayer-name - )
-    {{ to-stage find-layer "objects" j@ [: j@ @actor drop ;] jeach }} ;
+    {{ to-stage ?find-layer "objects" ?j@ [: j@ @actor drop ;] jeach }} ;
 
 : ?tileset ( jtileset - )
     to tsSrc
