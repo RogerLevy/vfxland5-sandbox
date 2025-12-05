@@ -28,6 +28,9 @@ CLASS: %level
         sprlayer# @ = if sprites then ;
 CLASS;
 
+: *narray ( ... n - array )
+    cell array{ >r for , loop r> array} ;
+
 : LEVEL  ( tmj <name> <layernames>- )
     \ layers need to be listed in reverse order (TODO: fix??)
     {: tmj | cnt zbuf[ 256 ] :}
@@ -35,14 +38,10 @@ CLASS;
     create %level dmake { 
         begin bl parse dup while
             zbuf[ zplace 
-            save-input n>r
             tmj zbuf[ *tilemap-from ( add to stack )
-            nr> restore-input drop
             1 +to cnt
         repeat ." done" cr 2drop
-        cell array{ >r
-            cnt for , loop 
-        r> array} layers !
+        cnt *narray layers !
     } ;
 
 dungeon.tmj LEVEL dungeon.lvl  front details platform background 
