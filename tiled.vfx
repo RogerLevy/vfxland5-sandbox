@@ -170,15 +170,18 @@ CLASS;
 : *narray ( ... n - array )
     cell array{ >r for , loop r> array} ;
 
-: LEVEL  ( tmj <name> <layernames>- )
+: *LEVEL ( tmj <layernames> - level )
     \ layers need to be listed in reverse order (TODO: fix??)
     {: tmj | cnt zbuf[ 256 ] :}
     0 to cnt
-    create %level dmake { 
+    %level dmake { 
         begin bl parse dup while
             zbuf[ zplace 
             tmj zbuf[ *tilemap-from ( add to stack )
             1 +to cnt
-        repeat ." done" cr 2drop
+        repeat 2drop
         cnt *narray layers !
-    } ;
+    me } ;
+
+: LEVEL ( tmj <name> <layernames> - )
+    create *level drop ;
