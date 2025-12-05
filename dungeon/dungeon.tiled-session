@@ -66,10 +66,10 @@
         },
         "dungeon.tmj": {
             "scale": 1.5,
-            "selectedLayer": 5,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 158.33333333333331,
-                "y": 269.33333333333337
+                "x": 552.3333333333334,
+                "y": 233.33333333333337
             }
         },
         "dungeon.tsj": {
