@@ -1,0 +1,34 @@
+2VARIABLE scrollx
+scrollx cell+ CONSTANT scrolly
+
+: bound-ofs ( array - n )
+    scrollx 2@ 2>i xgap ygap 2/ tmw * +  swap #items umod ;
+
+: _torg ( - a )
+    ta @` dup bound-ofs` nth ;
+
+: _scroll ( - )
+    scrollx 2@ 2>i xgap ygap 2mod 2negate +at ;
+
+REDEF %tilemap :: draw ( - )
+    <at
+    ts @ >baseid @ pile!
+    _scroll
+    gamew >p xgap / p>f roundup f>s 1 + 
+    gameh >p ygap / p>f roundup f>s 1 +
+    w 2@ 2min
+    _torg` -rot ( a cols rows ) drawbg ;
+
+
+    
+REDEF : backsprites
+    m{ 
+        scrollx 2@ 2negate 2p>f 1e 1e 0e transform
+        backsprites
+    m} ;
+
+REDEF : sprites
+    m{ 
+        scrollx 2@ 2negate 2p>f 1e 1e 0e transform
+        sprites
+    m} ;

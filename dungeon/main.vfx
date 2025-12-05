@@ -1,70 +1,76 @@
+builtin-font fnt! \ TODO: where to call this??
+
 REQUIRE %vfxland5%/supershow/actor.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 REQUIRE %vfxland5%/supershow/sprites.vfx
+REQUIRE %vfxland5%/supershow/mode.vfx
 
 REQUIRE %vfxland5%/cjson/cjson.vfx
-REQUIRE %idir%/tiled.vfx
-
-builtin-font fnt! \ TODO: where to call this??
-
-2VARIABLE scrollx
-scrollx cell+ CONSTANT scrolly
-
-: bound-ofs ( array - n )
-    scrollx 2@ 2>i xgap ygap 2/ tmw * +  swap #items umod ;
-
-: _torg ( - a )
-    ta @` dup bound-ofs` nth ;
-
-: _scroll ( - )
-    scrollx 2@ 2>i xgap ygap 2mod 2negate +at ;
-
-%tilemap :: draw ( - )
-    <at
-    ts @ >baseid @ pile!
-    _scroll
-    gamew >p xgap / p>f roundup f>s 1 + 
-    gameh >p ygap / p>f roundup f>s 1 +
-    w 2@ 2min
-    _torg` -rot ( a cols rows ) drawbg ;
-
+REQUIRE %idir%/../tiled.vfx
+REQUIRE %idir%/../scrolling.vfx
 
 JSONFILE %idir%/dungeon.tmj
 
-dungeon.tmj "dungeon_background" TILEMAP-FROM layer0.tm
-dungeon.tmj "dungeon_platform" TILEMAP-FROM layer1.tm
-dungeon.tmj "dungeon_details" TILEMAP-FROM layer2.tm
-dungeon.tmj "dungeon_front" TILEMAP-FROM layer3.tm
+CLASS: %level
+    IS-A %drawable
+    PROP layers :ref %array
+    PROP sprlayer#
+    PROP bsprlayer# 
+    template { 1 sprlayer# ! }
 
-bitmap assets/blobby.png \ TODO: Load automatically from image-collection tileset
+    :: draw ( - )
+        0 
+        [:  over bsprlayer# @ = if backsprites then
+            over sprlayer# @ = if sprites then
+            0 0 at draw  1 + 
+        ;] layers @ each
+        dup bsprlayer# @ = if backsprites then
+        sprlayer# @ = if sprites then ;
+CLASS;
 
-class: %blobby 
+: LEVEL  ( tmj <name> <layernames>- )
+    \ layers need to be listed in reverse order (TODO: fix??)
+    {: tmj | cnt zbuf[ 256 ] :}
+    0 to cnt
+    create %level dmake { 
+        begin bl parse dup while
+            zbuf[ zplace 
+            save-input n>r
+            tmj zbuf[ *tilemap-from ( add to stack )
+            nr> restore-input drop
+            1 +to cnt
+        repeat ." done" cr 2drop
+        cell array{ >r
+            cnt for , loop 
+        r> array} layers !
+    } ;
+
+dungeon.tmj LEVEL dungeon.lvl  front details platform background 
+3 dungeon.lvl >sprlayer# !
+
+
+BITMAP assets/blobby.png \ TODO: Load automatically from image-collection tileset
+
+CLASS: %blobby 
     %actor derive
     template { blobby.png bmp ! }
-class;
+CLASS;
 
-dungeon.tmj "objects" load-to-stage
+ec-cell lvl
 
 : dungeon
+    dungeon.tmj "objects" load-to-stage
+    dungeon.lvl lvl! ;
+
+: game
     work>
         <left> held? if -2. scrollx +! then
         <right> held? if 2. scrollx +! then
         <up> held? if -2. scrolly +! then
         <down> held? if 2. scrolly +! then
     show>
-        0 0 at
-        layer0.tm draw
-        layer1.tm draw
-        layer2.tm draw
-        m{ 
-            scrollx 2@ 2negate 2p>f 1e 1e 0e transform
-            sprites
-        m}
-        {{
-            gamew gameh 2 2 2/ at blobby.png put
-        }}
-        layer3.tm draw 
+        lvl@ draw
         0 0 at s{ scrollx 2@ 2>i swap . . s} print
 ;
 
-dungeon
+dungeon game
