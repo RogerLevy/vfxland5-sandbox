@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Dungeon.tmj",
+    "activeFile": "dungeon.tmj",
     "automapping.whileDrawing": false,
     "expandedProjectPaths": [
     ],
@@ -65,16 +65,16 @@
             }
         },
         "dungeon.tmj": {
-            "scale": 0.25709375,
-            "selectedLayer": 0,
+            "scale": 0.75,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 2401.847575057737,
-                "y": 248.9364288318949
+                "x": 737.9999999999999,
+                "y": 437.33333333333326
             }
         },
         "dungeon.tsj": {
             "dynamicWrapping": false,
-            "scaleInDock": 1.5,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "dungeon.tsx": {
@@ -83,29 +83,34 @@
             "scaleInEditor": 1
         },
         "objects.tsj": {
-            "dynamicWrapping": true
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
     "frame.defaultDuration": 80,
+    "last.exportedFilePath": "C:/Users/roger/Desktop/dev/vfxland5_starling/sandbox/dungeon",
     "last.externalTilesetPath": "/Users/edesantis/Dropbox/Rumblecade/Asset Creation/Tilesets 8 BIT/FACTORY ASSETS/TMX TSX",
     "last.imagePath": "C:/Users/roger/Desktop/dev/vfxland5_starling/sandbox/assets",
     "map.fixedSize": true,
     "map.height": 50,
-    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "json",
     "map.orientation": 1,
     "map.tileHeight": 32,
     "map.tileWidth": 32,
     "map.width": 150,
     "openFiles": [
-        "Dungeon.tmj",
-        "dungeon.tsj"
+        "dungeon.tsj",
+        "dungeon.tmj",
+        "objects.tsj"
     ],
     "project": "dungeon.tiled-project",
     "recentFiles": [
+        "dungeon.tsj",
+        "objects.tsj",
         "dungeon.tmj",
         "Dungeon.tmj",
-        "dungeon.tsj",
         "dungeon.tsx",
         "Dungeon.tmx",
         "C:/Users/edesantis/Dropbox/Rumblecade/Asset Creation/Tilesets 8 BIT/FACTORY ASSETS/TMX TSX/factory.tmx",

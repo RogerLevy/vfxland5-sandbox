@@ -19,7 +19,7 @@ private
 : @dims ( layerSrc - w h )
     dup "width" j@n swap "height" j@n ;
 
-: @pos ( jobj - x. y. )
+: j@pos ( jobj - x. y. )
     >r r@ "x" j@p r@ "width" j@p 2 / +
        r@ "y" j@p r> "height" j@p 2 / - ;
 
@@ -31,7 +31,9 @@ private
         0 exit
     then
     f" %%%s" sfind if
-        execute make { obj @pos x 2!
+        execute make {   
+            obj j@pos x 2!
+            en on
         me }
     else
         ( $ ) f" Class %$ not found, skipping..." type cr
@@ -41,7 +43,7 @@ private
 : stage-allocator ( n - a ior )
     drop stage-slot 0 ;
 
-: on-stage
+: to-stage
     ['] stage-allocator allocator! ;
 
 : fix-gids ( ofs array - )
@@ -75,8 +77,8 @@ class;
     0 tmjSrc "layers" j@ [: j@ dup zname jnamed? if nip else drop then ;] jeach
     ?dup 0= if -1 zname f" Layer '%z' not found" .abort then ;
 
-: load-to-stage ( zlayer-name - )
-    t{ on-stage tmjSrc swap find-layer "objects" j@ [: j@ @actor drop ;] jeach t} ;
+: load-to-stage ( tmj zlayer-name - )
+    {{ to-stage find-layer "objects" j@ [: j@ @actor drop ;] jeach }} ;
 
 : ?tileset ( jtileset - )
     to tsSrc

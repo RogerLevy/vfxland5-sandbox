@@ -16,7 +16,8 @@
          "id":0,
          "image":"..\/assets\/blobby.gif",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"blobby"
         }],
  "tilewidth":32,
  "type":"tileset",
