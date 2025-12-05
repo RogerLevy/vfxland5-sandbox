@@ -3,6 +3,7 @@ REQUIRE %vfxland5%/supershow/actor.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 REQUIRE %vfxland5%/supershow/traits.vfx
 REQUIRE %vfxland5%/supershow/autoload.vfx
+REQUIRE %vfxland5%/cjson/cjson.vfx
 
 private
 
@@ -147,3 +148,36 @@ class;
 
 \ : get-metadata ( tsj - )
 \     ;
+
+CLASS: %level
+    IS-A %drawable
+    PROP layers :ref %array
+    PROP sprlayer#
+    PROP bsprlayer# 
+    template { 1 sprlayer# ! }
+
+    :: draw ( - )
+        0 
+        [:  over bsprlayer# @ = if backsprites then
+            over sprlayer# @ = if sprites then
+            0 0 at draw  1 + 
+        ;] layers @ each
+        dup bsprlayer# @ = if backsprites then
+        sprlayer# @ = if sprites then ;
+CLASS;
+
+: *narray ( ... n - array )
+    cell array{ >r for , loop r> array} ;
+
+: LEVEL  ( tmj <name> <layernames>- )
+    \ layers need to be listed in reverse order (TODO: fix??)
+    {: tmj | cnt zbuf[ 256 ] :}
+    0 to cnt
+    create %level dmake { 
+        begin bl parse dup while
+            zbuf[ zplace 
+            tmj zbuf[ *tilemap-from ( add to stack )
+            1 +to cnt
+        repeat ." done" cr 2drop
+        cnt *narray layers !
+    } ;
