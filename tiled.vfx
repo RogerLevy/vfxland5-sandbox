@@ -34,6 +34,7 @@ private
     f" %%%s" sfind if
         execute make {   
             obj j@pos x 2!
+            obj "name" j@s tag$ place
             en on
         me }
     else
