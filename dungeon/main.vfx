@@ -1,4 +1,3 @@
-\ EMPTY
 REQUIRE %vfxland5%/supershow/actor.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 REQUIRE %vfxland5%/supershow/sprites.vfx
@@ -30,7 +29,7 @@ scrollx cell+ CONSTANT scrolly
     _torg` -rot ( a cols rows ) drawbg ;
 
 
-JSONFILE %idir%/dungeon/dungeon.tmj
+JSONFILE %idir%/dungeon.tmj
 
 dungeon.tmj "dungeon_background" TILEMAP-FROM layer0.tm
 dungeon.tmj "dungeon_platform" TILEMAP-FROM layer1.tm
