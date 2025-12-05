@@ -1,0 +1,50 @@
+EMPTY
+
+REQUIRE %vfxland5%/cjson/cjson.vfx
+REQUIRE %idir%/tiled.vfx
+
+\ c: %tilemap scrollx scrolly ;
+\ %tilemap template { 0 0 scrollx 2! }
+
+2VARIABLE scrollx
+scrollx cell+ CONSTANT scrolly
+
+: bound-ofs ( array - n )
+    scrollx 2@ 2>i xgap ygap 2/ tmw * +  swap #items umod ;
+
+: _torg ( - a )
+    ta @` dup bound-ofs` nth ;
+
+: _scroll ( - )
+    scrollx 2@ 2>i xgap ygap 2mod 2negate +at ;
+
+%tilemap :: draw ( - )
+    <at
+    ts @ >baseid @ pile!
+    _scroll
+    gamew >p xgap / p>f roundup f>s 1 + 
+    gameh >p ygap / p>f roundup f>s 1 +
+    w 2@ 2min
+    _torg` -rot ( a cols rows ) drawbg ;
+
+JSONFILE %idir%/dungeon/dungeon.tmj
+
+dungeon.tmj "dungeon_background" TILEMAP-FROM layer0.tm
+dungeon.tmj "dungeon_platform" TILEMAP-FROM layer1.tm
+dungeon.tmj "dungeon_details" TILEMAP-FROM layer2.tm
+dungeon.tmj "dungeon_front" TILEMAP-FROM layer3.tm
+
+: dungeon
+    work>
+        <left> held? if -2. scrollx +! then
+        <right> held? if 2. scrollx +! then
+        <up> held? if -2. scrolly +! then
+        <down> held? if 2. scrolly +! then
+    show>
+        0 0 at
+        layer0.tm draw
+        layer1.tm draw
+        layer2.tm draw
+        layer3.tm draw ;
+
+dungeon

@@ -1,0 +1,147 @@
+REQUIRE %vfxland5%/supershow/tilemap3.vfx
+REQUIRE %vfxland5%/supershow/actor.vfx
+REQUIRE %vfxland5%/supershow/stage.vfx
+REQUIRE %vfxland5%/supershow/traits.vfx
+REQUIRE %vfxland5%/supershow/autoload.vfx
+
+private
+
+0 value tile#  0 value nextGID  0 value tsSrc  0 value jtilesets
+0 value tmjSrc  0 value tsjSrc  0 value zname  0 value layerSrc
+0 value tmjPath$
+
+: gids, ( jlayer - )
+    "data" j@ [: j>int , ;] jeach-fast ;
+
+: *array-from-jlayer ( jlayer - array )
+    >r cell array{ r> gids, array} ;
+
+: @dims ( layerSrc - w h )
+    dup "width" j@n swap "height" j@n ;
+
+: @pos ( jobj - x. y. )
+    >r r@ "x" j@p r@ "width" j@p 2 / +
+       r@ "y" j@p r> "height" j@p 2 / - ;
+
+: @actor ( jobj - actor|0 )
+    {: obj :}
+    obj "type" ['] j@s catch if
+        2drop
+        ." No 'type' property found in JSON object, skipping..." cr
+        0 exit
+    then
+    f" %%%s" sfind if
+        execute make { obj @pos x 2!
+        me }
+    else
+        ( $ ) f" Class %$ not found, skipping..." type cr
+        0
+    then ;
+
+: stage-allocator ( n - a ior )
+    drop stage-slot 0 ;
+
+: on-stage
+    ['] stage-allocator allocator! ;
+
+: fix-gids ( ofs array - )
+    [: dup @ if udup +! else drop then ;] swap eacha drop ;
+
+public
+
+class: %jsonfile
+    %asset derive
+    is-a %autoload
+    is-a %loadable
+    prop json :addr
+
+    : _load-json ( - )
+        me @data parse-json json ! ;
+
+    :: on-startup ( - )
+        ." Loading JSON file " me .name cr
+        _load-json ;
+
+class;
+
+: jsonfile ( <path> - )
+    bl parse 2dup -path %jsonfile asset { embed _load-json }
+    does> dup >srcpath$ to tmjPath$ >json @ ;
+
+: jnamed? ( jobj zname - flag ) swap "name" j@z z$= ;
+
+: find-layer ( tmj zlayer-name - jlayer )
+    to zname to tmjSrc
+    0 tmjSrc "layers" j@ [: j@ dup zname jnamed? if nip else drop then ;] jeach
+    ?dup 0= if -1 zname f" Layer '%z' not found" .abort then ;
+
+: load-to-stage ( zlayer-name - )
+    t{ on-stage tmjSrc swap find-layer "objects" j@ [: j@ @actor drop ;] jeach t} ;
+
+: ?tileset ( jtileset - )
+    to tsSrc
+
+    tsSrc "source" j@s '.' ending s" tsx" s= abort" Only .TSJ tilesets are supported."
+    tsSrc "source" j@s -path sfind nip ?exit  \ tileset is already loaded
+
+    tsSrc "source" j@s 
+    tmjPath$ count '\' <scan
+    f" jsonfile %s\%s" .evaluate  \ load the .TSJ file
+    lastbody >json @ to tsjSrc
+
+    tsjSrc "image" ['] j@s catch if 2drop exit then
+    -path sfind nip 0= if
+        tsjSrc "image" j@s 
+        tmjPath$ count '\' <scan
+        f" bitmap %s\%s" .evaluate  \ load the bitmap
+    then
+
+    tsSrc "source" j@s -path -ext
+    tsjSrc "tileheight" j@n
+    tsjSrc "tilewidth" j@n
+    tsjSrc "image" j@s -path
+    f" %s %n %n tileset-from %s.ts" .evaluate
+;
+
+: load-tmj-tilesets ( tmj - )
+    "tilesets" j@ [: j@ ?tileset ;] jeach ;
+
+: find-first-nonzero ( array - n )
+    0 [: ?dup if nip enough then ;] rot each ;
+
+: find-tileset-ref ( tile# - jtileset|0 )
+    to tile#
+    tmjSrc load-tmj-tilesets
+    tmjSrc "tilesets" j@ to jtilesets
+    0
+    jtilesets [:
+        2dup j@ to tsSrc
+
+        \ get nextGID
+        1 + dup jtilesets jlen < if j@ "firstgid" j@n else 2drop 65536 then to nextGID
+
+        \ if tile# within the range, get the tileset object
+        tile#` tsSrc "firstgid" j@n` nextGID` within? if drop tsSrc enough then
+    ;] jeach ;
+
+: *tilemap-from ( tmj zlayername - tilemap )
+    to zname to tmjSrc
+    %tilemap dmake {
+        tmjSrc load-tmj-tilesets
+        tmjSrc zname find-layer to layerSrc
+        layerSrc @dims w 2!                           \ get dimensions
+        layerSrc *array-from-jlayer ta !              \ get tiles (GID's)
+        ta @ find-first-nonzero find-tileset-ref ( jtileset )
+        ?dup if 
+            dup 
+            "source" j@s -ext f" %s.ts" evaluate ts !
+            "firstgid" j@n negate  \ ts @ >baseid @ +
+            ta @ fix-gids 
+        then
+    me } ;
+
+: tilemap-from ( tileset tmj zname <name> - )
+    create *tilemap-from drop ;
+
+\ : get-metadata ( tsj - )
+\     ;
