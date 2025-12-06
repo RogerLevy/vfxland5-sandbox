@@ -1,4 +1,5 @@
 builtin-font fnt! \ TODO: where to call this??
+
 REQUIRE %vfxland5%/supershow/actor.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 REQUIRE %vfxland5%/supershow/sprites.vfx
@@ -12,12 +13,7 @@ JSONFILE %idir%/onett.tmj
 onett.tmj LEVEL onett.lvl  fg bg
 1 onett.lvl >sprlayer# !
 
-BITMAP %idir%/../dungeon/assets/blobby.png \ TODO: Load automatically from image-collection tileset
-
-CLASS: %blobby 
-    %actor derive
-    template { blobby.png bmp ! }
-CLASS;
+REQUIRE %idir%/../obj/blobby/blobby.vfx
 
 EC-CELL lvl
 

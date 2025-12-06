@@ -1,0 +1,6 @@
+BITMAP %idir%/blobby.png \ TODO: Load automatically from image-collection tileset
+
+CLASS: %blobby 
+    %actor derive
+    template { blobby.png bmp ! }
+CLASS;

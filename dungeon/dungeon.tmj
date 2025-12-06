@@ -392,7 +392,7 @@
         }, 
         {
          "firstgid":1025,
-         "source":"objects.tsj"
+         "source":"..\/objects.tsj"
         }],
  "tilewidth":32,
  "type":"map",

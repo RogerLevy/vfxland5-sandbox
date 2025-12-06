@@ -699,7 +699,7 @@
         }, 
         {
          "firstgid":2370,
-         "source":"..\/dungeon\/objects.tsj"
+         "source":"..\/objects.tsj"
         }],
  "tilewidth":16,
  "type":"map",

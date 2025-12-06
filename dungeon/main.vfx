@@ -13,17 +13,16 @@ JSONFILE %idir%/dungeon.tmj
 dungeon.tmj LEVEL dungeon.lvl  front details platform background 
 3 dungeon.lvl >sprlayer# !
 
-
-BITMAP assets/blobby.png \ TODO: Load automatically from image-collection tileset
-
-CLASS: %blobby 
-    %actor derive
-    template { blobby.png bmp ! }
-CLASS;
+\ REQUIRE %idir%/../obj/kvn/kvn.vfx
+REQUIRE %idir%/../obj/blobby/blobby.vfx
 
 ec-cell lvl
 
+0 value p1
+
 : dungeon
+    just
+    \ 50 50 at %kvn one to p1
     dungeon.tmj "objects" load-to-stage
     dungeon.lvl lvl! ;
 

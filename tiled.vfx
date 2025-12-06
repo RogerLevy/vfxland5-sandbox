@@ -11,6 +11,8 @@ private
 0 value tmjSrc  0 value tsjSrc  0 value zname  0 value layerSrc
 0 value tmjPath$
 
+: jnamed? ( jobj zname - flag ) swap "name" j>z z$= ;
+
 : gids, ( jlayer - )
     "data" j>j [: j@n , ;] jeach-fast ;
 
@@ -68,22 +70,24 @@ class: %jsonfile
 
 class;
 
-: jsonfile ( <path> - )
-    bl parse 2dup -path %jsonfile asset { embed _load-json }
-    does> dup >srcpath$ to tmjPath$ >json @ ;
+private
 
-: jnamed? ( jobj zname - flag ) swap "name" j>z z$= ;
+: set-meta ( bits index - ) 
+    metas-array @ swap nth dup @ rot or swap ! ;
 
-: find-layer ( tmj zlayer-name - jlayer )
-    to zname to tmjSrc
-    0 tmjSrc "layers" j>j [: j>j dup zname jnamed? if nip else drop then ;] jeach
-    ?dup 0= if -1 zname f" Layer '%z' not found" .abort then ;
-
-: ?find-layer ( tmj zlayer-name - jlayer|0 )
-    ['] find-layer catch if 2drop 0 then ;
-
-: load-to-stage ( tmj zlayer-name - )
-    {{ to-stage ?find-layer "objects" ?j>j [: j>j @actor drop ;] jeach }} ;
+0 value id 
+: get-tsj-properties ( tsj tileset - )
+    {
+        #tiles @` cell` %array make metas-array !
+        metas-array @ o.
+        ( tsj ) "tiles" ?j>j [: 
+            dup "id" j>n to id
+            "properties" ?j>j [: 
+                "solid" jnamed? if $0F id set-meta then
+            ;] jeach-fast 
+        ;] jeach-fast
+        me load-metas-from 
+    } ;
 
 : ?tileset ( jtileset - )
     to tsSrc
@@ -99,7 +103,7 @@ class;
     tsjSrc "image" ['] j>s catch if 2drop exit then
     -path sfind nip 0= if
         tsjSrc "image" j>s``
-        tmjPath$ count '\' <scan`` .s
+        tmjPath$ count '\' <scan``
         f" BITMAP %s\%s" .evaluate  \ load the bitmap
     then
 
@@ -108,13 +112,31 @@ class;
     tsjSrc "tilewidth" j>n`
     tsjSrc "image" j>s -path``
     f" %s %n %n TILESET-FROM %s.ts" .evaluate
+    tsjSrc lastbody get-tsj-properties
 ;
-
-: load-tmj-tilesets ( tmj - )
-    "tilesets" j>j [: j>j ?tileset ;] jeach ;
 
 : find-first-nonzero ( array - n )
     0 [: ?dup if nip enough then ;] rot each ;
+
+public
+
+: jsonfile ( <path> - )
+    bl parse 2dup -path %jsonfile asset { embed _load-json }
+    does> dup >srcpath$ to tmjPath$ >json @ ;
+
+: find-layer ( tmj zlayer-name - jlayer )
+    to zname to tmjSrc
+    0 tmjSrc "layers" j>j [: j>j dup zname jnamed? if nip else drop then ;] jeach
+    ?dup 0= if -1 zname f" Layer '%z' not found" .abort then ;
+
+: ?find-layer ( tmj zlayer-name - jlayer|0 )
+    ['] find-layer catch if 2drop 0 then ;
+
+: load-to-stage ( tmj zlayer-name - )
+    {{ to-stage ?find-layer "objects" ?j>j [: j>j @actor drop ;] jeach }} ;
+
+: load-tmj-tilesets ( tmj - )
+    "tilesets" j>j [: j>j ?tileset ;] jeach ;
 
 : find-tileset-ref ( tile# - jtileset|0 )
     to tile#
@@ -150,9 +172,6 @@ class;
 : tilemap-from ( tileset tmj zname <name> - )
     create *tilemap-from drop ;
 
-\ : get-metadata ( tsj - )
-\     ;
-
 CLASS: %level
     IS-A %drawable
     PROP layers :ref %array
@@ -170,7 +189,7 @@ CLASS: %level
         sprlayer# @ = if sprites then ;
 CLASS;
 
-: *narray ( ... n - array )
+: n*array ( ... n - array )
     cell array{ >r for , loop r> array} ;
 
 : *LEVEL ( tmj <layernames> - level )
@@ -183,7 +202,7 @@ CLASS;
             tmj zbuf[ *tilemap-from ( add to stack )
             1 +to cnt
         repeat 2drop
-        cnt *narray layers !
+        cnt n*array layers !
     me } ;
 
 : LEVEL ( tmj <name> <layernames> - )
