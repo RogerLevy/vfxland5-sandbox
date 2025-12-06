@@ -1,5 +1,4 @@
 builtin-font fnt! \ TODO: where to call this??
-
 REQUIRE %vfxland5%/supershow/actor.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 REQUIRE %vfxland5%/supershow/sprites.vfx
@@ -20,11 +19,11 @@ CLASS: %blobby
     template { blobby.png bmp ! }
 CLASS;
 
-ec-cell lvl
+EC-CELL lvl
 
-%actor dmake value p1
+%actor dmake VALUE p1
 
-|| 0 value zbuf
+|| 0 VALUE zbuf
 : findtag ( z$ - actor|0 )
     to zbuf   who> zbuf zcount tag$ count s= ;
 
