@@ -11,7 +11,7 @@ REQUIRE %idir%/../tiled.vfx
 JSONFILE %idir%/onett.tmj
 
 onett.tmj LEVEL onett.lvl  fg bg
-1 onett.lvl >sprlayer# !
+0 onett.lvl >sprlayer# !
 
 REQUIRE %idir%/../obj/blobby/blobby.vfx
 
@@ -30,10 +30,13 @@ EC-CELL lvl
     "mychar" findtag ?dup if to p1  p1 freemove then
 ;
 
+: track ( actor - ) 
+    { x 2@ gamew gameh 2 2 2/ 2>p 2- scrollx 2! } ;
+
 : game
     work>
         step
-        p1 { x 2@ gamew gameh 2 2 2/ 2>p 2- scrollx 2! }
+        p1 track
     show>
         lvl@ draw
         0 0 at s{ scrollx 2@ 2>i swap . . s} print

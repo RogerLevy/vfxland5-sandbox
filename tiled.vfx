@@ -75,11 +75,10 @@ private
 : set-meta ( bits index - ) 
     metas-array @ swap nth dup @ rot or swap ! ;
 
-0 value id 
+|| 0 value id 
 : get-tsj-properties ( tsj tileset - )
     {
-        #tiles @` cell` %array make metas-array !
-        metas-array @ o.
+        #tiles @ cell %array make metas-array !
         ( tsj ) "tiles" ?j>j [: 
             dup "id" j>n to id
             "properties" ?j>j [: 
@@ -100,8 +99,8 @@ private
     f" JSONFILE %s\%s" .evaluate  \ load the .TSJ file
     lastbody >json @ to tsjSrc
 
-    tsjSrc "image" ['] j>s catch if 2drop exit then
-    -path sfind nip 0= if
+    tsjSrc "image" ?j>z -exit
+    tsjSrc "image" j>s -path sfind nip 0= if
         tsjSrc "image" j>s``
         tmjPath$ count '\' <scan``
         f" BITMAP %s\%s" .evaluate  \ load the bitmap
@@ -177,16 +176,16 @@ CLASS: %level
     PROP layers :ref %array
     PROP sprlayer#
     PROP bsprlayer# 
-    template { 1 sprlayer# ! }
+    template { -1 bsprlayer# ! 999 sprlayer# ! }
 
     :: draw ( - )
         0 
-        [:  over bsprlayer# @ = if backsprites then
-            over sprlayer# @ = if sprites then
+        [:  over bsprlayer# @ 1 + = if backsprites then
+            over sprlayer# @ 1 + = if sprites then
             0 0 at draw  1 + 
         ;] layers @ each
-        dup bsprlayer# @ = if backsprites then
-        sprlayer# @ = if sprites then ;
+        dup bsprlayer# @ 1 + <= if backsprites then
+        sprlayer# @ 1 + <= if sprites then ;
 CLASS;
 
 : n*array ( ... n - array )

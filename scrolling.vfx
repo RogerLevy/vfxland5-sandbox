@@ -10,28 +10,23 @@ scrollx cell+ CONSTANT scrolly
 : _torg ( - a )
     ta @` dup bound-ofs` nth ;
 
-: _scroll ( - )
+: _tscroll ( - )
     scrollx 2@ 2>i xgap ygap 2mod 2negate +at ;
 
 REDEF %tilemap :: draw ( - )
     <at
     ts @ >baseid @ pile!
-    _scroll
+    _tscroll
     gamew >p xgap / p>f roundup f>s 1 + 
     gameh >p ygap / p>f roundup f>s 1 +
     w 2@ 2min
     _torg` -rot ( a cols rows ) drawbg ;
 
+: _scroll ( - )
+    scrollx 2@ 2pfloor 2negate 2p>f 1e 1e 0e transform ;
 
-    
 REDEF : backsprites
-    m{ 
-        scrollx 2@ 2negate 2p>f 1e 1e 0e transform
-        backsprites
-    m} ;
+    m{ _scroll backsprites m} ;
 
 REDEF : sprites
-    m{ 
-        scrollx 2@ 2negate 2p>f 1e 1e 0e transform
-        sprites
-    m} ;
+    m{ _scroll sprites m} ;
