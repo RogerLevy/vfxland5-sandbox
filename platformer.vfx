@@ -22,7 +22,7 @@ REQUIRE %vfxland5%/supershow/tmcol3.vfx
 : climbable?  $ff and 240 = ;
 : gevent ( z$ - )
     zcount 2dup sfind not if
-        drop cr ." Global event not found: " type 
+        drop ." Global event not found: " type  cr
     else -rot type cr execute then ;
 
 trait: %hurtable
