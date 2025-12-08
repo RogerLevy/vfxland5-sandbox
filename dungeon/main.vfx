@@ -24,7 +24,7 @@ ec-cell lvl
 : dungeon
     just
     150 150 at %kvn one to p1
-    p1 { dungeon.lvl >layers @ 1 []@ map! }
+    p1 { 1 dungeon.lvl >layers @ el@ map! }
     dungeon.tmj "objects" load-to-stage
     dungeon.lvl lvl! 
     dungeon.ts 0 tile pile! ;

@@ -17,7 +17,7 @@ private
     "data" j>j [: j@n , ;] jeach-fast ;
 
 : *array-from-jlayer ( jlayer - array )
-    >r cell array{ r> gids, array} ;
+    >r %int array{ r> gids, array} ;
 
 : j>dims ( layerSrc - w h )
     dup "width" j>n swap "height" j>n ;
@@ -51,7 +51,7 @@ private
     ['] stage-allocator allocator! ;
 
 : fix-gids ( ofs array - )
-    [: dup @ if udup +! else drop then ;] swap eacha drop ;
+    [: dup if udup + then ;] swap !each drop ;
 
 public
 
@@ -73,12 +73,12 @@ class;
 private
 
 : set-meta ( bits index - ) 
-    metas-array @ swap nth dup @ rot or swap ! ;
+    metas-array @ ['] or !el  ;
 
 || 0 value id 
 : get-tsj-properties ( tsj tileset - )
     {
-        #tiles @ cell %array make metas-array !
+        #tiles @ %int %array make metas-array !
         ( tsj ) "tiles" ?j>j [: 
             dup "id" j>n to id
             "properties" ?j>j [: 
@@ -188,8 +188,8 @@ CLASS: %level
         sprlayer# @ 1 + <= if sprites then ;
 CLASS;
 
-: n*array ( ... n - array )
-    cell array{ >r for , loop r> array} ;
+: n*array ( ... n datatype - array )
+    array{ for , loop array} ;
 
 : *LEVEL ( tmj <layernames> - level )
     \ layers need to be listed in reverse order (TODO: fix??)
@@ -201,7 +201,7 @@ CLASS;
             tmj zbuf[ *tilemap-from ( add to stack )
             1 +to cnt
         repeat 2drop
-        cnt n*array layers !
+        cnt %addr n*array layers !
     me } ;
 
 : LEVEL ( tmj <name> <layernames> - )

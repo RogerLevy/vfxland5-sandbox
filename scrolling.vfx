@@ -1,14 +1,17 @@
 REQUIRE %vfxland5%/supershow/tileset.vfx
 REQUIRE %vfxland5%/supershow/tilemap3.vfx
 
+public 
+
 2VARIABLE scrollx
 scrollx cell+ CONSTANT scrolly
 
-: bound-ofs ( array - n )
-    scrollx 2@ 2>i xgap ygap 2/ tmw * +  swap #items umod ;
+: _bound-ofs ( array - n )
+    scrollx 2@ 2>i xgap ygap 2/ tmw * +  ta @ #items umod ;
 
+borrow array3>> slot
 : _torg ( - a )
-    ta @` dup bound-ofs` nth ;
+    _bound-ofs` ta @ slot ;
 
 : _tscroll ( - )
     scrollx 2@ 2>i xgap ygap 2mod 2negate +at ;
