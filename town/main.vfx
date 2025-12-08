@@ -1,5 +1,3 @@
-builtin-font fnt! \ TODO: where to call this??
-
 REQUIRE %vfxland5%/supershow/actor.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 REQUIRE %vfxland5%/supershow/sprites.vfx

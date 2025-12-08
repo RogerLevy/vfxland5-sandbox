@@ -11,7 +11,7 @@ scrollx cell+ CONSTANT scrolly
 
 borrow array3>> slot
 : _torg ( - a )
-    _bound-ofs` ta @ slot ;
+    _bound-ofs ta @ slot ;
 
 : _tscroll ( - )
     scrollx 2@ 2>i xgap ygap 2mod 2negate +at ;
