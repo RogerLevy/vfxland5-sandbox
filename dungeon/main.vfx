@@ -5,16 +5,15 @@ REQUIRE %idir%/../obj/kvn/kvn.vfx
 REQUIRE %idir%/../obj/blobby/blobby.vfx
 
 : /kvn
-    150 150 at %kvn one to p1   
-    p1 { 1 layer map! } ;
+    150 150 at %kvn one to p1 ;
 
 JSONFILE %idir%/dungeon.tmj
 dungeon.tmj LEVEL dungeon.lvl  background platform details front 
 dungeon.lvl {
     2 sprlayer# !
+    1 layer map!   \ default map for new actors
     [: 
         /kvn 
-        dungeon.ts 0 tile pile!     
     ;] on-load-xt !
 }
 
