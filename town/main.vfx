@@ -3,7 +3,7 @@ REQUIRE %idir%/../leveltest.vfx
 REQUIRE %idir%/../obj/blobby/blobby.vfx
 
 JSONFILE %idir%/onett.tmj
-onett.tmj LEVEL onett.lvl  fg bg
+onett.tmj LEVEL onett.lvl  bg fg 
 onett.lvl {
     0 sprlayer# !
     [: "mychar" findtag to p1  p1 freemove ;] on-load-xt !

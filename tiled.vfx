@@ -8,7 +8,7 @@ REQUIRE %vfxland5%/cjson/cjson2.vfx
 private
 
 0 value tile#  0 value nextGID  0 value tsSrc  0 value jtilesets
-0 value tmjSrc  0 value tsjSrc  0 value zname  0 value layerSrc
+0 value tmjSrc  0 value tsjSrc  create zname 32 allot  0 value layerSrc
 0 value tmjPath$
 
 : jnamed? ( jobj zname - flag ) swap "name" j>z z$= ;
@@ -124,7 +124,8 @@ public
     does> dup >srcpath$ to tmjPath$ >json @ ;
 
 : find-layer ( tmj zlayer-name - jlayer )
-    to zname to tmjSrc
+    \ {: tmjSrc zname :}
+    zname zmove   to tmjsrc
     0 tmjSrc "layers" j>j [: j>j dup zname jnamed? if nip else drop then ;] jeach
     ?dup 0= if -1 zname f" Layer '%z' not found" .abort then ;
 
@@ -153,7 +154,7 @@ public
     ;] jeach ;
 
 : *tilemap-from ( tmj zlayername - tilemap )
-    to zname to tmjSrc
+    zname zmove  to tmjSrc
     %tilemap dmake {
         tmjSrc load-tmj-tilesets
         tmjSrc zname find-layer to layerSrc
@@ -175,11 +176,11 @@ ec-cell lvl  \ current level
 CLASS: %level
     IS-A %drawable
     IS-A %loadable
-    PROP layers :ref %array
+    PROP layers :ref %iterable
     PROP sprlayer#
     PROP bsprlayer# 
-    PROP on-load-xt
-    PROP srcdata  \ jsonfile
+    PROP on-load-xt :xt
+    PROP srcdata :addr  \ jsonfile
 
     template { -1 bsprlayer# ! 999 sprlayer# ! }
 
@@ -202,22 +203,16 @@ CLASS: %level
 
 CLASS;
 
-: n*array ( ... n datatype - array )
-    array{ for , loop array} ;
+0 %level :construct ( - )
+    8 %addr %stack make layers ! ;
 
 : *LEVEL ( jsonfile <layernames> - level )
     \ jsonfile must be in .TMJ format
-    \ layers need to be listed in reverse order (TODO: fix??)
-    {: tmj | cnt zbuf[ 256 ] :}
-    0 to cnt
     %level dmake { 
-        tmj srcdata !
-        begin bl parse dup while
-            zbuf[ zplace 
-            tmj zbuf[ *tilemap-from ( add to stack )
-            1 +to cnt
-        repeat 2drop
-        cnt %addr n*array layers !
+        srcdata !
+        begin bl parse dup while >zpad 
+            srcdata @ swap *tilemap-from layers @ push
+        repeat 2drop 
     me } ;
 
 : LEVEL ( tmj <name> <layernames> - )

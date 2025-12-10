@@ -9,7 +9,7 @@ REQUIRE %idir%/../obj/blobby/blobby.vfx
     p1 { 1 layer map! } ;
 
 JSONFILE %idir%/dungeon.tmj
-dungeon.tmj LEVEL dungeon.lvl  front details platform background 
+dungeon.tmj LEVEL dungeon.lvl  background platform details front 
 dungeon.lvl {
     2 sprlayer# !
     [: 
