@@ -14,6 +14,9 @@
         "C:/Users/roger/Desktop/dev/vfxland5_starling/sandbox/dungeon/objects.tsj": {
             "dynamicWrapping": true
         },
+        "C:/Users/roger/Desktop/dev/vfxland5_starling/sandbox/objects.tsj": {
+            "scaleInDock": 1
+        },
         "onett.tmj": {
             "scale": 0.25,
             "selectedLayer": 0,

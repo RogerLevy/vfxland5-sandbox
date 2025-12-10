@@ -438,7 +438,7 @@
          "name":"objects",
          "objects":[
                 {
-                 "gid":2370,
+                 "gid":1905,
                  "height":32,
                  "id":1,
                  "name":"mychar",
@@ -450,7 +450,7 @@
                  "y":384
                 }, 
                 {
-                 "gid":2370,
+                 "gid":1905,
                  "height":32,
                  "id":2,
                  "name":"",
@@ -681,7 +681,7 @@
          "name":"fg",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":192,
          "x":0,
          "y":0
@@ -698,7 +698,7 @@
          "source":"onett.tsj"
         }, 
         {
-         "firstgid":2370,
+         "firstgid":1905,
          "source":"..\/objects.tsj"
         }],
  "tilewidth":16,

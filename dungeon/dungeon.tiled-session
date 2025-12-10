@@ -48,6 +48,9 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "C:/Users/roger/Desktop/dev/vfxland5_starling/sandbox/objects.tsj": {
+            "scaleInDock": 1
+        },
         "Dungeon.tmj": {
             "scale": 0.33,
             "selectedLayer": 4,
@@ -65,11 +68,11 @@
             }
         },
         "dungeon.tmj": {
-            "scale": 1,
-            "selectedLayer": 6,
+            "scale": 1.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 569.5,
-                "y": 338
+                "x": 425.6666666666667,
+                "y": 281.99999999999994
             }
         },
         "dungeon.tsj": {
@@ -101,13 +104,12 @@
     "map.tileWidth": 32,
     "map.width": 150,
     "openFiles": [
-        "dungeon.tmj",
-        "objects.tsj"
+        "dungeon.tmj"
     ],
     "project": "dungeon.tiled-project",
     "recentFiles": [
-        "objects.tsj",
         "dungeon.tmj",
+        "objects.tsj",
         "dungeon.tsj",
         "Dungeon.tmj",
         "dungeon.tsx",

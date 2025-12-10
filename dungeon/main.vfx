@@ -1,43 +1,24 @@
-REQUIRE %vfxland5%/supershow/actor.vfx
-REQUIRE %vfxland5%/supershow/stage.vfx
-REQUIRE %vfxland5%/supershow/sprites.vfx
-REQUIRE %vfxland5%/supershow/mode.vfx
-
-REQUIRE %idir%/../scrolling.vfx
-REQUIRE %idir%/../tiled.vfx
-
-JSONFILE %idir%/dungeon.tmj
-
-dungeon.tmj LEVEL dungeon.lvl  front details platform background 
-2 dungeon.lvl >sprlayer# !
+REQUIRE %idir%/../leveltest.vfx
 
 REQUIRE %idir%/../platformer.vfx
 REQUIRE %idir%/../obj/kvn/kvn.vfx
 REQUIRE %idir%/../obj/blobby/blobby.vfx
 
-ec-cell lvl
+: /kvn
+    150 150 at %kvn one to p1   
+    p1 { 1 layer map! } ;
 
-0 value p1
+JSONFILE %idir%/dungeon.tmj
+dungeon.tmj LEVEL dungeon.lvl  front details platform background 
+dungeon.lvl {
+    2 sprlayer# !
+    [: 
+        /kvn 
+        dungeon.ts 0 tile pile!     
+    ;] on-load-xt !
+}
 
 : dungeon
-    just
-    150 150 at %kvn one to p1
-    p1 { 1 dungeon.lvl >layers @ el@ map! }
-    dungeon.tmj "objects" load-to-stage
-    dungeon.lvl lvl! 
-    dungeon.ts 0 tile pile! ;
+    dungeon.lvl load leveltest ;
 
-: track ( actor - ) 
-    { x 2@ gamew gameh 2 2 2/ 2>p 2- 0 0 2max scrollx 2! } ;
-
-: game
-    work>
-        step
-        p1 track
-    show>
-        lvl@ draw
-        animate
-        0 0 at s{ scrollx 2@ 2>i swap . . s} print
-;
-
-dungeon game
+dungeon

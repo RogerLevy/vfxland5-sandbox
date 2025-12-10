@@ -1,2 +1,5 @@
-ldp dungeon
+\ ldp dungeon
 \ ldp town
+
+include %idir%/dungeon/main.vfx
+include %idir%/town/main.vfx

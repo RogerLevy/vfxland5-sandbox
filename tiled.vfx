@@ -14,7 +14,7 @@ private
 : jnamed? ( jobj zname - flag ) swap "name" j>z z$= ;
 
 : gids, ( jlayer - )
-    "data" j>j [: j@n , ;] jeach-fast ;
+    "data" j>j [: j@u , ;] jeach-fast ;
 
 : *array-from-jlayer ( jlayer - array )
     >r %int array{ r> gids, array} ;
@@ -119,8 +119,8 @@ private
 
 public
 
-: jsonfile ( <path> - ) ( - cjson )
-    bl parse 2dup -path %jsonfile asset { embed _load-json }
+: JSONFILE ( <path> - ) ( - cjson )
+    bl parse 2dup -path %jsonfile ASSET { embed _load-json }
     does> dup >srcpath$ to tmjPath$ >json @ ;
 
 : find-layer ( tmj zlayer-name - jlayer )
@@ -163,20 +163,28 @@ public
         ?dup if 
             dup 
             "source" j>s -ext f" %s.ts" evaluate ts !
-            "firstgid" j>n negate  \ ts @ >baseid @ +
-            ta @ fix-gids 
+            "firstgid" j>n negate ta @ fix-gids 
         then
     me } ;
 
-: tilemap-from ( tileset tmj zname <name> - )
+: TILEMAP-FROM ( tileset tmj zname <name> - )
     create *tilemap-from drop ;
+
+ec-cell lvl  \ current level 
 
 CLASS: %level
     IS-A %drawable
+    IS-A %loadable
     PROP layers :ref %array
     PROP sprlayer#
     PROP bsprlayer# 
+    PROP on-load-xt
+    PROP srcdata  \ jsonfile
+
     template { -1 bsprlayer# ! 999 sprlayer# ! }
+
+    : layer ( level - tilemap )
+        lvl@ >layers @ el@ ;
 
     :: draw ( - )
         0 
@@ -186,16 +194,24 @@ CLASS: %level
         ;] layers @ each
         dup bsprlayer# @ 1 + <= if backsprites then
         sprlayer# @ 1 + <= if sprites then ;
+
+    :: load ( - )
+        me global { lvl!  0 layer map! }
+        just srcdata @ "objects" load-to-stage 
+        on-load-xt @ ?oexec ;
+
 CLASS;
 
 : n*array ( ... n datatype - array )
     array{ for , loop array} ;
 
-: *LEVEL ( tmj <layernames> - level )
+: *LEVEL ( jsonfile <layernames> - level )
+    \ jsonfile must be in .TMJ format
     \ layers need to be listed in reverse order (TODO: fix??)
     {: tmj | cnt zbuf[ 256 ] :}
     0 to cnt
     %level dmake { 
+        tmj srcdata !
         begin bl parse dup while
             zbuf[ zplace 
             tmj zbuf[ *tilemap-from ( add to stack )
@@ -206,3 +222,4 @@ CLASS;
 
 : LEVEL ( tmj <name> <layernames> - )
     create *level drop ;
+
