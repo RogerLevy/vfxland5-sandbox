@@ -1,4 +1,4 @@
-REQUIRE %idir%/../leveltest.vfx
+REQUIRE %idir%/../scenetest.vfx
 
 REQUIRE %idir%/../platformer.vfx
 REQUIRE %idir%/../obj/kvn/kvn.vfx
@@ -8,8 +8,8 @@ REQUIRE %idir%/../obj/blobby/blobby.vfx
     150 150 at %kvn one to p1 ;
 
 JSONFILE %idir%/dungeon.tmj
-dungeon.tmj LEVEL dungeon.lvl  background platform details front 
-dungeon.lvl {
+dungeon.tmj scene dungeon.scn  background platform details front 
+dungeon.scn {
     2 sprlayer# !
     1 layer map!   \ default map for new actors
     [: 
@@ -18,6 +18,6 @@ dungeon.lvl {
 }
 
 : dungeon
-    dungeon.lvl load leveltest ;
+    dungeon.scn load scenetest ;
 
 dungeon

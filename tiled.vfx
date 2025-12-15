@@ -171,22 +171,22 @@ public
 : TILEMAP-FROM ( tileset tmj zname <name> - )
     create *tilemap-from drop ;
 
-ec-cell lvl  \ current level 
+ec-cell scn  \ current scene 
 
-CLASS: %level
+CLASS: %scene
     IS-A %drawable
     IS-A %loadable
-    PROP layers :ref %iterable
+    PROP layers :ref %iterable \ Array of tilemaps
     PROP sprlayer#
     PROP bsprlayer# 
     PROP on-load-xt :xt
-    PROP srcdata :addr  \ jsonfile
+    PROP srcdata :addr  \ Tiled cjson
     EC_MAX_SIZE NPROP ec  template { ec clear-ec }
     
     template { -1 bsprlayer# ! 999 sprlayer# ! }
 
-    : layer ( level - tilemap )
-        lvl@ >layers @ el@ ;
+    : layer ( scene - tilemap )
+        scn@ >layers @ el@ ;
 
     :: draw ( - )
         0 
@@ -198,34 +198,35 @@ CLASS: %level
         sprlayer# @ 1 + <= if sprites then ;
 
     :: load ( - )
+        me global { scn! }   \ set global scene
         just srcdata @ "objects" load-to-stage 
         on-load-xt @ ?oexec ;
 
 CLASS;
 
-0 %level :construct ( - )
+0 %scene :construct ( - )
     8 %addr %stack make layers ! 
-    ec ecp!  me lvl!  ;
+    ec ecp!  me scn!  ;
 
 0 %actor :construct ( - )
     actor:construct
     you { map@ pile@ } pile! map!   \ hard-inherit pile and map
 ;
 
-: *LEVEL ( jsonfile <layernames> - level )
+: *scene ( jsonfile <layernames> - scene )
     \ jsonfile must be in .TMJ format
-    %level dmake { 
+    %scene dmake { 
         srcdata !
         begin bl parse dup while >zpad 
             srcdata @ swap *tilemap-from layers @ push
         repeat 2drop 
         layers @ #items if 
-            \ Set default map and pile for level
+            \ Set default map and pile for scene
             0 layer map!
             0 layer >ts @ 0 tile pile!
         then
     me } ;
 
-: LEVEL ( tmj <name> <layernames> - )
-    create *level drop ;
+: scene ( tmj <name> <layernames> - )
+    create *scene drop ;
 
