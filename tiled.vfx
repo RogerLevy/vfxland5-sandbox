@@ -44,11 +44,8 @@ private
         0
     then ;
 
-: stage-allocator ( n - a ior )
-    drop stage-slot 0 ;
-
-: to-stage
-    ['] stage-allocator allocator! ;
+: node-allocated ( n - a ior )
+    [: drop frees pop 0 ;] allocator! ;
 
 : fix-gids ( ofs array - )
     [: dup if udup + then ;] swap !each drop ;
@@ -133,7 +130,7 @@ public
     ['] find-layer catch if 2drop 0 then ;
 
 : load-to-stage ( tmj zlayer-name - )
-    {{ to-stage ?find-layer "objects" ?j>j [: @actor drop ;] jeach-fast }} ;
+    {{ node-allocated ?find-layer "objects" ?j>j [: @actor stg@ push ;] jeach-fast }} ;
 
 : load-tmj-tilesets ( tmj - )
     "tilesets" j>j [: j>j ?tileset ;] jeach ;
