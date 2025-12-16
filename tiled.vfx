@@ -130,7 +130,7 @@ public
     ['] find-layer catch if 2drop 0 then ;
 
 : load-to-stage ( tmj zlayer-name - )
-    {{ node-allocated ?find-layer "objects" ?j>j [: @actor stg@ push ;] jeach-fast }} ;
+    e{ node-allocated ?find-layer "objects" ?j>j [: @actor stg@ push ;] jeach-fast e} ;
 
 : load-tmj-tilesets ( tmj - )
     "tilesets" j>j [: j>j ?tileset ;] jeach ;
