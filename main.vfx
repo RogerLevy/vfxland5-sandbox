@@ -3,3 +3,6 @@
 
 include %idir%/dungeon/main.vfx
 include %idir%/town/main.vfx
+
+ld colors
+ld shapes
