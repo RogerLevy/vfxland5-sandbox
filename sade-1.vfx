@@ -1,0 +1,63 @@
+require %vfxland5%/supershow/tileset.vfx
+
+public
+
+trait: %playable
+    :: play ( - ) stub ;
+trait;
+
+class: %animation
+    is-a %playable
+    prop ts :ref %tileset
+    prop frames :ref %array
+    prop spd :fixed
+class;
+
+class: %actor
+    prop frames :addr
+    prop a.ts :ref %tileset
+    prop a.spd :fixed
+    prop a.ofs 
+    prop a.done 
+    prop a.flp
+class;
+
+|| : _alen  frames @ #items ;
+|| : ?baseid  a.ts @ dup if 0 tile then ;
+|| : update  a.ofs @ >i cells frames @ + @ ?baseid + a.flp @ xor bmp ! ;
+|| : ?done  a.ofs @ a.spd @ + _alen >p >= -exit  a.done on ;
+
+borrow array3>> slot
+%animation :: play ( - )
+    0 frames @ slot you { frames ! }
+    spd @ a.spd !
+    ts @ a.ts !
+    a.done off 
+    0 a.ofs ! ;
+
+dataformat [sade-1] sade-1-ed.vfx
+ 
+: *animation ( tileset - animation )
+    %animation make { ts ! me } ;
+
+: animation: ( tileset <name> - )
+    create *animation %int stack{  ;
+
+: animation;
+    stack} swap { frames ! } ;
+
+require %idir%/io.vfx
+
+: write-ints ( index iterable count - ) 
+    for 
+        2dup el@ f" %n , " write 
+        1 u+ 
+    loop 2drop ;
+
+: write-animation ( animation - )
+    {
+        me body>name` ts @ body>name` f" %s animation: %s" write-line
+        s"     " write   0 frames @ len @ write-ints   write-lb
+        f" animation;" write-line
+        write-lb 
+    } ;

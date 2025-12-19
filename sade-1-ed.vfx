@@ -1,0 +1,30 @@
+require %idir%/shapes.vfx
+require %idir%/colors.vfx
+
+256 %addr stack objects
+0 value the-object
+
+: save 
+    e> the-filepath$ count fopen [: write-animation ;] objects each ;
+
+\ TODO: needs to add the animation to a stack
+: animation: ( tileset <name> - )
+    create here { _animation: ;
+
+: animation; ( - ) 
+    the-object 0= if me to the-object then
+    me objects push } ; 
+
+: put+ ( bmpid - )
+    dup put bmpw 0 +at ;
+
+: main
+    work>
+        <esc> pressed? shift? and if 
+            edit-backup pristine 
+        then
+    show>
+        the-object {
+            [: ts @ swap tile put+ ;] frames @ each
+        } ;
+        \ 50 50 at  200. 100. red rectf ;

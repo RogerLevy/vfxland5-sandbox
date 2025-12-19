@@ -1,0 +1,33 @@
+
+ec-cell io
+
+trait: %io
+    prop hnd
+    :: _write ( a len - ) 2drop ;
+    :: _read ( a len - ) 2drop ;
+    :: _close ( - ) ;
+trait;
+
+redef : write ( a len - ) io@ _write ;
+redef : read ( a len - ) io@ _read ;
+redef : close ( - ) io@ _close ;
+
+: write-char ( n - ) >r rp@ 1 write r> drop ;
+: write-lb ( - )  13 write-char 10 write-char ;
+: write-line ( a len - ) write write-lb ;
+
+class: %fileio
+    is-a %io
+
+    :: _write ( a len - )
+        hnd @ write-file abort" File write error" ;
+    
+    :: _read ( a len - )
+        hnd @ read-file abort" File read error" drop ;
+
+    : fopen ( fp len - )
+        me io! expand r/o open-file abort" File open error" hnd ! ;
+    
+    : fcreate ( fp len - )
+        me io! expand w/o create-file abort" File create error" hnd ! ;
+class;

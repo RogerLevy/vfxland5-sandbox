@@ -1,0 +1,104 @@
+((
+Data editor framework
+
+Idea:
+
+Data is stored as Forth files where the search order can affect how the data is
+stored in memory, and also how the editor is configured.  
+
+This technique is intended for data to be statically-compiled into a game as
+binary values and addresses, but it could be conceivably stored in source-format
+within the executable in an encrypted form (and limited to a safe vocabulary) 
+to help keep it secure.  
+
+
+```
+\ Data Example 1 - an initial keyword does double duty declaring the format/version 
+\ of the data, and depending on the search order, loading/initializing/resuming 
+\  the editor.
+
+\ Editor state can be optionally stored, allowing seemless resume.
+
+[sade-1]    \ sprite animation data editor, v. 1
+            \ in "edit" mode, this actually compiles and starts the appropriate editor, then the rest of the file is loaded.
+            \ in "compile" mode, this just sets the appropriate search order (if required)
+
+bitmap mybitmap.png
+mybitmap.png 16 16 tileset-from mybitmap.ts
+
+mybitmap.ts 0.25 animation: myanm.anm
+    0 , 1 , 2 , 3 , 4 , 
+animation;
+
+mybitmap.ts 0.5 animation: myanm2.anm
+    5 , 6 , 7 , 7 , 7 , 8 , 
+animation;
+
+\ in "edit" mode, ANIMATION: adds the animation to the list of available animations to edit.
+
+```
+
+Theoretical workflow:
+
+    - Compile and test game
+    - Edit a data file
+    - Quit the editor, restoring the system state (dictionary)
+    - Load files with LD (such as actor scripts), which in turn reload relevant data file(s), 
+        other actors still using the old data unaffected.  (this is safer)
+    - Can reload scenes or the entire game, potentially using save/resume (JSON) to maintain continuity
+
+Storing data with direct Forth code has a number of advantages:
+
+    - Maximum readability and editability before data format is settled / editor is ready
+    - Data format files can leverage game systems
+    - It's more future proof, doesn't rely on fixed binary data layout
+    - Intuitive inspection (if the data format uses direct object property assignment and such)
+
+
+))
+
+0 value editing?
+variable edit-backup
+
+: finish-compiling   begin refill while interpret repeat ;
+    
+: decree ( z$ - ) 
+    \ Execute word if it exists
+    zcount >pad find if execute else drop then ;
+
+: dataformat ( <name> <editor.vfx> - ) ( - )
+    create bl parse $, 
+    does> 
+        editing? if count included else drop then
+        finish-compiling 
+        editing? if "main" decree go then ;
+
+cstring the-filepath$ 
+
+: edit-included ( fp len - )
+    edit-backup remember
+    2dup the-filepath$ place
+    true to editing?  ['] included catch  false to editing?  throw ;
+
+: edit ( <name> - )
+    \ Extend EDIT to include .vfx files in edit mode
+    {: | name len _in :}
+    >in @ to _in
+    bl parse to len to name
+    name len '.' ending s" vfx" s= if
+        name len edit-included 
+        exit 
+    then
+    name len f" %s.vfx" file-exists? if 
+        name len f" %s.vfx" edit-included 
+        exit
+    then
+    _in >in ! edit ;
+
+require %idir%/sade-1.vfx
+
+\ edit-backup remember   \ this doesn't work because it remembers the interpreter state
+\ ld sade-1-ed
+
+
+
