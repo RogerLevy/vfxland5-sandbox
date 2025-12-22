@@ -23,8 +23,6 @@ ec-cell thickness
 : line ( relx. rely. - )
     thickness@ p>f f>ds >r   at@f   at@p 2+ 2p>f  rgba@fds r> al_draw_line ;
 
-: at@p  ppenx@ ppeny@ ;
-
 : rect ( w. h. - )
     thickness@ p>f f>ds >r   at@f   at@p 2+ 2p>f   rgba@fds r> al_draw_rectangle ;
 
