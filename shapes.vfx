@@ -1,3 +1,7 @@
+require %vfxland5%/supershow/actor.vfx
+require %vfxland5%/supershow/stage.vfx
+require %vfxland5%/supershow/mode.vfx
+
 \ Color and thickness are stored in each shape's execution context.
 \ So to set a shape's color or thickness:
 \ myshape { $ff00ffff rgba   5. thick }
@@ -49,17 +53,14 @@ c: %pixel %shape ;
 %rect :: draw  at-me w 2@ fil @ if rectf else rect then ;
 %pixel :: draw  at-me pixel ;
 
-
-: add  make dup me push ;
-
-: *circle %circle add { r ! me } ;
+: *circle  %circle add { r ! me } ;
 : *circlef *circle { fil on me } ;    
-: *oval %oval add { rx 2! me } ;
-: *ovalf *oval { fil on me } ;
-: *line %line add { dx 2! me } ;
-: *rect %rect add { w 2! me } ;
-: *rectf *rect { fil on me } ;
-: *pixel %pixel add ;
+: *oval    %oval add { rx 2! me } ;
+: *ovalf   *oval { fil on me } ;
+: *line    %line add { dx 2! me } ;
+: *rect    %rect add { w 2! me } ;
+: *rectf   *rect { fil on me } ;
+: *pixel   %pixel add ;
 
 defer _ndraw  \ had to do the recursion this way because [: RECURSE ;] didn't work.
 : ndraw ( drawable - )
