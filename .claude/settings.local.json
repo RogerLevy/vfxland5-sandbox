@@ -3,7 +3,10 @@
     "allow": [
       "Bash(git submodule:*)",
       "Bash(git log:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(objdump:*)",
+      "Bash(dumpbin:*)",
+      "Bash(powershell -Command \"& { dumpbin /exports ''vfxland5/bin/allegro-debug-5.2.dll'' | Select-String ''al_map_rgba'' }\")"
     ],
     "deny": [],
     "ask": []
