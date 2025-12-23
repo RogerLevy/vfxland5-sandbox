@@ -1,54 +1,56 @@
+|| : color  create , does> @ rgba8 ;
+
 \ Primary/Secondary
-: red      $ff0000ff rgba8 ;
-: green    $00ff00ff rgba8 ;
-: blue     $0000ffff rgba8 ;
-: yellow   $ffff00ff rgba8 ;
-: cyan     $00ffffff rgba8 ;
-: magenta  $ff00ffff rgba8 ;
+$ff0000ff COLOR red
+$00ff00ff COLOR green
+$0000ffff COLOR blue
+$ffff00ff COLOR yellow
+$00ffffff COLOR cyan
+$ff00ffff COLOR magenta
 
 \ Grayscale
-: white    $ffffffff rgba8 ;
-: black    $000000ff rgba8 ;
-: gray     $808080ff rgba8 ;
-: grey     $808080ff rgba8 ;
+$ffffffff COLOR white
+$000000ff COLOR black
+$808080ff COLOR gray
+$808080ff COLOR grey
 
 \ Common colors
-: orange   $ff8000ff rgba8 ;
-: purple   $8000ffff rgba8 ;
-: violet   $8000ffff rgba8 ;
-: pink     $ff80c0ff rgba8 ;
-: brown    $804000ff rgba8 ;
-: lime     $80ff00ff rgba8 ;
+$ff8000ff COLOR orange
+$8000ffff COLOR purple
+$8000ffff COLOR violet
+$ff80c0ff COLOR pink
+$804000ff COLOR brown
+$80ff00ff COLOR lime
 
 \ Dark variants
-: dark-red     $800000ff rgba8 ;
-: dark-green   $008000ff rgba8 ;
-: dark-blue    $000080ff rgba8 ;
-: dark-yellow  $808000ff rgba8 ;
-: dark-cyan    $008080ff rgba8 ;
-: dark-magenta $800080ff rgba8 ;
-: dark-gray    $404040ff rgba8 ;
-: dark-grey    $404040ff rgba8 ;
-: dark-orange  $ff4000ff rgba8 ;
-: dark-purple  $400080ff rgba8 ;
-: dark-brown   $402000ff rgba8 ;
+$800000ff COLOR dark-red
+$008000ff COLOR dark-green
+$000080ff COLOR dark-blue
+$808000ff COLOR dark-yellow
+$008080ff COLOR dark-cyan
+$800080ff COLOR dark-magenta
+$404040ff COLOR dark-gray
+$404040ff COLOR dark-grey
+$ff4000ff COLOR dark-orange
+$400080ff COLOR dark-purple
+$402000ff COLOR dark-brown
 
 \ Light variants
-: light-red    $ff8080ff rgba8 ;
-: light-green  $80ff80ff rgba8 ;
-: light-blue   $8080ffff rgba8 ;
-: light-yellow $ffff80ff rgba8 ;
-: light-cyan   $80ffffff rgba8 ;
-: light-pink   $ffb0d0ff rgba8 ;
-: light-gray   $d0d0d0ff rgba8 ;
-: light-grey   $d0d0d0ff rgba8 ;
-: light-brown  $a06020ff rgba8 ;
+$ff8080ff COLOR light-red
+$80ff80ff COLOR light-green
+$8080ffff COLOR light-blue
+$ffff80ff COLOR light-yellow
+$80ffffff COLOR light-cyan
+$ffb0d0ff COLOR light-pink
+$d0d0d0ff COLOR light-gray
+$d0d0d0ff COLOR light-grey
+$a06020ff COLOR light-brown
 
 \ Named colors
-: crimson  $dc143cff rgba8 ;
-: indigo   $4b0082ff rgba8 ;
-: khaki    $f0e68cff rgba8 ;
-: tan      $d2b48cff rgba8 ;
-: beige    $f5f5dcff rgba8 ;
-: lavender $e6e6faff rgba8 ;
-: skyblue  $87ceebff rgba8 ; 
+$dc143cff COLOR crimson
+$4b0082ff COLOR indigo
+$f0e68cff COLOR khaki
+$d2b48cff COLOR tan
+$f5f5dcff COLOR beige
+$e6e6faff COLOR lavender
+$87ceebff COLOR skyblue 
