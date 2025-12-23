@@ -31,6 +31,7 @@
 : dark-grey    $404040ff rgba8 ;
 : dark-orange  $ff4000ff rgba8 ;
 : dark-purple  $400080ff rgba8 ;
+: dark-brown   $402000ff rgba8 ;
 
 \ Light variants
 : light-red    $ff8080ff rgba8 ;
@@ -41,6 +42,7 @@
 : light-pink   $ffb0d0ff rgba8 ;
 : light-gray   $d0d0d0ff rgba8 ;
 : light-grey   $d0d0d0ff rgba8 ;
+: light-brown  $a06020ff rgba8 ;
 
 \ Named colors
 : crimson  $dc143cff rgba8 ;
