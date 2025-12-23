@@ -1,8 +1,10 @@
 \ ldp dungeon
 \ ldp town
 
-include %idir%/dungeon/main.vfx
-include %idir%/town/main.vfx
+\ include %idir%/dungeon/main.vfx
+\ include %idir%/town/main.vfx
 
-include %idir%/colors.vfx
-include %idir%/shapes.vfx
+\ include %idir%/colors.vfx
+\ include %idir%/shapes.vfx
+
+include %idir%/microcodes.vfx

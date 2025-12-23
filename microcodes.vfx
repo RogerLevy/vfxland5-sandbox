@@ -25,6 +25,7 @@ require %vfxland5%/forge/lib/dltree.vfx
 require %vfxland5%/supershow/traits.vfx
 require %vfxland5%/supershow/bitmap.vfx
 require %vfxland5%/supershow/sprites.vfx
+require %idir%/shapes.vfx
 
 trait: %element
     is-a %dltree
@@ -34,7 +35,7 @@ trait: %element
     :: clickbox@ ( - x1 y1 x2 y2 ) $DEADBEEF dup dup dup ;
 trait;
 
-: abspos  x 2@ begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
+: abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
 : box  2over 2+ ;
 
 trait: %micro-like
@@ -43,6 +44,7 @@ trait: %micro-like
     prop en          \ user disable switch
     prop val :fixed  \ coefficient, must be >= 0.01 to process
     prop dcy :fixed  \ scalar
+    static icon-color \ rgba8
 trait;
 
 trait: %animator
@@ -54,14 +56,7 @@ trait;
 class: %micro
     96 field-space
     is-a %micro-like
-    template { en on 1.0 val ! 0.97 dcy ! }
-class;
-
-\ allow actors to behave as micros
-class: %actor
-    is-a %micro-like
-    template { en on 1.0 val ! 0.97 dcy ! }
-    :: clickbox@ x 2@ x1 2@ 2-`` w1 2@`` box ;
+    template { en on 1.0 val ! 0.97 dcy ! -1 icon-color ! }
 class;
 
 
@@ -81,11 +76,19 @@ defer _decay
         ['] _decay me each ;
 ['] decay is _decay
 
-
 : non-decaying  template { 1.0 dcy ! } ;
 
+0 %micro :construct ( - )
+    at@p x 2!  24 0 +at ;
+
+: val-alpha  $ffffff00 and  val @ 257.0 p/ or ;
+
+%micro :: .summary  object:.summary x 2p? ;
+%micro :: draw  abspos 2>i at icon-color @ val-alpha rgba8 8. circf ;
+
+
 c: %origin  %micro [non-decaying] ; 
-c: %move    %micro ang ; \ val = speed
+c: %move    %micro ang acc ; \ val = speed
 c: %ability %micro k kp kh kr [non-decaying] ; 
 c: %rep     %micro dur t xt [non-decaying] ; \ val modulates speed
 c: %timeout %micro dur t xt [non-decaying] ; \ val modulates speed
@@ -93,18 +96,21 @@ c: %hitbox  %micro w h lyr msk px py [non-decaying] ;
 c: %neuron  %micro thr ;
 c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed 
 
-%origin :: clickbox@ abspos 16. 16. box ;
+%origin :: clickbox@  abspos 16. 16. box ;
+%hitbox :: draw  abspos 2>i at icon-color @ rgba8 w 2@ rect ;
 
-class: %panel
-    is-a %element
-    prop w :fixed 
-    prop h :fixed
-    :: clickbox@ abspos w 2@ box ;
-class;
+%neuron >template { 2.0 thr ! 0.999 dcy ! } 
 
-class: %inspector
-    %panel derive
-class;
+\ class: %panel
+\     is-a %element
+\     prop w :fixed 
+\     prop h :fixed
+\     :: clickbox@ abspos w 2@ box ;
+\ class;
+
+\ class: %inspector
+\     %panel derive
+\ class;
 
 \ : performs: >template { :noname action ! } ;
 \ : perform  action ! ;
@@ -113,8 +119,8 @@ class;
     acc @ val +!
     ang @ val @ vec parent @ >x 2+! ;
 
-c: %gravity %move ;
-%gravity >template { 90. ang ! 0.01 acc ! }
+c: %gravity %move [non-decaying] ;
+%gravity >template { 90. ang ! 0.03 acc ! }
 
 %ability :: action 
     k @ pressed? if kp @ parent @ { ?execute } then
@@ -125,7 +131,7 @@ c: %gravity %move ;
     pdelta val @ p* t +! 
     dur @ t @ > ?exit
     0 t ! 
-    xt @ parent @ { ?execute } 
+    xt @ parent @ { ?execute } ;
 
 %timeout :: action 
     pdelta val @ p* t +! 
@@ -154,3 +160,43 @@ c: %gravity %move ;
     next @ if dup next @ >val +! then
     if 0 val ! then ;
 
+0 0 at %micro object machines
+    machines { 1.0 dcy ! }
+
+
+\ TODO: add >static syntax
+$00ffffff %move -> icon-color !
+$ffff00ff %ability -> icon-color !
+$ff00ffff %rep -> icon-color !
+$ff0000ff %timeout -> icon-color !
+$00ff00ff %hitbox -> icon-color !
+$0000ffff %neuron -> icon-color !
+
+\ defer _draw-micros
+\ : draw-micros
+\     dup draw ['] _draw-micros swap each ;
+\ ['] draw-micros is _draw-micros
+
+: micros
+    work> machines process machines decay
+    show> 0 0 at machines ndraw ;
+
+micros
+
+\ Test
+machines {
+    32 64 at 
+    \ %origin add { 
+    %origin add { 
+        8 8 at
+        \ %gravity add { }
+        %move add { 
+            8 8 at
+            %neuron add { }
+            %timeout add { }
+        }
+        \ %ability add { 
+        \ }
+
+    }
+}

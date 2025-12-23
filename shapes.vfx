@@ -63,7 +63,7 @@ c: %pixel %shape ;
 : *pixel   %pixel add ;
 
 defer _ndraw  \ had to do the recursion this way because [: RECURSE ;] didn't work.
-: ndraw ( drawable - )
+: ndraw ( drawable-iterable - )
     \ dup .summary cr
     dup draw ['] _ndraw swap each ;
 ' ndraw is _ndraw
