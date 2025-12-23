@@ -1,12 +1,12 @@
 || : color  create , does> @ rgba8 ;
 
 \ Primary/Secondary
-$ff0000ff COLOR red
-$00ff00ff COLOR green
-$0000ffff COLOR blue
-$ffff00ff COLOR yellow
-$00ffffff COLOR cyan
-$ff00ffff COLOR magenta
+$e54b4bff COLOR red
+$4ade80ff COLOR green
+$3b82f6ff COLOR blue
+$facc15ff COLOR yellow
+$22d3eeff COLOR cyan
+$d946efff COLOR magenta
 
 \ Grayscale
 $ffffffff COLOR white
@@ -15,33 +15,33 @@ $808080ff COLOR gray
 $808080ff COLOR grey
 
 \ Common colors
-$ff8000ff COLOR orange
-$8000ffff COLOR purple
-$8000ffff COLOR violet
-$ff80c0ff COLOR pink
+$f97316ff COLOR orange
+$a855f7ff COLOR purple
+$8b5cf6ff COLOR violet
+$f472b6ff COLOR pink
 $804000ff COLOR brown
-$80ff00ff COLOR lime
+$a3e635ff COLOR lime
 
 \ Dark variants
-$800000ff COLOR dark-red
-$008000ff COLOR dark-green
-$000080ff COLOR dark-blue
-$808000ff COLOR dark-yellow
-$008080ff COLOR dark-cyan
-$800080ff COLOR dark-magenta
+$b91c1cff COLOR dark-red
+$16a34aff COLOR dark-green
+$1d4ed8ff COLOR dark-blue
+$ca8a04ff COLOR dark-yellow
+$0891b2ff COLOR dark-cyan
+$a21cafff COLOR dark-magenta
 $404040ff COLOR dark-gray
 $404040ff COLOR dark-grey
-$ff4000ff COLOR dark-orange
-$400080ff COLOR dark-purple
+$c2410cff COLOR dark-orange
+$7c3aedff COLOR dark-purple
 $402000ff COLOR dark-brown
 
 \ Light variants
-$ff8080ff COLOR light-red
-$80ff80ff COLOR light-green
-$8080ffff COLOR light-blue
-$ffff80ff COLOR light-yellow
-$80ffffff COLOR light-cyan
-$ffb0d0ff COLOR light-pink
+$fca5a5ff COLOR light-red
+$86efacff COLOR light-green
+$93c5fdff COLOR light-blue
+$fef08aff COLOR light-yellow
+$a5f3fcff COLOR light-cyan
+$f9a8d4ff COLOR light-pink
 $d0d0d0ff COLOR light-gray
 $d0d0d0ff COLOR light-grey
 $a06020ff COLOR light-brown
@@ -54,3 +54,12 @@ $d2b48cff COLOR tan
 $f5f5dcff COLOR beige
 $e6e6faff COLOR lavender
 $87ceebff COLOR skyblue 
+
+: mix ( rgba8 t. - )
+    {: c t :} 
+    1.0 t - to t
+    c
+    dup c>p ppenr@ t plerp ppenr! 8 >>
+    dup c>p ppeng@ t plerp ppeng! 8 >> 
+    dup c>p ppenb@ t plerp ppenb! 8 >> 
+    c>p ppena@ t plerp ppena! ;
