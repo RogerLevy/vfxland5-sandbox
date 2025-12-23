@@ -38,7 +38,11 @@ trait;
 : box  2over 2+ ;
 
 trait: %micro-like
+    is-a %element
     :: action ;
+    prop en          \ user disable switch
+    prop val :fixed  \ coefficient, must be >= 0.01 to process
+    prop dcy :fixed  \ scalar
 trait;
 
 trait: %animator
@@ -49,17 +53,17 @@ trait;
 
 class: %micro
     96 field-space
-    is-a %element
     is-a %micro-like
-    prop en          \ user disable switch
-    prop val :fixed  \ coefficient, must be >= 0.01 to process
-    prop dcy :fixed  \ scalar
-    template { 
-        en on 
-        1.0 val ! 
-        0.97 dcy ! 
-    }
+    template { en on 1.0 val ! 0.97 dcy ! }
 class;
+
+\ allow actors to behave as micros
+class: %actor
+    is-a %micro-like
+    template { en on 1.0 val ! 0.97 dcy ! }
+    :: clickbox@ x 2@ x1 2@ 2-`` w1 2@`` box ;
+class;
+
 
 defer _process
 : process ( micro - )
@@ -80,14 +84,14 @@ defer _decay
 
 : non-decaying  template { 1.0 dcy ! } ;
 
-c: %origin %micro [non-decaying] ; 
-c: %move %micro ang acc ; \ val = speed
+c: %origin  %micro [non-decaying] ; 
+c: %move    %micro ang ; \ val = speed
 c: %ability %micro k kp kh kr [non-decaying] ; 
-c: %rep %micro dur t xt [non-decaying] ; \ val modulates speed
+c: %rep     %micro dur t xt [non-decaying] ; \ val modulates speed
 c: %timeout %micro dur t xt [non-decaying] ; \ val modulates speed
-c: %hitbox %micro w h lyr msk px py [non-decaying] ;
-c: %neuron %micro thr ;
-c: %sprite %micro %animator bmp [non-decaying] ; \ val modulates speed 
+c: %hitbox  %micro w h lyr msk px py [non-decaying] ;
+c: %neuron  %micro thr ;
+c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed 
 
 %origin :: clickbox@ abspos 16. 16. box ;
 
@@ -105,10 +109,12 @@ class;
 \ : performs: >template { :noname action ! } ;
 \ : perform  action ! ;
 
-%move :: action  acc @ spd +!  ang @ spd @ vec parent @ >x 2+! ;
+%move :: action  
+    acc @ val +!
+    ang @ val @ vec parent @ >x 2+! ;
 
 c: %gravity %move ;
-\ %gravity >template { 0.01 ay ! }
+%gravity >template { 90. ang ! 0.01 acc ! }
 
 %ability :: action 
     k @ pressed? if kp @ parent @ { ?execute } then
@@ -128,7 +134,8 @@ c: %gravity %move ;
     xt @ parent @ { ?execute }
     en off ;
 
-%sprite :: draw  bmp @ cput ;
+%sprite :: draw  
+    at-me   bmp @ cput ;
 
 %sprite :: action 
     anm @ -exit
@@ -143,5 +150,7 @@ c: %gravity %move ;
 \     parent @ >x 2@ px 2! ;
  
 %neuron :: action
-    val @ thr @ >= dup next @ en ! ;
+    val @ thr @ >= 
+    next @ if dup next @ >val +! then
+    if 0 val ! then ;
 
