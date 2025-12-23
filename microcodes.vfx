@@ -62,16 +62,18 @@ class;
 defer _process
 : process ( micro - )
     as> en @ -exit
-        val @ 0.01 < ?exit
-        me action 
+        val @ 0.01 >= if 
+            me action 
+        then
         ['] _process me each ;
 ['] process is _process
 
 defer _decay
 : decay ( micro - )
     as> en @ -exit
-        val @ 0.01 < ?exit
-        val @ dcy @ p* val !
+        val @ 0.01 >= if
+            val @ dcy @ p* val !
+        then
         ['] _decay me each ;
 ['] decay is _decay
 
@@ -128,17 +130,17 @@ c: %gravity %move [non-decaying] ;
 %ability :: action 
     k @ pressed? if kp @ parent @ { ?execute } then
     k @ held? if kh @ parent @ { ?execute }  then
-    k @ letgo? if kr @ parent @ { ?execute } then ;
+    k @ letgo? if kr @ parent @ { ." KR " ?execute } then ;
 
 %rep :: action 
     pdelta val @ p* t +! 
-    dur @ t @ > ?exit
+    t @ dur @ < ?exit
     0 t ! 
     xt @ parent @ { ?execute } ;
 
 %timeout :: action 
     pdelta val @ p* t +! 
-    dur @ t @ > ?exit
+    t @ dur @ < ?exit
     0 t ! 
     xt @ parent @ { ?execute }
     en off ;
@@ -191,22 +193,37 @@ micros
 machines {
     64 64 at 
     \ %origin add { 
+
     %origin add { 
-        16 16 at
-        \ %gravity add { }
-        %move add { 
-            16 16 at
-            %rep add { 
-                [: 1.0 val ! 360. rnd ang ! ;] xt !
-            } 
-            \ %neuron add { 
-            \ }
-            \ %timeout add { }
-        }
-        %ability add { 
-            <enter> k !
-            [: 64. 64. x 2! ;] kp !
-        }
+        16 16 at e{
+            %ability add { 
+                <enter> k !
+                [: 64. 64. x 2! ;] kp !
+            }
+            \ %gravity add { }
+            %move add { 
+                16 16 at e{
+                    %rep add { 
+                        [: 1.0 val ! 360. rnd ang ! ;] xt !
+                        16 16 at e{
+                            %ability add { 
+                                <enter> k !
+                                [: 0. val ! ;] kp !
+                                [: 1. val ! ." asdf" cr ;] kr !
+                            }
+                        e}
+                    } 
+                    %ability add { 
+                        <enter> k !
+                        [: 1. val ! ;] kh !
+                    }
+                \ %neuron add { 
+                \ }
+                \ %timeout add { }
+                e} 
+            }
+        e}
 
     }
+
 }
