@@ -26,6 +26,7 @@ require %vfxland5%/supershow/traits.vfx
 require %vfxland5%/supershow/bitmap.vfx
 require %vfxland5%/supershow/sprites.vfx
 require %idir%/shapes.vfx
+require %idir%/colors.vfx
 
 trait: %element
     is-a %dltree
@@ -40,7 +41,8 @@ trait;
 
 trait: %micro-like
     is-a %element
-    :: action ;
+    :: action  ( - ) ;
+    :: trigger ( - ) ;
     prop en          \ user disable switch
     prop val :fixed  \ coefficient, must be >= 0.01 to process
     prop dcy :fixed  \ scalar
@@ -80,15 +82,32 @@ defer _decay
 : non-decaying  template { 1.0 dcy ! } ;
 
 0 %micro :construct ( - )
-    at@p x 2!  16 0 +at ;
+    at@p x 2!  ;
 
 : val-alpha  $ffffff00 and  val @ 257.0 p/ or ;
 
-%micro :: .summary  object:.summary x 2p? ;
-%micro :: draw  
+: sibling-connector
+    prev @ if 
+        prev @ { abspos } brown line
+    then ;
+
+: parent-connector
+    parent @ if 
+        parent @ { abspos } grey line
+    then ;
+
+: connectors
+    sibling-connector parent-connector ;
+
+redef : icon
     abspos 2>i at 
-    icon-color @ val-alpha rgba8 8. circf 
-    icon-color @ rgba8 8. circ ;
+    icon-color @ val-alpha rgba8 6. circf 
+    icon-color @ rgba8 6. circ ;
+
+%micro :: .summary  object:.summary x 2p? ;
+
+%micro :: draw  
+    icon connectors ;
 
 c: %origin  %micro [non-decaying] ; 
 c: %move    %micro ang acc ; \ val = speed
@@ -100,10 +119,19 @@ c: %neuron  %micro thr tst ;
 c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed 
 
 %origin :: clickbox@  abspos 16. 16. box ;
-%hitbox :: draw  abspos 2>i at icon-color @ rgba8 w 2@ rect ;
+
+%origin :: draw  
+    icon   sibling-connector ;
+
+%sprite :: draw  
+    abspos 2>i at   bmp @ cput ;
+
+%hitbox :: draw  
+    abspos 2>i at icon-color @ rgba8 w 2@ rect 
+    connectors ;
 
 %neuron >template { 2.0 thr ! 0.999 dcy ! } 
-%rep >template { 0.5 dur ! }
+%rep >template { 1.0 dur ! }
 %timeout >template { 1.0 dur ! }
 
 \ class: %panel
@@ -130,7 +158,11 @@ c: %gravity %move [non-decaying] ;
 %ability :: action 
     k @ pressed? if kp @ parent @ { ?execute } then
     k @ held? if kh @ parent @ { ?execute }  then
-    k @ letgo? if kr @ parent @ { ." KR " ?execute } then ;
+    k @ letgo? if kr @ parent @ { ?execute } then ;
+
+%rep :: trigger
+    0 t ! 
+    xt @ parent @ { ?execute } ;
 
 %rep :: action 
     pdelta val @ p* t +! 
@@ -138,15 +170,14 @@ c: %gravity %move [non-decaying] ;
     0 t ! 
     xt @ parent @ { ?execute } ;
 
+%timeout :: trigger
+    0 t ! 0 val !
+    xt @ parent @ { ?execute } ;
+
 %timeout :: action 
     pdelta val @ p* t +! 
     t @ dur @ < ?exit
-    0 t ! 
-    xt @ parent @ { ?execute }
-    en off ;
-
-%sprite :: draw  
-    at-me   bmp @ cput ;
+    me trigger ;
 
 %sprite :: action 
     anm @ -exit
@@ -189,41 +220,37 @@ $0000ffff %neuron -> icon-color !
 
 micros
 
+: {{  { 16 16 at e{ ;
+: }}  e} } 16 0 +at ;
+
 \ Test
-machines {
-    64 64 at 
-    \ %origin add { 
-
-    %origin add { 
-        16 16 at e{
-            %ability add { 
+: *rando
+    %origin add {{
+    \ %micro add {{
+        %ability add {{ 
+            <enter> k !
+            [: 64. 64. x 2! ;] kp !
+        }}
+        \ %gravity add { }
+        %move add {{ 
+            %rep add {{
+                [: 1.0 val ! 360. rnd ang ! ;] xt !
+                %ability add {{
+                    <enter> k !
+                    [: 0. val ! ;] kp !
+                    [: 1. val ! me trigger ;] kr !
+                }}
+            }}
+            %ability add {{
                 <enter> k !
-                [: 64. 64. x 2! ;] kp !
-            }
-            \ %gravity add { }
-            %move add { 
-                16 16 at e{
-                    %rep add { 
-                        [: 1.0 val ! 360. rnd ang ! ;] xt !
-                        16 16 at e{
-                            %ability add { 
-                                <enter> k !
-                                [: 0. val ! ;] kp !
-                                [: 1. val ! ." asdf" cr ;] kr !
-                            }
-                        e}
-                    } 
-                    %ability add { 
-                        <enter> k !
-                        [: 1. val ! ;] kh !
-                    }
-                \ %neuron add { 
-                \ }
-                \ %timeout add { }
-                e} 
-            }
-        e}
+                [: 1. val ! ;] kh !
+            }}
+        }}
+    me }} ;
 
-    }
-
-}
+machines {{
+    64 64 at 
+    *rando {{
+        *rando {{ }}
+    }}
+}}
