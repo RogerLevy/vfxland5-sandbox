@@ -24,8 +24,8 @@ ec-cell thickness
 : ovalf ( radiusx. radiusy. - )
     at@f 2p>f rgba@fds al_draw_filled_ellipse ;
 
-: line ( relx. rely. - )
-    thickness@ p>f f>ds >r   at@f   at@p 2+ 2p>f  rgba@fds r> al_draw_line ;
+: line ( x. y. - )
+    thickness@ p>f f>ds >r   at@f   2p>f  rgba@fds r> al_draw_line ;
 
 : rect ( w. h. - )
     thickness@ p>f f>ds >r   at@f   at@p 2+ 2p>f   rgba@fds r> al_draw_rectangle ;
