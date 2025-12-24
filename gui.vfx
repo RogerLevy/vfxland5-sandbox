@@ -1,0 +1,19 @@
+trait: %element
+    is-a %dltree
+    is-a %drawable
+    prop x :fixed
+    prop y :fixed
+    :: clickbox@ ( - x1 y1 x2 y2 ) $DEADBEEF dup dup dup ;
+trait;
+
+: abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
+: box  2over 2+ ;
+
+class: %panel
+    is-a %element
+    :: clickbox@ abspos w 2@ box ;
+class;
+
+class: %inspector
+    %panel derive
+class;

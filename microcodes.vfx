@@ -1,6 +1,8 @@
-((
-micro-codes
+\ =============================================================================
+\ micro-codes
+\ =============================================================================
 
+((
 experiments into the idea of tiny modular bits of logic
 (combining "Forth encourages you to not just slice, but dice" with explorative game development)
 
@@ -21,6 +23,8 @@ it's part of my "physicality" project
 
 ))
 
+\ -- Dependencies ---------------------------------------------------------------
+
 require %vfxland5%/forge/lib/dltree.vfx
 require %vfxland5%/supershow/traits.vfx
 require %vfxland5%/supershow/bitmap.vfx
@@ -29,20 +33,14 @@ require %vfxland5%/supershow/tileset.vfx
 require %vfxland5%/supershow/autoload.vfx
 require %idir%/shapes.vfx
 require %idir%/colors.vfx
+require %idir%/gui.vfx
+
+\ -- Assets --------------------------------------------------------------------
 
 bitmap micro-icons.png
 micro-icons.png 20 20 tileset-from micro-icons.ts
 
-trait: %element
-    is-a %dltree
-    is-a %drawable
-    prop x :fixed
-    prop y :fixed
-    :: clickbox@ ( - x1 y1 x2 y2 ) $DEADBEEF dup dup dup ;
-trait;
-
-: abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
-: box  2over 2+ ;
+\ -- Traits --------------------------------------------------------------------
 
 trait: %micro-like
     is-a %element
@@ -72,6 +70,8 @@ trait: %animator
     prop a.ofs prop a.done prop a.flp
 trait;
 
+\ -- Base Class ----------------------------------------------------------------
+
 ECONTEXT micro-ec
 
 class: %micro
@@ -79,6 +79,8 @@ class: %micro
     is-a %micro-like
     template { micro-ec ecp! in-heap en on 1.0 val ! 0.97 dcy ! -1 icon-color ! }
 class;
+
+\ -- Processing ----------------------------------------------------------------
 
 defer _process
 : process ( micro - )
@@ -109,6 +111,8 @@ defer _decay
 
 %micro :: unload ( - )
     unloaded on ;
+
+\ -- Rendering -----------------------------------------------------------------
 
 : val-alpha  $ffffff00 and  val @ 257.0 p/ or ;
 
@@ -150,6 +154,8 @@ redef : icon
 %micro :: draw
     icon connectors ;
 
+\ -- Micro Classes -------------------------------------------------------------
+
 c: %origin  %micro [non-decaying] ; 
 c: %move    %micro ang acc ; \ val = speed
 c: %ability %micro k kp kh kr [non-decaying] ; 
@@ -157,10 +163,9 @@ c: %rep     %micro dur t xt [non-decaying] ; \ val modulates speed
 c: %timeout %micro dur t xt [non-decaying] ; \ val modulates speed
 c: %hitbox  %micro w h lyr msk px py [non-decaying] ;
 c: %neuron  %micro thr tst ;
-c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed 
+c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
-%origin :: clickbox@  
-    abspos 16. 16. box ;
+\ -- Class Draw Methods --------------------------------------------------------
 
 %origin :: draw  
     icon ;
@@ -173,9 +178,6 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     white w 2@ rect 
     connectors ;
 
-\ require %vfxland5%/forge/lib/allegro5/vga13h.vfx
-\ init-vga-font
-
 : _ability-key
     abspos 2>i at 8 8 +at 
     black 0.5 ppena! k @ f" %n" print 
@@ -187,22 +189,25 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 \     _ability-key
 \     connectors ;
 
+defer _ability-keys
+: ability-keys
+    [: { me %ability is? if _ability-key then me _ability-keys } ;] swap each ;
+' ability-keys is _ability-keys
+
+\ -- Class Templates -----------------------------------------------------------
+
 %hitbox >template { 16.0 16.0 w 2! }
 %neuron >template { 2.0 thr ! 0.999 dcy ! } 
 %rep >template { 1.0 dur ! }
 %timeout >template { 1.0 dur ! }
 
-\ class: %panel
-\     is-a %element
-\     :: clickbox@ abspos w 2@ box ;
-\ class;
-
-\ class: %inspector
-\     %panel derive
-\ class;
+\ -- Class Logic ------------------------------------------------------
 
 \ : performs: >template { :noname action ! } ;
 \ : perform  action ! ;
+
+%origin :: clickbox@  
+    abspos 16. 16. box ;
 
 %move :: action  
     acc @ val +!
@@ -258,9 +263,10 @@ c: %gravity %move [non-decaying] ;
     then
     if 0 val ! then ;
 
+\ -- Lifecycle -----------------------------------------------------------------
+
 0 0 at %micro object machines
     machines { 1.0 dcy ! }
-
 
 defer _delete-micro
 : delete-micro ( micro - )
@@ -275,6 +281,7 @@ defer _delete-micro
 %micro :: vacate
     ['] unload me each  me sweep ;
 
+\ -- Icon Configuration --------------------------------------------------------
 
 || : tile!  micro-icons.ts swap tile icon-bmp ! ;
 
@@ -285,12 +292,9 @@ defer _delete-micro
 %rep     >template { valof magenta    icon-color !  4  tile! }
 %timeout >template { valof red        icon-color !  3  tile! }
 %hitbox  >template { valof green      icon-color !  6  tile! }   
-%neuron  >template { valof blue       icon-color !  1  tile! }   
+%neuron  >template { valof blue       icon-color !  1  tile! }
 
-defer _ability-keys
-: ability-keys
-    [: { me %ability is? if _ability-key then me _ability-keys } ;] swap each ;
-' ability-keys is _ability-keys
+\ -- Main Loop -----------------------------------------------------------------
 
 : micros
     microcodes>> machines as 
@@ -303,18 +307,24 @@ defer _ability-keys
 
 micros
 
+\ -- DSL Syntax ----------------------------------------------------------------
+
 : {{  { e{ 0 20 at ;
 : }}  e} } 20 0 +at ;
 
 : *kpress ( key xt - ability )
     %ability add { kp ! k ! me } ;
 
-\ Test
+\ -- Test ----------------------------------------------------------------------
+
+c: %rando %origin startx starty ;
+0 %rando :construct micro:construct x 2@ startx 2! ;
+
 : *rando
-    %origin add {
+    %rando add {
         0 20 at
         <del> [: me unload ;] *kpress {{ }}
-        <enter> [: 64. 64. x 2! ;] *kpress {{ }}
+        <enter> [: startx 2@ x 2! ;] *kpress {{ }}   \ couples this to a rando
         \ %gravity add { }
         %move add {{ 
             %rep add {{
