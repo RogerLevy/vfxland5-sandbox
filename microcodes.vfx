@@ -25,8 +25,13 @@ require %vfxland5%/forge/lib/dltree.vfx
 require %vfxland5%/supershow/traits.vfx
 require %vfxland5%/supershow/bitmap.vfx
 require %vfxland5%/supershow/sprites.vfx
+require %vfxland5%/supershow/tileset.vfx
+require %vfxland5%/supershow/autoload.vfx
 require %idir%/shapes.vfx
 require %idir%/colors.vfx
+
+bitmap micro-icons.png
+micro-icons.png 20 20 tileset-from micro-icons.ts
 
 trait: %element
     is-a %dltree
@@ -51,6 +56,7 @@ trait: %micro-like
     prop lpul :fixed
     prop rpul :fixed
     static icon-color \ rgba8
+    static icon-bmp 
 trait;
 
 : pulse-up    1.0 upul ! ;
@@ -126,10 +132,11 @@ redef : icon
     abspos 2>i at
     pulse@ 0.01 > if
         icon-color @ $ffffff00 and pulse@ 257.0 p/ or rgba8
-        8. circ  \ outer pulse circle
+        10. circ  \ outer pulse circle
     then
-    icon-color @ val-alpha rgba8 6. circf
-    icon-color @ rgba8 6. circ ;
+    icon-color @ val-alpha rgba8 8.5 circf
+    icon-color @ rgba8 8.5 circ 
+    icon-bmp @ cput ;
 
 %micro :: .summary  object:.summary x 2p? ;
 
@@ -154,10 +161,12 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 %sprite :: draw  
     abspos 2>i at   bmp @ cput ;
 
-%hitbox :: draw  
-    abspos 2>i at icon-color @ rgba8 w 2@ rect 
+%hitbox :: draw
+    icon
+    white w 2@ rect 
     connectors ;
 
+%hitbox >template { 16.0 16.0 w 2! }
 %neuron >template { 2.0 thr ! 0.999 dcy ! } 
 %rep >template { 1.0 dur ! }
 %timeout >template { 1.0 dur ! }
@@ -178,7 +187,8 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
 %move :: action  
     acc @ val +!
-    ang @ val @ vec parent @ >x 2+! ;
+    ang @ val @ vec parent @ >x 2+! 
+    val @ 0.01 >= if pulse-up then ;
 
 c: %gravity %move [non-decaying] ;
 %gravity >template { 90. ang ! 0.03 acc ! }
@@ -232,17 +242,16 @@ c: %gravity %move [non-decaying] ;
 0 0 at %micro object machines
     machines { 1.0 dcy ! }
 
-valof cyan    %move -> icon-color !
-valof yellow  %ability -> icon-color !
-valof magenta %rep -> icon-color !
-valof red     %timeout -> icon-color !
-valof green   %hitbox -> icon-color !
-valof blue    %neuron -> icon-color !
+|| : tile!  micro-icons.ts swap tile icon-bmp ! ;
 
-\ defer _draw-micros
-\ : draw-micros
-\     dup draw ['] _draw-micros swap each ;
-\ ['] draw-micros is _draw-micros
+%micro   >template { valof white      icon-color !  0 icon-bmp ! }
+%origin  >template { valof light-grey icon-color !  2  tile! }
+%move    >template { valof cyan       icon-color !  0  tile! }
+%ability >template { valof yellow     icon-color !  5  tile! }
+%rep     >template { valof magenta    icon-color !  4  tile! }
+%timeout >template { valof red        icon-color !  3  tile! }
+%hitbox  >template { valof green      icon-color !  6  tile! }   
+%neuron  >template { valof blue       icon-color !  1  tile! }   
 
 : micros
     work> machines process 
@@ -250,8 +259,8 @@ valof blue    %neuron -> icon-color !
 
 micros
 
-: {{  { 0 16 at e{ ;
-: }}  e} } 16 0 +at ;
+: {{  { e{ 0 20 at ;
+: }}  e} } 20 0 +at ;
 
 \ Test
 : *rando
@@ -281,7 +290,16 @@ micros
 machines {{
     64 64 at 
     *rando {{
-        me o.
-        *rando {{ me o. }}
+        *rando {{ }}
+    }}
+    32 200 at
+    %origin add {{ 
+        en off
+        %move add {{ }}
+        %ability add {{ }}
+        %rep add {{ }}
+        %timeout add {{ }}
+        %neuron add {{ }}
+        %hitbox add {{ }} \ -8. -8. x 2+!  16. 16. w 2! }}
     }}
 }}

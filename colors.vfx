@@ -1,7 +1,7 @@
 || : color  create , does> @ rgba8 ;
 
 \ Primary/Secondary
-$e54b4bff COLOR red
+$e04000ff COLOR red
 $4ade80ff COLOR green
 $3b82f6ff COLOR blue
 $facc15ff COLOR yellow
