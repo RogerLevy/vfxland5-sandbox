@@ -93,14 +93,17 @@ defer _process
 
 || 0.025 constant ps
 
+: pulse- ( val. - val'. ) 
+    dup 0> if ps - 0 max else ps + 0 min then ;
+
 defer _decay
 : decay ( micro - )
     as> en @ -exit
         val @ 0.01 >= if val @ dcy @ p* val ! then
-        upul @ dup 0> if ps - 0 max else ps + 0 min then upul !
-        \ dpul @ dup 0> if ps - 0 max else ps + 0 min then dpul !
-        lpul @ dup 0> if ps - 0 max else ps + 0 min then lpul !
-        rpul @ dup 0> if ps - 0 max else ps + 0 min then rpul !
+        upul @ pulse- upul !
+        \ dpul @ pulse- dpul !
+        lpul @ pulse- lpul !
+        rpul @ pulse- rpul !
         ['] _decay me each ;
 ['] decay is _decay
 
@@ -126,12 +129,12 @@ defer _decay
     
 : sibling-connector
     prev @ if
-        prev @ { abspos } brown 0.5 ppena! x-flow-color line
+        brown 0.5 ppena! x-flow-color   prev @ { abspos } line
     then ;
 
 : parent-connector
     parent @ if
-        parent @ { abspos } grey 0.5 ppena! y-flow-color line
+        grey 0.5 ppena! y-flow-color   parent @ { abspos } line
     then ;
 
 : connectors
