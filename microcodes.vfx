@@ -70,10 +70,12 @@ trait: %animator
     prop a.ofs prop a.done prop a.flp
 trait;
 
+ECONTEXT micro-ec
+
 class: %micro
     128 field-space
     is-a %micro-like
-    template { en on 1.0 val ! 0.97 dcy ! -1 icon-color ! }
+    template { micro-ec ecp! in-heap en on 1.0 val ! 0.97 dcy ! -1 icon-color ! }
 class;
 
 defer _process
@@ -101,7 +103,7 @@ defer _decay
 : non-decaying  template { 1.0 dcy ! } ;
 
 0 %micro :construct ( - )
-    at@p x 2!  ;
+    at@p x 2!  micro-ec ecp! ;
 
 : val-alpha  $ffffff00 and  val @ 257.0 p/ or ;
 
@@ -254,6 +256,7 @@ c: %gravity %move [non-decaying] ;
 %neuron  >template { valof blue       icon-color !  1  tile! }   
 
 : micros
+    machines as
     work> machines process 
     show> 0 0 at machines ndraw machines decay ;
 
@@ -261,6 +264,7 @@ micros
 
 : {{  { e{ 0 20 at ;
 : }}  e} } 20 0 +at ;
+
 
 \ Test
 : *rando
@@ -289,6 +293,15 @@ micros
 
 machines {{
     64 64 at 
+    *rando {{
+        *rando {{ }}
+    }}
+    *rando {{
+        *rando {{ }}
+    }}
+    *rando {{
+        *rando {{ }}
+    }}
     *rando {{
         *rando {{ }}
     }}
