@@ -45,7 +45,7 @@ private
     then ;
 
 : node-allocated ( n - a ior )
-    [: drop frees pop 0 ;] allocator! ;
+    [: drop free-nodes pop 0 ;] allocator! ;
 
 : fix-gids ( ofs array - )
     [: dup if udup + then ;] swap !each drop ;
