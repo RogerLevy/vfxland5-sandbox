@@ -46,9 +46,11 @@ trait;
 
 trait: %micro-like
     is-a %element
+    is-a %unloadable
     :: action  ( - ) ;
     :: trigger ( - ) ;
     prop en          \ user disable switch
+    prop unloaded
     prop val :fixed  \ coefficient, must be >= 0.01 to process
     prop dcy :fixed  \ scalar
     prop upul :fixed  
@@ -104,6 +106,9 @@ defer _decay
 
 0 %micro :construct ( - )
     at@p x 2!  micro-ec ecp! ;
+
+%micro :: unload ( - )
+    unloaded on ;
 
 : val-alpha  $ffffff00 and  val @ 257.0 p/ or ;
 
@@ -168,6 +173,20 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     white w 2@ rect 
     connectors ;
 
+\ require %vfxland5%/forge/lib/allegro5/vga13h.vfx
+\ init-vga-font
+
+: _ability-key
+    abspos 2>i at 8 8 +at 
+    black 0.5 ppena! k @ f" %n" print 
+    -1 -1 +at
+    white 0.9 ppena! k @ f" %n" print ;
+
+\ %ability :: draw
+\     icon
+\     _ability-key
+\     connectors ;
+
 %hitbox >template { 16.0 16.0 w 2! }
 %neuron >template { 2.0 thr ! 0.999 dcy ! } 
 %rep >template { 1.0 dur ! }
@@ -175,8 +194,6 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
 \ class: %panel
 \     is-a %element
-\     prop w :fixed 
-\     prop h :fixed
 \     :: clickbox@ abspos w 2@ box ;
 \ class;
 
@@ -244,9 +261,24 @@ c: %gravity %move [non-decaying] ;
 0 0 at %micro object machines
     machines { 1.0 dcy ! }
 
+
+defer _delete-micro
+: delete-micro ( micro - )
+    >r 
+    ['] _delete-micro r@ each
+    r@ dlremove r> free throw ;
+' delete-micro is _delete-micro
+
+|| : sweep ( iterable - )
+    [: { unloaded @ if me delete-micro then } ;] swap each ;
+
+%micro :: vacate
+    ['] unload me each  me sweep ;
+
+
 || : tile!  micro-icons.ts swap tile icon-bmp ! ;
 
-%micro   >template { valof white      icon-color !  0 icon-bmp ! }
+%micro   >template { 0                icon-color !  0 icon-bmp ! }
 %origin  >template { valof light-grey icon-color !  2  tile! }
 %move    >template { valof cyan       icon-color !  0  tile! }
 %ability >template { valof yellow     icon-color !  5  tile! }
@@ -255,25 +287,34 @@ c: %gravity %move [non-decaying] ;
 %hitbox  >template { valof green      icon-color !  6  tile! }   
 %neuron  >template { valof blue       icon-color !  1  tile! }   
 
+defer _ability-keys
+: ability-keys
+    [: { me %ability is? if _ability-key then me _ability-keys } ;] swap each ;
+' ability-keys is _ability-keys
+
 : micros
-    machines as
-    work> machines process 
-    show> 0 0 at machines ndraw machines decay ;
+    microcodes>> machines as 
+    work> machines process machines sweep
+    show> 
+        0 0 at 
+        machines ndraw 
+        machines ability-keys
+        machines decay ;
 
 micros
 
 : {{  { e{ 0 20 at ;
 : }}  e} } 20 0 +at ;
 
+: *kpress ( key xt - ability )
+    %ability add { kp ! k ! me } ;
 
 \ Test
 : *rando
-    %origin add {{
-    \ %micro add {{
-        %ability add {{ 
-            <enter> k !
-            [: 64. 64. x 2! ;] kp !
-        }}
+    %origin add {
+        0 20 at
+        <del> [: me unload ;] *kpress {{ }}
+        <enter> [: 64. 64. x 2! ;] *kpress {{ }}
         \ %gravity add { }
         %move add {{ 
             %rep add {{
@@ -289,30 +330,34 @@ micros
                 [: 1. val ! ;] kh !
             }}
         }}
-    me }} ;
+    me } ;
 
-machines {{
-    64 64 at 
-    *rando {{
-        *rando {{ }}
+: test 
+    machines {{
+        64 64 at 
+        *rando {{
+            *rando {{ }}
+        }}
+        *rando {{
+            *rando {{ }}
+        }}
+        *rando {{
+            *rando {{ }}
+        }}
+        *rando {{
+            *rando {{ }}
+        }}
+        32 200 at
+        %origin add {{ 
+            en off
+            %move add {{ }}
+            %ability add {{ }}
+            %rep add {{ }}
+            %timeout add {{ }}
+            %neuron add {{ }}
+            %hitbox add {{ }} \ -8. -8. x 2+!  16. 16. w 2! }}
+        }}
     }}
-    *rando {{
-        *rando {{ }}
-    }}
-    *rando {{
-        *rando {{ }}
-    }}
-    *rando {{
-        *rando {{ }}
-    }}
-    32 200 at
-    %origin add {{ 
-        en off
-        %move add {{ }}
-        %ability add {{ }}
-        %rep add {{ }}
-        %timeout add {{ }}
-        %neuron add {{ }}
-        %hitbox add {{ }} \ -8. -8. x 2+!  16. 16. w 2! }}
-    }}
-}}
+;
+
+test
