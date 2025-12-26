@@ -51,6 +51,7 @@ trait: %_micro
     :: act     ( - ) ;
     :: gather  ( - ) ;
     :: trigger ( - ) ;
+    :: _hint    ( - a len ) s" " ;
     prop en          \ user disable switch
     prop val :fixed  \ coefficient, must be >= 0.01 to process
     prop dcy :fixed  \ scalar
@@ -62,9 +63,10 @@ trait: %_micro
     static icon-bmp 
 trait;
 
-class: %element
-    works-with %_micro
-class;
+\ TODO: Propagate IS-A and WORKS-WITH with classifier dependents
+class: %element  works-with %_micro  class;
+class: %panel  works-with %_micro  class;
+class: %label  works-with %_micro  class;
 
 : pulse-up    1.0 upul ! ;
 \ : pulse-down  1.0 dpul ! ;
@@ -148,14 +150,14 @@ defer _decay
 : sibling-connector
     prev @ if
         $88ccff88 rgba8 x-flow-color
-        prev @ { abspos } abspos ICON_RADIUS negate dup changelen
+        prev @ { abspos } abspos ICON_RADIUS 0.5 + negate dup changelen
         2swap atp ->line
     then ;
 
 : parent-connector
     parent @ if
         $ff888888 rgba8 y-flow-color
-        abspos parent @ { abspos } ICON_RADIUS negate dup changelen
+        abspos parent @ { abspos } ICON_RADIUS 0.5 + negate dup changelen
         2swap atp ->line
     then ;
 
@@ -166,11 +168,12 @@ defer _decay
 
 redef : icon
     pulse@ 0.01 > if
-        icon-color @ $ffffff00 and pulse@ 257.0 p/ or rgba8
-        9.5 circ  \ outer pulse circle
+        icon-color @ rgba8   
+        pulse@ ppena!
+        9.5 circ     \ outer pulse circle
     then
-    icon-color @ val-alpha rgba8 ICON_RADIUS circf
-    icon-color @ rgba8 ICON_RADIUS circ 
+    icon-color @ val-alpha rgba8 ICON_RADIUS circf  \ inner circle fill
+    icon-color @ rgba8 ICON_RADIUS circ             \ inner circle rim
     icon-bmp @ cput ;
 
 %micro :: .summary  
@@ -206,22 +209,34 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     white w 2@ rect 
     connectors ;
 
-: _ability-key
-    at-me
+%rep :: _hint ( - a len )
+    dur @ f" %p" ;
+
+%timeout :: _hint ( - a len )
+    dur @ f" %p" ;
+
+%ability :: _hint ( - a len )
+    k @ f" %n" ;
+
+: hint ( element - )
+    {: me | a len :} 
+    me _hint to len to a
+    len -exit
+    me { at-me }
     5 5 +at 
-    black 0.5 ppena! k @ f" %n" print 
+    black 0.5 ppena! a len print 
     -1 -1 +at
-    white 0.9 ppena! k @ f" %n" print ;
+    white 0.9 ppena! a len print ;
 
 \ %ability :: _draw
 \     icon
 \     _ability-key
 \     connectors ;
 
-defer _ability-keys
-: ability-keys
-    [: { me %ability is? if _ability-key then me _ability-keys } ;] swap each ;
-' ability-keys is _ability-keys
+defer __hints
+: hints ( element - ) 
+    [: dup hint __hints ;] swap each ;
+' hints is __hints
 
 \ -- Class Templates -----------------------------------------------------------
 
@@ -325,7 +340,7 @@ defer _delete-micro
 : draw-micros
     0 0 at 
     machines draw 
-    machines ability-keys
+    machines hints
     ['] decay machines each ;
     
 redef : process-input
