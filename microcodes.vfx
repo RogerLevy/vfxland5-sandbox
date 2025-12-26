@@ -46,7 +46,10 @@ micro-icons.png 20 20 TILESET-FROM micro-icons.ts
 \ -- Traits -------------------------------------------------------------------
 
 trait: %_micro
-    :: action  ( - ) ;
+    :: _act    ( - ) ;
+    :: _gather ( - ) ;
+    :: act     ( - ) ;
+    :: gather  ( - ) ;
     :: trigger ( - ) ;
     prop en          \ user disable switch
     prop val :fixed  \ coefficient, must be >= 0.01 to process
@@ -58,6 +61,10 @@ trait: %_micro
     static icon-color \ rgba8
     static icon-bmp 
 trait;
+
+class: %element
+    works-with %_micro
+class;
 
 : pulse-up    1.0 upul ! ;
 \ : pulse-down  1.0 dpul ! ;
@@ -83,11 +90,19 @@ class;
 
 \ -- Processing ---------------------------------------------------------------
 
-%micro :: _process
+%micro :: gather
     en @ -exit
+    ['] gather me each 
     val @ 0.01 >= if 
-        me action 
+        me _gather 
     then ;
+
+%micro :: act 
+    en @ -exit
+    val @ 0.01 >= if
+        me _act
+    then
+    ['] act me each ;
 
 || 0.025 constant ps
 
@@ -184,7 +199,7 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 %origin :: _draw  
     icon ;
 
-%sprite :: _draw  
+%sprite :: _draw
     bmp @ cput ;
 
 %hitbox :: _draw
@@ -219,15 +234,19 @@ defer _ability-keys
 
 \ -- Class Logic ------------------------------------------------------
 
-\ : performs: >template { :noname action ! } ;
-\ : perform  action ! ;
+%origin :: _process
+    micro:gather   micro:act ;
 
-%move :: action  
+\ stop processing gather/act at other origins.
+%origin :: gather ;
+%origin :: act ;
+
+%move :: _act  
     acc @ val +!
     ang @ val @ vec parent @ >x 2+! 
     val @ 0.01 >= if pulse-up then ;
 
-%ability :: action
+%ability :: _gather
     k @ pressed? if pulse-up kp @ parent @ { ?execute } then
     k @ held?    if pulse-up kh @ parent @ { ?execute } then
     k @ letgo?   if pulse-up kr @ parent @ { ?execute } then ;
@@ -237,7 +256,7 @@ defer _ability-keys
     0 t !
     xt @ parent @ { ?execute } ;
 
-%rep :: action 
+%rep :: _gather 
     pdelta val @ p* t +! 
     t @ dur @ < ?exit
     me trigger ;
@@ -247,31 +266,31 @@ defer _ability-keys
     0 t ! 0 val !
     xt @ parent @ { ?execute } ;
 
-%timeout :: action 
+%timeout :: _gather 
     pdelta val @ p* t +! 
     t @ dur @ < ?exit
     me trigger ;
 
-%sprite :: action 
+%sprite :: _act 
     anm @ -exit
     val @ advance-animation bmp ! ;
 
 : calc-vel ( element - vx. vy. )
     >x 2@ px 2@ 2- ;
 
-\ %hitbox :: action
+\ %hitbox :: _act
 \     parent @ calc-vel vx 2!
 \     abspos w 2@ box hit-test 
 \     parent @ >x 2@ px 2! ;
  
-%neuron :: action
+%neuron :: _gather
     tst @ ?execute
     val @ thr @ < ?exit
-    next @ if
-        1.0 next @ >val +!
-        pulse-right
+    parent @ if
+        1.0 parent @ >val +!
+        pulse-up
     then
-    if 0 val ! then ;
+    0 val ! ;
 
 \ -- Lifecycle ----------------------------------------------------------------
 
