@@ -26,12 +26,13 @@ trait: %_element
     :: _click ( n - ) drop ;
     :: _enter ( - ) ;
     :: _leave ( - ) ;
-    :: _mousedown ( btn - ) drop ;  \ 1 = left, 2 = right, 4 = middle
+    :: _mousedown ( btn - ) drop ;  \ lbm , rmb , or mmb
     :: _mouseup ( btn - ) drop ;
     :: _mousemove ( - ) ;
     :: _process ( - ) ;
     :: _draw ( - ) ;
     :: delete ( - ) stub ;
+    :: draggable? ( - flag ) true ;
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
@@ -97,7 +98,7 @@ class: %desktop
     %element derive
 
     :: click-box@ 0 0 winw winh 2>p ;
-    :: _process <space> held? lb and if mickey 2>p x 2+! then ;
+    :: _process <space> held? lmb? and if mickey 2>p x 2+! then ;
     :: _draw 0 0 at grey winw winh 2>p rectf ;
 class;
 
@@ -106,7 +107,6 @@ class;
 class: %ui-box
     %element derive
 
-    prop draggable
     prop w :fixed
     prop h :fixed
     template { 100. 100. w 2! } 
@@ -119,9 +119,19 @@ class;
 0 %ui-box :construct ( - )
     at@p x 2!   ec ecp! in-heap ;
 
+\ -- Selection -----------------------------------------------------------------
+
+1024 %addr stack selection
+
+: +select  ( element - ) selection ?push ;
+: select   ( element - ) selection vacate selection push ;
+
+
 \ -- Mouse ---------------------------------------------------------------------
 
 0 value hovered
+variable drag-btn
+variable dragging
 
 : pen-in?  me click-box@ at@p 2dup overlap? ;
 
@@ -142,14 +152,48 @@ defer _topmost-element
     to hovered
     hovered ?dup if _enter then ;
 
+: begin-drag ( btn -- )
+    drag-btn ! dragging on ;
+
+: end-drag ( -- )
+    dragging off ;
+
+: handle-lmb
+    <space> held? ?exit
+    lmb pressed? if
+        ." hi"
+        hovered if 
+            hovered ctrl? if +select else select then
+            selection #items if
+                lmb begin-drag
+            then
+        else
+            selection vacate
+        then
+    then
+    drag-btn @ letgo? if
+        end-drag
+    then ;
+
+: do-drag 
+    dragging @ -exit
+    mickey 2>p                          \ get mouse delta
+    [: { 2dup x 2+! } ;] selection each \ apply to all selected
+    2drop ;
+
 : gui-input ( element - )
-    as>
-    mouse at topmost-element hover ;
+    as> 
+    mouse at 
+    topmost-element hover 
+    handle-lmb
+    do-drag
+;
 
 : click-box  me click-box@ 2over atp 2swap 2- rect ;
 
 : gui-overlay ( - )
-    hovered ?dup if { yellow click-box } then ;
+    hovered ?dup if { yellow click-box } then 
+    [: { green click-box } ;] selection each ;
 
 \ -- Panel ---------------------------------------------------------------------
 
@@ -171,7 +215,7 @@ trait: %textual
     prop fnt :addr 
     prop w :fixed
     prop h :fixed
-    prop tx :fixed
+    prop tx :fixed  \ text offset
     prop ty :fixed
 
     :: text! ( a n - ) 
@@ -195,11 +239,4 @@ class;
 
 : *label ( zstr - label )
     %label add { zcount me text! me } ;
-
-\ -- Selection -----------------------------------------------------------------
-
-1024 %addr stack selection
-
-: +select  ( element - ) selection ?push ;
-: select   ( element - ) selection vacate selection push ;
 

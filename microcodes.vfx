@@ -179,6 +179,7 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     connectors ;
 
 : _ability-key
+    at-me
     8 8 +at 
     black 0.5 ppena! k @ f" %n" print 
     -1 -1 +at
