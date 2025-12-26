@@ -25,20 +25,20 @@ it's part of my "physicality" project
 
 \ -- Dependencies --------------------------------------------------------------
 
-require %vfxland5%/forge/lib/dltree.vfx
-require %vfxland5%/supershow/traits.vfx
-require %vfxland5%/supershow/bitmap.vfx
-require %vfxland5%/supershow/sprites.vfx
-require %vfxland5%/supershow/tileset.vfx
-require %vfxland5%/supershow/autoload.vfx
-require %idir%/shapes.vfx
-require %idir%/colors.vfx
-require %idir%/gui.vfx
+REQUIRE %vfxland5%/forge/lib/dltree.vfx
+REQUIRE %vfxland5%/supershow/traits.vfx
+REQUIRE %vfxland5%/supershow/bitmap.vfx
+REQUIRE %vfxland5%/supershow/sprites.vfx
+REQUIRE %vfxland5%/supershow/tileset.vfx
+REQUIRE %vfxland5%/supershow/autoload.vfx
+REQUIRE %idir%/shapes.vfx
+REQUIRE %idir%/colors.vfx
+REQUIRE %idir%/gui.vfx
 
 \ -- Assets -------------------------------------------------------------------
 
-bitmap micro-icons.png
-micro-icons.png 20 20 tileset-from micro-icons.ts
+BITMAP micro-icons.png
+micro-icons.png 20 20 TILESET-FROM micro-icons.ts
 
 \ -- Traits -------------------------------------------------------------------
 
@@ -137,7 +137,6 @@ defer _decay
 : pulse@  upul @ ( dpul @ + ) ( lpul @ + ) rpul @ + 1.0 min ;
 
 redef : icon
-    at-me
     pulse@ 0.01 > if
         icon-color @ $ffffff00 and pulse@ 257.0 p/ or rgba8
         10. circ  \ outer pulse circle
@@ -146,10 +145,14 @@ redef : icon
     icon-color @ rgba8 8.5 circ 
     icon-bmp @ cput ;
 
-%micro :: .summary  object:.summary x 2p? ;
+%micro :: .summary  
+    object:.summary x 2p? ;
 
 %micro :: _draw
     icon connectors ;
+
+%micro :: click-box@
+    abspos 8. 8. 2- 16. 16. box ;
 
 \ -- Micro Classes -------------------------------------------------------------
 
@@ -168,7 +171,7 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     icon ;
 
 %sprite :: _draw  
-    at-me   bmp @ cput ;
+    bmp @ cput ;
 
 %hitbox :: _draw
     icon
@@ -176,7 +179,7 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     connectors ;
 
 : _ability-key
-    at-me 8 8 +at 
+    8 8 +at 
     black 0.5 ppena! k @ f" %n" print 
     -1 -1 +at
     white 0.9 ppena! k @ f" %n" print ;
@@ -203,9 +206,6 @@ defer _ability-keys
 
 \ : performs: >template { :noname action ! } ;
 \ : perform  action ! ;
-
-%origin :: click-box@  
-    abspos 16. 16. box ;
 
 %move :: action  
     acc @ val +!
@@ -295,10 +295,13 @@ defer _delete-micro
     machines ability-keys
     ['] decay machines each ;
     
+redef : process-input
+    get-mouse machines gui-input ;
+
 : micros
     microcodes>> machines as 
-    work> get-mouse process-micros
-    show> draw-micros ;
+    work> process-input process-micros
+    show> draw-micros gui-overlay ;
 
 micros
 

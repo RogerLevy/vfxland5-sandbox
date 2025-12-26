@@ -4,7 +4,10 @@
 
 \ -- Dependencies --------------------------------------------------------------
 
+REQUIRE %vfxland5%/forge/lib/dltree.vfx
 REQUIRE %vfxland5%/lib/mouse.vfx
+REQUIRE %idir%/shapes.vfx
+REQUIRE %idir%/colors.vfx
 
 \ -- Context -------------------------------------------------------------------
 
@@ -19,7 +22,7 @@ trait: %_element
     prop x :fixed
     prop y :fixed
     prop unloaded
-    :: click-box@ ( - x1 y1 x2 y2 ) $DEADBEEF dup dup dup ;
+    :: click-box@ ( - x1. y1. x2. y2. ) $DEADBEEF dup dup dup ;
     :: _click ( n - ) drop ;
     :: _enter ( - ) ;
     :: _leave ( - ) ;
@@ -30,6 +33,15 @@ trait: %_element
     :: _draw ( - ) ;
     :: delete ( - ) stub ;
 trait;
+
+\ -- Helpers -------------------------------------------------------------------
+
+: abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
+: at-me  abspos atp ;
+: box  2over 2+ ;
+: ?push  2dup contains? if 2drop exit then push ;
+: see-thru   0.5 ppena! ;
+\ : click-dims  me click-box@ 2swap 2- ;
 
 \ -- Element Class -------------------------------------------------------------
 
@@ -77,15 +89,7 @@ defer __process
 ['] process is __process
 
 %element :: draw
-    me _draw ['] draw me each ;
-
-\ -- Helpers -------------------------------------------------------------------
-
-: abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
-: at-me  abspos 2>i at ;
-: box  2over 2+ ;
-: ?push  2dup contains? if 2drop exit then push ;
-: see-thru   0.5 ppena! ;
+    at-me me _draw ['] draw me each ;
 
 \ -- Desktop -------------------------------------------------------------------
 
@@ -115,11 +119,43 @@ class;
 0 %ui-box :construct ( - )
     at@p x 2!   ec ecp! in-heap ;
 
+\ -- Mouse ---------------------------------------------------------------------
+
+0 value hovered
+
+: pen-in?  me click-box@ at@p 2dup overlap? ;
+
+defer _topmost-element
+[: 
+    [: { 
+        <at pen-in? if drop me then  
+        me _topmost-element 
+    } ;] swap each
+;] is _topmost-element
+
+: topmost-element ( - element|0 )
+    0 me _topmost-element ;
+
+: hover ( element - )
+    dup hovered = if drop exit then
+    hovered ?dup if _leave then
+    to hovered
+    hovered ?dup if _enter then ;
+
+: gui-input ( element - )
+    as>
+    mouse at topmost-element hover ;
+
+: click-box  me click-box@ 2over atp 2swap 2- rect ;
+
+: gui-overlay ( - )
+    hovered ?dup if { yellow click-box } then ;
+
 \ -- Panel ---------------------------------------------------------------------
 
 class: %panel
     %ui-box derive
-    :: _draw at-me black see-thru w 2@ rectf ;
+    :: _draw  black see-thru w 2@ rectf ;
 class;
 
 \ -- Font (TODO) ---------------------------------------------------------------
@@ -148,14 +184,13 @@ trait;
 
 \ -- Label ---------------------------------------------------------------------
 
-
 class: %label
     %ui-box derive
     is-a %textual
     prop clr
     template { fnt@ fnt ! $FFFFFFFF clr ! }
 
-    :: _draw  at-me txt @ ?dup -exit lcount clr @ rgba8 print ;
+    :: _draw  txt @ ?dup -exit lcount clr @ rgba8 print ;
 class;
 
 : *label ( zstr - label )
