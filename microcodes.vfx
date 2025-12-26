@@ -1,6 +1,6 @@
-\ =============================================================================
-\ micro-codes
-\ =============================================================================
+\ ==============================================================================
+\ Micro-codes
+\ ==============================================================================
 
 ((
 experiments into the idea of tiny modular bits of logic
@@ -23,7 +23,7 @@ it's part of my "physicality" project
 
 ))
 
-\ -- Dependencies ---------------------------------------------------------------
+\ -- Dependencies --------------------------------------------------------------
 
 require %vfxland5%/forge/lib/dltree.vfx
 require %vfxland5%/supershow/traits.vfx
@@ -35,25 +35,22 @@ require %idir%/shapes.vfx
 require %idir%/colors.vfx
 require %idir%/gui.vfx
 
-\ -- Assets --------------------------------------------------------------------
+\ -- Assets -------------------------------------------------------------------
 
 bitmap micro-icons.png
 micro-icons.png 20 20 tileset-from micro-icons.ts
 
-\ -- Traits --------------------------------------------------------------------
+\ -- Traits -------------------------------------------------------------------
 
-trait: %micro-like
-    is-a %element
-    is-a %unloadable
+trait: %_micro
     :: action  ( - ) ;
     :: trigger ( - ) ;
     prop en          \ user disable switch
-    prop unloaded
     prop val :fixed  \ coefficient, must be >= 0.01 to process
     prop dcy :fixed  \ scalar
     prop upul :fixed  
     \ prop dpul :fixed
-    prop lpul :fixed
+    \ prop lpul :fixed
     prop rpul :fixed
     static icon-color \ rgba8
     static icon-bmp 
@@ -61,7 +58,7 @@ trait;
 
 : pulse-up    1.0 upul ! ;
 \ : pulse-down  1.0 dpul ! ;
-: pulse-left   1.0 lpul ! ;
+\ : pulse-left   1.0 lpul ! ;
 : pulse-right  1.0 rpul ! ;
 
 trait: %animator
@@ -70,26 +67,24 @@ trait: %animator
     prop a.ofs prop a.done prop a.flp
 trait;
 
-\ -- Base Class ----------------------------------------------------------------
+\ -- Base Class ---------------------------------------------------------------
 
 ECONTEXT micro-ec
 
 class: %micro
-    128 field-space
-    is-a %micro-like
+    128 field-space  \ enables in-place class changes
+    %element derive
+    is-a %_micro
     template { micro-ec ecp! in-heap en on 1.0 val ! 0.97 dcy ! -1 icon-color ! }
 class;
 
-\ -- Processing ----------------------------------------------------------------
+\ -- Processing ---------------------------------------------------------------
 
-defer _process
-: process ( micro - )
-    as> en @ -exit
-        val @ 0.01 >= if 
-            me action 
-        then
-        ['] _process me each ;
-['] process is _process
+%micro :: _process
+    en @ -exit
+    val @ 0.01 >= if 
+        me action 
+    then ;
 
 || 0.025 constant ps
 
@@ -98,11 +93,13 @@ defer _process
 
 defer _decay
 : decay ( micro - )
-    as> en @ -exit
+    as> 
+        me %micro is? -exit
+        en @ -exit
         val @ 0.01 >= if val @ dcy @ p* val ! then
         upul @ pulse- upul !
         \ dpul @ pulse- dpul !
-        lpul @ pulse- lpul !
+        \ lpul @ pulse- lpul !
         rpul @ pulse- rpul !
         ['] _decay me each ;
 ['] decay is _decay
@@ -110,17 +107,14 @@ defer _decay
 : non-decaying  template { 1.0 dcy ! } ;
 
 0 %micro :construct ( - )
-    at@p x 2!  micro-ec ecp! ;
+    element:construct  micro-ec ecp! ;
 
-%micro :: unload ( - )
-    unloaded on ;
-
-\ -- Rendering -----------------------------------------------------------------
+\ -- Rendering ----------------------------------------------------------------
 
 : val-alpha  $ffffff00 and  val @ 257.0 p/ or ;
 
 : x-flow-color ( - )
-    $ff0000ff lpul @ mix 
+\    $ff0000ff lpul @ mix 
     prev @ if $0000ffff prev @ >rpul @ mix then ;
 
 : y-flow-color ( - )
@@ -129,21 +123,21 @@ defer _decay
     
 : sibling-connector
     prev @ if
-        brown 0.5 ppena! x-flow-color   prev @ { abspos } line
+        pink 0.5 ppena! x-flow-color   prev @ { abspos } line
     then ;
 
 : parent-connector
     parent @ if
-        grey 0.5 ppena! y-flow-color   parent @ { abspos } line
+        white 0.5 ppena! y-flow-color   parent @ { abspos } line
     then ;
 
 : connectors
     sibling-connector parent-connector ;
 
-: pulse@  upul @ ( dpul @ + ) lpul @ + rpul @ + 1.0 min ;
+: pulse@  upul @ ( dpul @ + ) ( lpul @ + ) rpul @ + 1.0 min ;
 
 redef : icon
-    abspos 2>i at
+    at-me
     pulse@ 0.01 > if
         icon-color @ $ffffff00 and pulse@ 257.0 p/ or rgba8
         10. circ  \ outer pulse circle
@@ -154,7 +148,7 @@ redef : icon
 
 %micro :: .summary  object:.summary x 2p? ;
 
-%micro :: draw
+%micro :: _draw
     icon connectors ;
 
 \ -- Micro Classes -------------------------------------------------------------
@@ -170,24 +164,24 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
 \ -- Class Draw Methods --------------------------------------------------------
 
-%origin :: draw  
+%origin :: _draw  
     icon ;
 
-%sprite :: draw  
-    abspos 2>i at   bmp @ cput ;
+%sprite :: _draw  
+    at-me   bmp @ cput ;
 
-%hitbox :: draw
+%hitbox :: _draw
     icon
     white w 2@ rect 
     connectors ;
 
 : _ability-key
-    abspos 2>i at 8 8 +at 
+    at-me 8 8 +at 
     black 0.5 ppena! k @ f" %n" print 
     -1 -1 +at
     white 0.9 ppena! k @ f" %n" print ;
 
-\ %ability :: draw
+\ %ability :: _draw
 \     icon
 \     _ability-key
 \     connectors ;
@@ -200,25 +194,23 @@ defer _ability-keys
 \ -- Class Templates -----------------------------------------------------------
 
 %hitbox >template { 16.0 16.0 w 2! }
-%neuron >template { 2.0 thr ! 0.999 dcy ! } 
+%neuron >template { 2.0 thr ! 0 val ! } 
 %rep >template { 1.0 dur ! }
 %timeout >template { 1.0 dur ! }
+%move >template { 0 val ! }
 
 \ -- Class Logic ------------------------------------------------------
 
 \ : performs: >template { :noname action ! } ;
 \ : perform  action ! ;
 
-%origin :: clickbox@  
+%origin :: click-box@  
     abspos 16. 16. box ;
 
 %move :: action  
     acc @ val +!
     ang @ val @ vec parent @ >x 2+! 
     val @ 0.01 >= if pulse-up then ;
-
-c: %gravity %move [non-decaying] ;
-%gravity >template { 90. ang ! 0.03 acc ! }
 
 %ability :: action
     k @ pressed? if pulse-up kp @ parent @ { ?execute } then
@@ -259,17 +251,16 @@ c: %gravity %move [non-decaying] ;
  
 %neuron :: action
     tst @ ?execute
-    val @ thr @ >=
+    val @ thr @ < ?exit
     next @ if
-        dup next @ >val +!
+        1.0 next @ >val +!
         pulse-right
     then
     if 0 val ! then ;
 
-\ -- Lifecycle -----------------------------------------------------------------
+\ -- Lifecycle ----------------------------------------------------------------
 
-0 0 at %micro object machines
-    machines { 1.0 dcy ! }
+0 0 at %desktop object machines
 
 defer _delete-micro
 : delete-micro ( micro - )
@@ -278,17 +269,13 @@ defer _delete-micro
     r@ dlremove r> free throw ;
 ' delete-micro is _delete-micro
 
-|| : sweep ( iterable - )
-    [: { unloaded @ if me delete-micro then } ;] swap each ;
-
-%micro :: vacate
-    ['] unload me each  me sweep ;
+%micro :: delete  me delete-micro ;
 
 \ -- Icon Configuration --------------------------------------------------------
 
 || : tile!  micro-icons.ts swap tile icon-bmp ! ;
 
-%micro   >template { 0                icon-color !  0 icon-bmp ! }
+%micro   >template { $80808080        icon-color !  0 icon-bmp ! }
 %origin  >template { valof light-grey icon-color !  2  tile! }
 %move    >template { valof cyan       icon-color !  0  tile! }
 %ability >template { valof yellow     icon-color !  5  tile! }
@@ -297,28 +284,44 @@ defer _delete-micro
 %hitbox  >template { valof green      icon-color !  6  tile! }   
 %neuron  >template { valof blue       icon-color !  1  tile! }
 
-\ -- Main Loop -----------------------------------------------------------------
+\ -- Main Loop ----------------------------------------------------------------
 
+: process-micros
+    machines process machines sweep ;
+
+: draw-micros
+    0 0 at 
+    machines draw 
+    machines ability-keys
+    ['] decay machines each ;
+    
 : micros
     microcodes>> machines as 
-    work> machines process machines sweep
-    show> 
-        0 0 at 
-        machines ndraw 
-        machines ability-keys
-        machines decay ;
+    work> get-mouse process-micros
+    show> draw-micros ;
 
 micros
 
-\ -- DSL Syntax ----------------------------------------------------------------
+\ -- DSL Syntax ---------------------------------------------------------------
 
-: {{  { e{ 0 20 at ;
+\ || : level  parent @ dup if me swap indexof 1 + then ;
+
+|| : level ( - n )
+    {: | n :}
+    0 to n
+    prev @ begin ?dup while dup %origin is? not over #children 0> and if 1 +to n then >prev @ repeat 
+    n ;
+
+: {{  { e{ 0 level 1 + 20 * at ;
 : }}  e} } 20 0 +at ;
 
 : *kpress ( key xt - ability )
     %ability add { kp ! k ! me } ;
 
-\ -- Test ----------------------------------------------------------------------
+\ -- Test ---------------------------------------------------------------------
+
+c: %gravity %move [non-decaying] ;
+%gravity >template { 90. ang ! 0.03 acc ! }
 
 c: %rando %origin startx starty ;
 0 %rando :construct micro:construct x 2@ startx 2! ;
@@ -354,15 +357,14 @@ c: %rando %origin startx starty ;
         *rando {{
             *rando {{ }}
         }}
-        *rando {{
-            *rando {{ }}
-        }}
-        *rando {{
-            *rando {{ }}
-        }}
+        \ *rando {{
+        \     *rando {{ }}
+        \ }}
+        \ *rando {{
+        \     *rando {{ }}
+        \ }}
         32 200 at
         %origin add {{ 
-            en off
             %move add {{ }}
             %ability add {{ }}
             %rep add {{ }}
@@ -374,3 +376,13 @@ c: %rando %origin startx starty ;
 ;
 
 test
+
+10 10 at 
+%panel make constant panel
+panel machines unshift
+panel {
+    150. 100. w 2!
+    10 10 at
+    z" Hello, my baby!" *label constant label
+}
+

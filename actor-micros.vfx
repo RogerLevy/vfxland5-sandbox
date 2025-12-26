@@ -4,8 +4,8 @@ trait: %micro-like-actor
     \ this is fine so long as we don't actually need to check if an object is a %micro-like
     \ TODO: fix APPLY-TRAIT and INHERIT-TRAIT 
 
-    \ is-a %element
-    :: clickbox@ ( - x1 y1 x2 y2 ) $DEADBEEF dup dup dup ;
+    \ %element derive
+    :: click-box@ ( - x1 y1 x2 y2 ) $DEADBEEF dup dup dup ;
     :: action ;
     \ prop en          \ user disable switch
     prop val :fixed  \ coefficient, must be >= 0.01 to process
@@ -18,5 +18,5 @@ class: %actor
 
     is-a %micro-like-actor
     template { en on 1.0 val ! 0.97 dcy ! -1 icon-color ! }
-    :: clickbox@ x 2@ x1 2@ 2-`` w1 2@`` box ;
+    :: click-box@ x 2@ x1 2@ 2-`` w1 2@`` box ;
 class;

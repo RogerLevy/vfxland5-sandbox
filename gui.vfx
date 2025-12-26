@@ -1,19 +1,170 @@
-trait: %element
+\ =============================================================================
+\ GUI
+\ =============================================================================
+
+\ -- Dependencies --------------------------------------------------------------
+
+REQUIRE %vfxland5%/lib/mouse.vfx
+
+\ -- Context -------------------------------------------------------------------
+
+ECONTEXT gui-ec
+
+\ -- Base Trait ----------------------------------------------------------------
+
+trait: %_element   
     is-a %dltree
     is-a %drawable
+    is-a %unloadable
     prop x :fixed
     prop y :fixed
-    :: clickbox@ ( - x1 y1 x2 y2 ) $DEADBEEF dup dup dup ;
+    prop unloaded
+    :: click-box@ ( - x1 y1 x2 y2 ) $DEADBEEF dup dup dup ;
+    :: _click ( n - ) drop ;
+    :: _enter ( - ) ;
+    :: _leave ( - ) ;
+    :: _mousedown ( btn - ) drop ;  \ 1 = left, 2 = right, 4 = middle
+    :: _mouseup ( btn - ) drop ;
+    :: _mousemove ( - ) ;
+    :: _process ( - ) ;
+    :: _draw ( - ) ;
+    :: delete ( - ) stub ;
 trait;
 
+\ -- Element Class -------------------------------------------------------------
+
+class: %element
+    is-a %_element
+    template { gui-ec ecp! in-heap }
+class;
+
+0 %element :construct ( - )
+    at@p x 2!  gui-ec ecp! in-heap ;
+
+%element :: delete
+    me free drop ;
+
+\ -- Element Methods -----------------------------------------------------------
+
+%element :: unload ( - )
+    unloaded on ;
+
+: sweep ( iterable - )
+    [: { unloaded @ if me delete then } ;] swap each ;
+
+%element :: vacate
+    ['] unload me each  me sweep ;
+
+%element :: push
+    dup %element is? not abort" ELEMENT:PUSH : Source is not an element."
+    dltree:push ;
+
+%element :: insert-under
+    dup %element is? not abort" ELEMENT:INSERT-UNDER : Source is not an element."
+    dltree:insert-under ;
+
+%element :: insert-over
+    dup %element is? not abort" ELEMENT:INSERT-OVER : Source is not an element."
+    dltree:insert-over ;
+
+%element :: unshift
+    dup %element is? not abort" ELEMENT:UNSHIFT : Source is not an element."
+    dltree:unshift ;
+
+defer __process
+: process ( element - )
+    dup _process ['] __process swap each ;
+['] process is __process
+
+%element :: draw
+    me _draw ['] draw me each ;
+
+\ -- Helpers -------------------------------------------------------------------
+
 : abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
+: at-me  abspos 2>i at ;
 : box  2over 2+ ;
+: ?push  2dup contains? if 2drop exit then push ;
+: see-thru   0.5 ppena! ;
+
+\ -- Desktop -------------------------------------------------------------------
+
+class: %desktop
+    %element derive
+
+    :: click-box@ 0 0 winw winh 2>p ;
+    :: _process <space> held? lb and if mickey 2>p x 2+! then ;
+    :: _draw 0 0 at grey winw winh 2>p rectf ;
+class;
+
+\ -- UI Box --------------------------------------------------------------------
+
+class: %ui-box
+    %element derive
+
+    prop draggable
+    prop w :fixed
+    prop h :fixed
+    template { 100. 100. w 2! } 
+
+    EC_MAX_SIZE nprop ec  template { ec clear-ec }
+
+    :: click-box@ abspos w 2@ box ;
+class;
+
+0 %ui-box :construct ( - )
+    at@p x 2!   ec ecp! in-heap ;
+
+\ -- Panel ---------------------------------------------------------------------
 
 class: %panel
-    is-a %element
-    :: clickbox@ abspos w 2@ box ;
+    %ui-box derive
+    :: _draw at-me black see-thru w 2@ rectf ;
 class;
 
-class: %inspector
-    %panel derive
+\ -- Font (TODO) ---------------------------------------------------------------
+
+\ class: %font
+\     prop id
+\ class;
+
+\ -- Textual Trait -------------------------------------------------------------
+
+trait: %textual
+    prop txt :addr  \ lstring
+    prop fnt :addr 
+    prop w :fixed
+    prop h :fixed
+    prop tx :fixed
+    prop ty :fixed
+
+    :: text! ( a n - ) 
+        txt @ free drop \ ignore ior
+        0 txt !
+        dup cell+ allocate throw txt !
+        txt @ lplace
+        fnt @ fnt!  txt @ lcount textbox 2>p w 2! 2>p tx 2! ;
+trait;
+
+\ -- Label ---------------------------------------------------------------------
+
+
+class: %label
+    %ui-box derive
+    is-a %textual
+    prop clr
+    template { fnt@ fnt ! $FFFFFFFF clr ! }
+
+    :: _draw  at-me txt @ ?dup -exit lcount clr @ rgba8 print ;
 class;
+
+: *label ( zstr - label )
+    %label add { zcount me text! me } ;
+
+\ -- Selection -----------------------------------------------------------------
+
+1024 %addr stack selection
+
+: +select  ( element - ) selection ?push ;
+: select   ( element - ) selection vacate selection push ;
+

@@ -6,7 +6,10 @@
       "Bash(find:*)",
       "Bash(objdump:*)",
       "Bash(dumpbin:*)",
-      "Bash(powershell -Command \"& { dumpbin /exports ''vfxland5/bin/allegro-debug-5.2.dll'' | Select-String ''al_map_rgba'' }\")"
+      "Bash(powershell -Command \"& { dumpbin /exports ''vfxland5/bin/allegro-debug-5.2.dll'' | Select-String ''al_map_rgba'' }\")",
+      "Bash(xxd:*)",
+      "WebFetch(domain:liballeg.org)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": [],
     "ask": []
