@@ -36,58 +36,51 @@ ec-cell thickness
 : pixel ( - )
     at@f rgba@fds al_draw_pixel ;
 
-\ c: %shape %drawable tr tg tb ta fil ;
-c: %shape %actor fil ;
-c: %circle %shape r ;
-c: %oval %shape rx ry ;
-c: %line %shape dx dy ;
-c: %rect %shape w h ;
-c: %pixel %shape ;
+\ \ c: %shape %drawable tr tg tb ta fil ;
+\ c: %shape %actor fil ;
+\ c: %circle %shape r ;
+\ c: %oval %shape rx ry ;
+\ c: %line %shape dx dy ;
+\ c: %rect %shape w h ;
+\ c: %pixel %shape ;
 
-\ : tinted  tr @ ppenr! tg @ ppeng! tb @ ppenb! ta @ ppena! ;
-: at-me  <at  x 2@ 2>i +at ;
+\ \ : tinted  tr @ ppenr! tg @ ppeng! tb @ ppenb! ta @ ppena! ;
 
-%circle :: draw  at-me r @ fil @ if circf else circ then ;
-%oval :: draw  at-me rx 2@ fil @ if ovalf else oval then ;
-%line :: draw  at-me dx 2@ line ;
-%rect :: draw  at-me w 2@ fil @ if rectf else rect then ;
-%pixel :: draw  at-me pixel ;
+\ %circle :: draw  at-me r @ fil @ if circf else circ then ;
+\ %oval :: draw  at-me rx 2@ fil @ if ovalf else oval then ;
+\ %line :: draw  at-me dx 2@ line ;
+\ %rect :: draw  at-me w 2@ fil @ if rectf else rect then ;
+\ %pixel :: draw  at-me pixel ;
 
-: *circle  %circle add { r ! me } ;
-: *circlef *circle { fil on me } ;    
-: *oval    %oval add { rx 2! me } ;
-: *ovalf   *oval { fil on me } ;
-: *line    %line add { dx 2! me } ;
-: *rect    %rect add { w 2! me } ;
-: *rectf   *rect { fil on me } ;
-: *pixel   %pixel add ;
+\ : *circle  %circle add { r ! me } ;
+\ : *circlef *circle { fil on me } ;    
+\ : *oval    %oval add { rx 2! me } ;
+\ : *ovalf   *oval { fil on me } ;
+\ : *line    %line add { dx 2! me } ;
+\ : *rect    %rect add { w 2! me } ;
+\ : *rectf   *rect { fil on me } ;
+\ : *pixel   %pixel add ;
 
-defer _ndraw  \ had to do the recursion this way because [: RECURSE ;] didn't work.
-: ndraw ( drawable-iterable - )
-    \ dup .summary cr
-    dup draw ['] _ndraw swap each ;
-' ndraw is _ndraw
+\ 0 0 at
+\ create test-shapes
+\ %actor make {
+\     create c1
+\     100 100 at 50. *circlef { 
+\         $00ff00ff rgba8 
+\         create r1
+\         -20 -30 at  64. 32. *rect {
+\             $0000ffff rgba8
+\             3. thick
+\         }
+\     }
+\     create c2
+\     50 50 at 20. *circle { $ff0000ff rgba8 }
+\ }
 
-0 0 at
-create test-shapes
-%actor make {
-    create c1
-    100 100 at 50. *circlef { 
-        $00ff00ff rgba8 
-        create r1
-        -20 -30 at  64. 32. *rect {
-            $0000ffff rgba8
-            3. thick
-        }
-    }
-    create c2
-    50 50 at 20. *circle { $ff0000ff rgba8 }
-}
-
-: shapes
-    work>
-        step
-    show> 
-        test-shapes ndraw ;
+\ : shapes
+\     work>
+\         step
+\     show> 
+\         test-shapes ndraw ;
 
 \ shapes
