@@ -1,0 +1,21 @@
+\ -- Arrowheads ---------------------------------------------------------------
+
+3.0 constant arrow-size
+45.0 constant arrow-spread  \ half-angle of arrowhead wings
+
+: arrowhead ( tipx. tipy. angle. - )
+    \ Draw arrowhead at tip, pointing in direction 'angle' (tail to tip)
+    180.0 + >r  \ flip to get wing direction
+    atp
+    r@ arrow-spread - arrow-size vec at@p 2+ line
+    r> arrow-spread + arrow-size vec at@p 2+ line ;
+
+: angle-to ( srcx. srcy. destx. desty. - angle. )
+    \ Calculate angle from src to dest
+    2swap 2- xy>ang ;
+
+: ->line ( destx. desty. - )
+    \ Draw line from pen to dest with arrowhead at dest
+    at@p 2over angle-to >r  \ calculate angle
+    2dup line               \ draw line
+    r> arrowhead ;          \ arrowhead at dest

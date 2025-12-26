@@ -32,6 +32,7 @@ REQUIRE %vfxland5%/supershow/sprites.vfx
 REQUIRE %vfxland5%/supershow/tileset.vfx
 REQUIRE %vfxland5%/supershow/autoload.vfx
 REQUIRE %idir%/shapes.vfx
+REQUIRE %idir%/arrow.vfx
 REQUIRE %idir%/colors.vfx
 REQUIRE %idir%/gui.vfx
 
@@ -39,6 +40,8 @@ REQUIRE %idir%/gui.vfx
 
 BITMAP micro-icons.png
 micro-icons.png 20 20 TILESET-FROM micro-icons.ts
+
+8.5 constant ICON_RADIUS
 
 \ -- Traits -------------------------------------------------------------------
 
@@ -120,19 +123,30 @@ defer _decay
 : y-flow-color ( - )
     $ff0000ff upul @ mix ;
     \ parent @ if $80ffffff parent @ >dpul @ mix-rgba8 then ;
-    
+
+: changelen ( x1. y1. x2. y2. start. end. - x1'. y1'. x2'. y2'. )
+    {: x1 y1 x2 y2 sc ec | ang :} 
+    x1 y1 x2 y2 angle-to to ang
+    x1 y1 ang 180.0 + sc vec 2+
+    x2 y2 ang ec vec 2+ ;
+
 : sibling-connector
     prev @ if
-        pink 0.5 ppena! x-flow-color   prev @ { abspos } line
+        
+        pink 0.5 ppena! x-flow-color
+        prev @ { abspos } abspos ICON_RADIUS negate dup changelen
+        2swap atp ->line
     then ;
 
 : parent-connector
     parent @ if
-        white 0.5 ppena! y-flow-color   parent @ { abspos } line
+        white 0.5 ppena! y-flow-color
+        abspos parent @ { abspos } ICON_RADIUS negate dup changelen
+        2swap atp ->line
     then ;
 
 : connectors
-    sibling-connector parent-connector ;
+    e{ 1.0 thick sibling-connector parent-connector e} ;
 
 : pulse@  upul @ ( dpul @ + ) ( lpul @ + ) rpul @ + 1.0 min ;
 
@@ -141,8 +155,8 @@ redef : icon
         icon-color @ $ffffff00 and pulse@ 257.0 p/ or rgba8
         10. circ  \ outer pulse circle
     then
-    icon-color @ val-alpha rgba8 8.5 circf
-    icon-color @ rgba8 8.5 circ 
+    icon-color @ val-alpha rgba8 ICON_RADIUS circf
+    icon-color @ rgba8 ICON_RADIUS circ 
     icon-bmp @ cput ;
 
 %micro :: .summary  
@@ -180,7 +194,7 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
 : _ability-key
     at-me
-    8 8 +at 
+    5 5 +at 
     black 0.5 ppena! k @ f" %n" print 
     -1 -1 +at
     white 0.9 ppena! k @ f" %n" print ;
