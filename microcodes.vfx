@@ -276,7 +276,7 @@ defer _delete-micro
 
 || : tile!  micro-icons.ts swap tile icon-bmp ! ;
 
-%micro   >template { $80808080        icon-color !  0 icon-bmp ! }
+%micro   >template { $00000080        icon-color !  0 icon-bmp ! }
 %origin  >template { valof light-grey icon-color !  2  tile! }
 %move    >template { valof cyan       icon-color !  0  tile! }
 %ability >template { valof yellow     icon-color !  5  tile! }
@@ -309,15 +309,32 @@ micros
 \ -- DSL Syntax ---------------------------------------------------------------
 
 \ || : level  parent @ dup if me swap indexof 1 + then ;
+\ || : level ( - n )
+\     {: | n :}
+\     0 to n
+\     prev @ begin ?dup while dup %origin is? not over #children 0> and if 1 +to n then >prev @ repeat 
+\     n ;
 
-|| : level ( - n )
-    {: | n :}
-    0 to n
-    prev @ begin ?dup while dup %origin is? not over #children 0> and if 1 +to n then >prev @ repeat 
-    n ;
+machines value last-origin
+: absy  abspos nip >i ;
+0 value next-y
 
-: {{  { e{ 0 level 1 + 20 * at ;
-: }}  e} } 20 0 +at ;
+: {{ ( micro - )
+    { e{
+    me .summary ." absolute: " abspos 2p. cr
+    me %origin is? if
+        0 20 at
+        me to last-origin
+        absy 20 + to next-y
+    else
+        prev @ 0= if 20 +to next-y then   \ first child advances Y
+        0 next-y absy - at          \ Y relative to current object
+    then ;
+
+: }}
+    me %origin is? not >r
+    e} }
+    r> if 20 0 +at then ;
 
 : *kpress ( key xt - ability )
     %ability add { kp ! k ! me } ;
@@ -331,7 +348,7 @@ c: %rando %origin startx starty ;
 0 %rando :construct micro:construct x 2@ startx 2! ;
 
 : *rando
-    %rando add {
+    %rando add {{
         0 20 at
         <del> [: me unload ;] *kpress {{ }}
         <enter> [: startx 2@ x 2! ;] *kpress {{ }}   \ couples this to a rando
@@ -350,17 +367,20 @@ c: %rando %origin startx starty ;
                 [: 1. val ! ;] kh !
             }}
         }}
-    me } ;
+        %micro add {{
+            %micro add {{ }}
+        }}
+    me }} ;
 
 : test 
     machines {{
         64 64 at 
-        *rando {{
+        \ *rando {{
             *rando {{ }}
-        }}
-        *rando {{
-            *rando {{ }}
-        }}
+        \ }}
+        \ *rando {{
+            \ *rando {{ }}
+        \ }}
         \ *rando {{
         \     *rando {{ }}
         \ }}

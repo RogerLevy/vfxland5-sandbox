@@ -161,7 +161,6 @@ defer _topmost-element
 : handle-lmb
     <space> held? ?exit
     lmb pressed? if
-        ." hi"
         hovered if 
             hovered ctrl? if +select else select then
             selection #items if
