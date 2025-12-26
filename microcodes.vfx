@@ -147,15 +147,14 @@ defer _decay
 
 : sibling-connector
     prev @ if
-        
-        pink 0.5 ppena! x-flow-color
+        $88ccff88 rgba8 x-flow-color
         prev @ { abspos } abspos ICON_RADIUS negate dup changelen
         2swap atp ->line
     then ;
 
 : parent-connector
     parent @ if
-        white 0.5 ppena! y-flow-color
+        $ff888888 rgba8 y-flow-color
         abspos parent @ { abspos } ICON_RADIUS negate dup changelen
         2swap atp ->line
     then ;
@@ -168,7 +167,7 @@ defer _decay
 redef : icon
     pulse@ 0.01 > if
         icon-color @ $ffffff00 and pulse@ 257.0 p/ or rgba8
-        10. circ  \ outer pulse circle
+        9.5 circ  \ outer pulse circle
     then
     icon-color @ val-alpha rgba8 ICON_RADIUS circf
     icon-color @ rgba8 ICON_RADIUS circ 
