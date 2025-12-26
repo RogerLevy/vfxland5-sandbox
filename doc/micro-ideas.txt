@@ -1,0 +1,32 @@
+  Temporal:
+  - Frame/tick events - global heartbeat
+  - Scheduled callbacks - "call me in 0.5 seconds"
+  - Animation events - "hit frame", "animation ended"
+
+  Spatial (beyond collision):
+  - Proximity queries - "who's near me?" without touching
+  - Raycasts/Line of sight - can I see target?
+  - Screen/viewport queries - am I on screen?
+
+  Resource/Economy:
+  - Shared pools - health, ammo, score, mana that multiple machines read/write
+  - Inventories - items, powerups
+
+  Entity relationships:
+  - Parent entity reference - the actor/sprite this machine controls
+  - Scene graph queries - find by name/type/group
+  - Ownership - "my bullets" vs "enemy bullets"
+
+  State:
+  - Reactive values/Signals - notify on change (vs polling)
+  - Blackboard - AI knowledge base
+  - State machine transitions - enter/exit notifications
+
+  System:
+  - Audio triggers - play sound, react to music beat
+  - Camera events - shake, follow, bounds
+  - Scene transitions - level load, checkpoint
+
+  Multiplayer (if applicable):
+  - Network messages
+  - Sync/authoritative state
