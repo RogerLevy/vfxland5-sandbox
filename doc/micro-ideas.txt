@@ -30,3 +30,25 @@
   Multiplayer (if applicable):
   - Network messages
   - Sync/authoritative state
+
+    Already micro-native:
+  - Player input → %ability
+  - Timers → %rep, %timeout
+  - Collision → %hitbox
+  - Animation → %sprite
+
+  Likely external systems with "bridge" micros:
+
+  | System          | External               | Bridge Micro                                    |
+  |-----------------|------------------------|-------------------------------------------------|
+  | Global events   | Announcement pub/sub   | %listener - subscribes, fires when event occurs |
+  | Messaging       | Mailbox/router         | %receiver - listens for addressed messages      |
+  | Shared state    | Global pools/variables | %watcher - monitors value, triggers on change   |
+  | Spatial queries | World/scene graph      | %sensor - proximity, raycast, queries world     |
+  | Audio           | Sound engine           | %sfx - triggers sounds based on val             |
+  | Scene           | Level manager          | %checkpoint, %trigger                           |
+
+  Pattern emerging:
+  - Micros handle local, continuous behavior within the tree
+  - External systems handle global, event-driven communication
+  - Bridge micros connect the two worlds - they watch/listen externally and fire into the tree
