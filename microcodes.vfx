@@ -42,6 +42,7 @@ BITMAP micro-icons.png
 micro-icons.png 20 20 TILESET-FROM micro-icons.ts
 
 8.5 constant ICON_RADIUS
+24 constant ICON_SPACING
 
 \ -- Traits -------------------------------------------------------------------
 
@@ -50,7 +51,7 @@ trait: %_micro
     :: _gather ( - ) ;
     :: act     ( - ) ;
     :: gather  ( - ) ;
-    :: trigger ( - ) ;
+    \ :: trigger ( - ) ;
     :: _hint    ( - a len ) s" " ;
     prop en          \ user disable switch
     prop val :fixed  \ coefficient, must be >= 0.01 to process
@@ -168,7 +169,7 @@ defer _decay
 
 redef : icon
     pulse@ 0.01 > if
-        icon-color @ rgba8   
+        white
         pulse@ ppena!
         9.5 circ     \ outer pulse circle
     then
@@ -265,25 +266,19 @@ defer __hints
     k @ held?    if pulse-up kh @ parent @ { ?execute } then
     k @ letgo?   if pulse-up kr @ parent @ { ?execute } then ;
 
-%rep :: trigger
-    pulse-up
-    0 t !
-    xt @ parent @ { ?execute } ;
-
 %rep :: _gather 
     pdelta val @ p* t +! 
     t @ dur @ < ?exit
-    me trigger ;
-
-%timeout :: trigger
     pulse-up
-    0 t ! 0 val !
+    0 t !
     xt @ parent @ { ?execute } ;
 
 %timeout :: _gather 
     pdelta val @ p* t +! 
     t @ dur @ < ?exit
-    me trigger ;
+    pulse-up
+    0 t ! 0 val !
+    xt @ parent @ { ?execute } ;
 
 %sprite :: _act 
     anm @ -exit
@@ -370,18 +365,18 @@ machines value last-origin
     { e{
     me .summary ." absolute: " abspos 2p. cr
     me %origin is? if
-        0 20 at
+        0 ICON_SPACING at
         me to last-origin
-        absy 20 + to next-y
+        absy ICON_SPACING + to next-y
     else
-        prev @ 0= if 20 +to next-y then   \ first child advances Y
+        prev @ 0= if ICON_SPACING +to next-y then   \ first child advances Y
         0 next-y absy - at          \ Y relative to current object
     then ;
 
 : }}
     me %origin is? not >r
     e} }
-    r> if 20 0 +at then ;
+    r> if ICON_SPACING 0 +at then ;
 
 : *kpress ( key xt - ability )
     %ability add { kp ! k ! me } ;
@@ -396,7 +391,7 @@ c: %rando %origin startx starty ;
 
 : *rando
     %rando add {{
-        0 20 at
+        \ 0 ICON_SPACING at
         <del> [: me unload ;] *kpress {{ }}
         <enter> [: startx 2@ x 2! ;] *kpress {{ }}   \ couples this to a rando
         \ %gravity add { }
