@@ -24,7 +24,7 @@ trait: %_element
     is-a %unloadable
     prop x :fixed
     prop y :fixed
-    prop unloaded
+    prop flags
     :: click-box@ ( - x1. y1. x2. y2. ) $DEADBEEF dup dup dup ;
     \ :: _click ( n - ) drop ;
     :: _enter ( - ) ;
@@ -39,6 +39,11 @@ trait: %_element
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
+
+: +unloaded  1 flags or! ;
+: unloaded?  flags @ 1 and 0<> ;
+: +bolted    2 flags or! ;
+: bolted?    flags @ 2 and 0<> ;
 
 : abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
 : at-me  abspos atp ;
@@ -68,11 +73,11 @@ class;
 \ -- Element Methods -----------------------------------------------------------
 
 %element :: unload ( - )
-    unloaded on ;
+    +unloaded ;
 
 defer _sweep
 : sweep ( iterable - )
-    [: dup _sweep { unloaded @ if me delete then } ;] swap each ;
+    [: dup _sweep { unloaded? if me delete then } ;] swap each ;
 ['] sweep is _sweep
 
 %element :: vacate
@@ -123,7 +128,8 @@ class: %ui-box
 
     EC_MAX_SIZE nprop ec  template { ec clear-ec }
 
-    :: click-box@ abspos w 2@ box ;
+    :: click-box@ ( - x1 y1 x2 y2 )
+        abspos w 2@ box ;
 class;
 
 0 %ui-box :construct ( - )
@@ -169,9 +175,11 @@ defer _topmost-element
     lmb pressed? if
         hovered if 
             lmb hovered _mousedown
-            hovered ctrl? if +select else select then
-            selection #items if
-                lmb begin-drag
+            hovered { bolted? } not if
+                hovered ctrl? if +select else select then
+                selection #items if
+                    lmb begin-drag
+                then
             then
         else
             selection vacate
@@ -219,7 +227,9 @@ defer _topmost-element
 
 class: %panel
     %ui-box derive
-    :: _draw  black see-thru w 2@ rectf ;
+    prop clr
+    template { black see-thru rgba8@ clr ! }
+    :: _draw  clr @ rgba8 w 2@ rectf ;
 class;
 
 \ -- Textual Trait -------------------------------------------------------------
@@ -266,8 +276,9 @@ class: %label
     %ui-box derive
     is-a %textual
     prop clr
+    prop editable
     prop clear-on-edit
-    template { fnt@ fnt ! $FFFFFFFF clr ! }
+    template { fnt@ fnt ! $FFFFFFFF clr ! editable on }
 
     \ prop cur
 
@@ -279,6 +290,7 @@ class: %label
 
     :: _mousedown ( btn - )
         lmb = -exit
+        editable @ -exit
         me to focus
         editing on 
         original free drop

@@ -14,6 +14,12 @@ c: %inspector %panel ;
 : *inspector ( object - panel )
     {: obj | property0 n type :}
     %inspector add { 
+        \ +bolted
+
+        blue see-thru rgba8@ clr !
+        0 -10 at
+        obj >cla @ body>name *label { +bolted editable off }
+
         0 to n
         obj >cla @ -> property-list list-count for
             list-next to property0
@@ -25,6 +31,8 @@ c: %inspector %panel ;
             property0 obj >cla @ >property-size @ cell <= and if
                 \ create label with property name
                 property0 body>name f" %s:" *label {
+                    +bolted
+                    editable off
                     0. n 9 * >p x 2! 
                 } 
 
@@ -34,6 +42,7 @@ c: %inspector %panel ;
                 else
                     0 *int
                 then {
+                    +bolted
                     100. n 9 * >p x 2!
                     obj property0 prop+ ra !
                 } 
@@ -46,4 +55,5 @@ c: %inspector %panel ;
     } ;
 
 : inspect ( element - )
+    dup %inspector is? if drop exit then
     { -160 0 at me *inspector drop } ;

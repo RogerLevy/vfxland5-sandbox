@@ -155,14 +155,14 @@ defer _decay
 : sibling-connector
     prev @ if
         $88ccff88 rgba8 x-flow-color
-        prev @ { abspos } abspos ICON_RADIUS 0.5 + negate dup changelen
+        prev @ { abspos } abspos ICON_RADIUS 1.0 + negate dup changelen
         2swap atp ->line
     then ;
 
 : parent-connector
     parent @ if
         $ff888888 rgba8 y-flow-color
-        abspos parent @ { abspos } ICON_RADIUS 0.5 + negate dup changelen
+        abspos parent @ { abspos } ICON_RADIUS 1.0 + negate dup changelen
         2swap atp ->line
     then ;
 
