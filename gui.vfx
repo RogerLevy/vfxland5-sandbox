@@ -9,6 +9,9 @@ REQUIRE %vfxland5%/lib/mouse.vfx
 REQUIRE %idir%/shapes.vfx
 REQUIRE %idir%/colors.vfx
 
+0 value hovered
+1024 %addr stack selection
+
 \ -- Context -------------------------------------------------------------------
 
 ECONTEXT gui-ec
@@ -54,16 +57,23 @@ class;
 0 %element :construct ( - )
     at@p x 2!  gui-ec ecp! in-heap ;
 
+: delete-element ( element - )
+    dup hovered = if 0 to hovered then 
+    dup dlremove dup free drop ;
+
 %element :: delete
-    me free drop ;
+    me delete-element
+    me selection contains? if me selection remove then ;
 
 \ -- Element Methods -----------------------------------------------------------
 
 %element :: unload ( - )
     unloaded on ;
 
+defer _sweep
 : sweep ( iterable - )
-    [: { unloaded @ if me delete then } ;] swap each ;
+    [: dup _sweep { unloaded @ if me delete then } ;] swap each ;
+['] sweep is _sweep
 
 %element :: vacate
     ['] unload me each  me sweep ;
@@ -121,15 +131,11 @@ class;
 
 \ -- Selection -----------------------------------------------------------------
 
-1024 %addr stack selection
-
 : +select  ( element - ) selection ?push ;
 : select   ( element - ) selection vacate selection push ;
 
-
 \ -- Mouse ---------------------------------------------------------------------
 
-0 value hovered
 variable drag-btn
 variable dragging
 
@@ -187,12 +193,20 @@ defer _topmost-element
     [: { 2dup x 2+! } ;] selection each \ apply to all selected
     2drop ;
 
+: handle-keys
+    <del> pressed? if 
+        ['] delete-element selection each
+        selection vacate
+
+    then ;
+
 : gui-input ( element - )
     as> 
     mouse at 
     topmost-element hover 
     handle-lmb
     do-drag
+    handle-keys
 ;
 
 : click-box  me click-box@ 2over atp 2swap 2- rect ;
@@ -314,7 +328,7 @@ class;
     %label add { me text! me } ;
 
 trait: %syncable-value
-    prop ra  \ remote address
+    prop ra :addr \ remote address
     prop val
     prop val-type :addr
     prop was-editing

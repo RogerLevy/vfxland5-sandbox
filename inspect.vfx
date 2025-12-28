@@ -1,0 +1,49 @@
+public
+
+borrow nib2>> prop+
+
+c: %inspector %panel ;
+
+\ %inspector :: _mousedown ( btn - )
+\     rmb = -exit
+\     ." asdf" cr
+\     alt? if
+\         me unload 
+\     then ;
+
+: *inspector ( object - panel )
+    {: obj | property0 n type :}
+    %inspector add { 
+        0 to n
+        obj >cla @ -> property-list list-count for
+            list-next to property0
+            property0 obj >cla @ >property-type @ to type
+
+            type TYPE_INT = 
+            type TYPE_CELL = or 
+            type TYPE_FIXED = or 
+            property0 obj >cla @ >property-size @ cell <= and if
+                \ create label with property name
+                property0 body>name f" %s:" *label {
+                    0. n 9 * >p x 2! 
+                } 
+
+                \ create appropriate number editor
+                type TYPE_FIXED = if
+                    0 *fixed
+                else
+                    0 *int
+                then {
+                    100. n 9 * >p x 2!
+                    obj property0 prop+ ra !
+                } 
+
+                1 +to n
+            then
+        loop drop
+        150. n 9 * >p w 2!
+        me
+    } ;
+
+: inspect ( element - )
+    { -160 0 at me *inspector drop } ;

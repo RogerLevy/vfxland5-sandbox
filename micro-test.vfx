@@ -63,7 +63,7 @@ c: %rando %origin startx starty ;
 ;
 
 test
-10 10 at 
+160 20 at 
 %panel make constant panel
 panel machines unshift
 panel {
@@ -88,3 +88,25 @@ panel {
     panel >y fixed-y >ra !
 
 }
+
+require %idir%/inspect.vfx
+
+panel inspect
+
+%desktop :: _process
+    desktop:_process
+    rmb pressed? if
+        shift? if
+            hovered ?dup if inspect then
+        then
+        alt? if
+            hovered ?dup if .s unload then
+        then
+    then ;
+
+cr
+cr
+." Controls: " cr
+."  LMB: click/drag" cr
+."  Shift+RMB: inspect" cr
+."  Del: delete selected" cr

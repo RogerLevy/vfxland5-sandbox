@@ -38,9 +38,9 @@ REQUIRE %idir%/gui.vfx
 
 \ -- Assets -------------------------------------------------------------------
 
-allocator@ .name cr
+\ allocator@ .name cr
 BITMAP micro-icons.png
-allocator@ .name cr
+\ allocator@ .name cr
 micro-icons.png 20 20 TILESET-FROM micro-icons.ts
 
 8.5 constant ICON_RADIUS
