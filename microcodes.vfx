@@ -55,26 +55,13 @@ trait: %_micro
     :: gather  ( - ) ;
     \ :: trigger ( - ) ;
     :: _hint    ( - a len ) s" " ;
-    prop en          \ user disable switch
-    prop val :fixed  \ coefficient, must be >= 0.01 to process
-    prop dcy :fixed  \ scalar
-    prop upul :fixed  
-    \ prop dpul :fixed
-    \ prop lpul :fixed
-    prop rpul :fixed
-    static icon-color \ rgba8
-    static icon-bmp 
 trait;
 
 \ TODO: Propagate IS-A and WORKS-WITH with classifier dependents
 class: %element  works-with %_micro  class;
 class: %panel  works-with %_micro  class;
 class: %label  works-with %_micro  class;
-
-: pulse-up    1.0 upul ! ;
-\ : pulse-down  1.0 dpul ! ;
-\ : pulse-left   1.0 lpul ! ;
-: pulse-right  1.0 rpul ! ;
+class: %number  works-with %_micro  class;
 
 trait: %animator
     prop anm 
@@ -87,13 +74,28 @@ trait;
 ECONTEXT micro-ec
 
 class: %micro
-    128 field-space  \ enables in-place class changes
     %element derive
+    128 field-space  \ enables in-place class changes
+    prop en          \ user disable switch
+    prop val :fixed  \ coefficient, must be >= 0.01 to process
+    prop dcy :fixed  \ scalar
+    prop upul :fixed  
+    \ prop dpul :fixed
+    \ prop lpul :fixed
+    prop rpul :fixed
+    prop org :ref %micro
+    static icon-color \ rgba8
+    static icon-bmp 
     is-a %_micro
     template { micro-ec ecp! in-heap en on 1.0 val ! 0.97 dcy ! -1 icon-color ! }
 class;
 
 \ -- Processing ---------------------------------------------------------------
+
+: pulse-up    1.0 upul ! ;
+\ : pulse-down  1.0 dpul ! ;
+\ : pulse-left   1.0 lpul ! ;
+: pulse-right  1.0 rpul ! ;
 
 %micro :: gather
     en @ -exit
@@ -264,9 +266,9 @@ defer __hints
     val @ 0.01 >= if pulse-up then ;
 
 %ability :: _gather
-    k @ pressed? if pulse-up kp @ parent @ { ?execute } then
-    k @ held?    if pulse-up kh @ parent @ { ?execute } then
-    k @ letgo?   if pulse-up kr @ parent @ { ?execute } then ;
+    k @ pressed? if kp @ ?dup if pulse-up parent @ { execute } then then
+    k @ held?    if kh @ ?dup if pulse-up parent @ { execute } then then
+    k @ letgo?   if kr @ ?dup if pulse-up parent @ { execute } then then ;
 
 %rep :: _gather 
     pdelta val @ p* t +! 
@@ -306,6 +308,7 @@ defer __hints
 \ -- Lifecycle ----------------------------------------------------------------
 
 0 0 at %desktop object machines
+machines value last-origin
 
 defer _delete-micro
 : delete-micro ( micro - )
@@ -343,10 +346,31 @@ defer _delete-micro
 redef : process-input
     get-mouse machines gui-input ;
 
+: track-origin 
+    <space> held? lmb held? and ?exit
+    selection #items if
+        selection peek %origin is? if
+            selection peek to last-origin
+        then
+        last-origin {  
+            abspos machines { abspos } 2- 
+            2negate 
+            \ winw winh 2>p 0.5 0.5 2p*   zoom @ >p dup 2p/   2+
+            64. 64. 2+
+            \ 2dup 2p. cr
+            machines >x 2!
+        }
+    then
+;
+
 : micros
     microcodes>> machines as 
     work> process-input process-micros
-    show> draw-micros gui-overlay ;
+    show> 
+        \ track-origin 
+        draw-micros 
+        gui-overlay 
+        0 0 at micro-icons.png put ;
 
 micros
 
@@ -359,18 +383,18 @@ micros
 \     prev @ begin ?dup while dup %origin is? not over #children 0> and if 1 +to n then >prev @ repeat 
 \     n ;
 
-machines value last-origin
 : absy  abspos nip >i ;
 0 value next-y
 
 : {{ ( micro - )
     { e{
-    me .summary ." absolute: " abspos 2p. cr
+    \ me .summary ." absolute: " abspos 2p. cr
     me %origin is? if
         0 ICON_SPACING at
         me to last-origin
         absy ICON_SPACING + to next-y
     else
+        \ last-origin org !
         prev @ 0= if ICON_SPACING +to next-y then   \ first child advances Y
         0 next-y absy - at          \ Y relative to current object
     then ;
@@ -379,78 +403,3 @@ machines value last-origin
     me %origin is? not >r
     e} }
     r> if ICON_SPACING 0 +at then ;
-
-: *kpress ( key xt - ability )
-    %ability add { kp ! k ! me } ;
-
-\ -- Test ---------------------------------------------------------------------
-
-c: %gravity %move [non-decaying] ;
-%gravity >template { 90. ang ! 0.03 acc ! }
-
-c: %rando %origin startx starty ;
-0 %rando :construct micro:construct x 2@ startx 2! ;
-
-: *rando
-    %rando add {{
-        \ 0 ICON_SPACING at
-        <del> [: me unload ;] *kpress {{ }}
-        <enter> [: startx 2@ x 2! ;] *kpress {{ }}   \ couples this to a rando
-        \ %gravity add { }
-        %move add {{ 
-            %rep add {{
-                [: 1.0 val ! 360. rnd ang ! ;] xt !
-                %ability add {{
-                    <enter> k !
-                    [: 0. val ! ;] kp !
-                    [: 1. val ! dur @ t ! ;] kr !
-                }}
-            }}
-            %ability add {{
-                <enter> k !
-                [: 1. val ! ;] kh !
-            }}
-        }}
-        %micro add {{
-            %micro add {{ }}
-        }}
-    me }} ;
-
-: test 
-    machines {{
-        64 64 at 
-        \ *rando {{
-            *rando {{ }}
-        \ }}
-        \ *rando {{
-            \ *rando {{ }}
-        \ }}
-        \ *rando {{
-        \     *rando {{ }}
-        \ }}
-        \ *rando {{
-        \     *rando {{ }}
-        \ }}
-        32 200 at
-        %origin add {{ 
-            %move add {{ }}
-            %ability add {{ }}
-            %rep add {{ }}
-            %timeout add {{ }}
-            %neuron add {{ }}
-            %hitbox add {{ }} \ -8. -8. x 2+!  16. 16. w 2! }}
-        }}
-    }}
-;
-
-test
-
-10 10 at 
-%panel make constant panel
-panel machines unshift
-panel {
-    150. 100. w 2!
-    10 10 at
-    z" Hello, my baby!" *label constant label
-}
-

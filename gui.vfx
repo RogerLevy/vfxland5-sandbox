@@ -23,12 +23,12 @@ trait: %_element
     prop y :fixed
     prop unloaded
     :: click-box@ ( - x1. y1. x2. y2. ) $DEADBEEF dup dup dup ;
-    :: _click ( n - ) drop ;
+    \ :: _click ( n - ) drop ;
     :: _enter ( - ) ;
     :: _leave ( - ) ;
     :: _mousedown ( btn - ) drop ;  \ lbm , rmb , or mmb
-    :: _mouseup ( btn - ) drop ;
-    :: _mousemove ( - ) ;
+    \ :: _mouseup ( btn - ) drop ;
+    \ :: _mousemove ( - ) ;
     :: _process ( - ) ;
     :: _draw ( - ) ;
     :: delete ( - ) stub ;
@@ -90,7 +90,7 @@ defer __process
 ['] process is __process
 
 %element :: draw
-    at-me me _draw ['] draw me each ;
+    at-me  me _draw ['] draw me each ;
 
 \ -- Desktop -------------------------------------------------------------------
 
@@ -162,6 +162,7 @@ defer _topmost-element
     <space> held? ?exit
     lmb pressed? if
         hovered if 
+            lmb hovered _mousedown
             hovered ctrl? if +select else select then
             selection #items if
                 lmb begin-drag
@@ -170,6 +171,12 @@ defer _topmost-element
             selection vacate
         then
     then
+    \ lmb letgo? if
+    \     hovered if
+    \         lmb hovered _mouseup
+    \     then
+    \ then
+
     drag-btn @ letgo? if
         end-drag
     then ;
@@ -201,13 +208,10 @@ class: %panel
     :: _draw  black see-thru w 2@ rectf ;
 class;
 
-\ -- Font (TODO) ---------------------------------------------------------------
-
-\ class: %font
-\     prop id
-\ class;
-
 \ -- Textual Trait -------------------------------------------------------------
+
+redef : *lstring ( a n - a' )
+    dup cell+ allocate throw >r r@ lplace r> ;
 
 trait: %textual
     prop txt :addr  \ lstring
@@ -217,25 +221,151 @@ trait: %textual
     prop tx :fixed  \ text offset
     prop ty :fixed
 
-    :: text! ( a n - ) 
-        txt @ free drop \ ignore ior
-        0 txt !
-        dup cell+ allocate throw txt !
-        txt @ lplace
+    : _update-box  
         fnt @ fnt!  txt @ lcount textbox 2>p w 2! 2>p tx 2! ;
+
+    :: text! ( a n - ) 
+        dup 0< if 2drop exit then
+        txt @ >r 
+        0 txt !
+        *lstring txt !
+        _update-box 
+        r> free drop \ ignore ior 
+    ;
+
+    :: add-char ( n - )
+        txt @ lcount cell+ -4 u+ 1 + resize throw txt !
+        ( n ) pad c!  pad 1 txt @ lappend 
+        _update-box ;
+
+    :: text@ ( - a len | 0 0 )
+        txt @ dup if lcount else 0 then ;
 trait;
 
 \ -- Label ---------------------------------------------------------------------
+
+variable editing
+0 value focus
+|| 0 value original
 
 class: %label
     %ui-box derive
     is-a %textual
     prop clr
+    prop clear-on-edit
     template { fnt@ fnt ! $FFFFFFFF clr ! }
 
-    :: _draw  txt @ ?dup -exit lcount clr @ rgba8 print ;
+    \ prop cur
+
+    : editing-me?  editing @   focus me = and ;
+
+    :: _draw  
+        editing-me? if red else clr @ rgba8 then
+        txt @ ?dup -exit lcount print ;
+
+    :: _mousedown ( btn - )
+        lmb = -exit
+        me to focus
+        editing on 
+        original free drop
+        txt @ lcount *lstring to original 
+        clear-on-edit @ if
+            s" " me text! 
+        then 
+    ;
+
+    : _revert
+        original lcount me text!
+        original free drop ;
+
+    :: _process
+        \ TODO: use ACT> (factor out a %statemachine trait)
+        esc-quits on
+        editing-me? -exit
+        <esc> pressed? if   \ doesn't work if put in the event handler
+            editing off
+            _revert
+            esc-quits off
+            exit
+        then
+        event? -exit
+        ALLEGRO_EVENT_KEY_CHAR happened? if 
+            the-key <enter> = if
+                editing off
+                me text@ nip 0= if _revert then
+                exit
+            then
+            \ the-key <enter> = if
+            \     10 me add-char
+            \     exit
+            \ then
+            the-key <bksp> = if
+                txt @ lcount 1 - 0 max me text!
+                exit
+            then
+            txt @ if
+                the-char me add-char
+            then
+        then ;
+
 class;
 
-: *label ( zstr - label )
-    %label add { zcount me text! me } ;
+: *label ( a len - label )
+    %label add { me text! me } ;
 
+trait: %syncable-value
+    prop ra  \ remote address
+    prop val
+    prop val-type :addr
+    prop was-editing
+
+    :: sync ( - )
+        ra @ -exit
+        editing-me? not was-editing @ and if
+            val @ ra @ !
+        then
+        editing-me? not if
+            ra @ @ val !
+        then
+        editing-me? was-editing ! ;
+
+trait;
+
+
+class: %number
+    %label derive
+    is-a %syncable-value
+    template { %int val-type !   clear-on-edit on }
+
+    : val>str ( - a len )
+        val-type @ %int = if val @ f" %n" exit then
+        val-type @ %fixed = if val @ f" %p" exit then
+        -1 abort" invalid val-type" ;
+
+    :: _draw 
+        editing-me? not if val>str me text! then
+        label:_draw ;
+
+    :: _process
+        editing-me?
+        label:_process 
+        txt @ 0<> and if 
+            me text@ s" -" s= not if
+                sp@ >r val @
+                me text@ ['] evaluate catch if 
+                    2drop 
+                else 
+                    val-type @ %fixed = if
+                        me text@ s" ." strin? not if >p then
+                    then
+                then
+                val !
+                r> sp! 
+            then
+        then
+        me sync ;
+
+class;
+
+: *int  %number add { val ! %int val-type ! me } ;
+: *fixed  %number add { val ! %fixed val-type ! me } ;
