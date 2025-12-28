@@ -211,9 +211,9 @@ defer _topmost-element
 : gui-input ( element - )
     as> 
     mouse at 
-    topmost-element hover 
     handle-lmb
     do-drag
+    topmost-element hover 
     handle-keys
 ;
 
