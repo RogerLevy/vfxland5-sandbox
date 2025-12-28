@@ -205,7 +205,6 @@ defer _topmost-element
     <del> pressed? if 
         ['] delete-element selection each
         selection vacate
-
     then ;
 
 : gui-input ( element - )
@@ -356,7 +355,6 @@ trait: %syncable-value
         editing-me? was-editing ! ;
 
 trait;
-
 
 class: %number
     %label derive

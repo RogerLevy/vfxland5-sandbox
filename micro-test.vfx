@@ -100,7 +100,7 @@ panel inspect
             hovered ?dup if inspect then
         then
         alt? if
-            hovered ?dup if .s unload then
+            hovered ?dup if unload then
         then
     then ;
 

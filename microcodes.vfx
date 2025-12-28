@@ -340,8 +340,7 @@ defer _delete-micro
 : draw-micros
     0 0 at 
     machines draw 
-    machines hints
-    ['] decay machines each ;
+    machines hints ;
     
 redef : process-input
     get-mouse machines gui-input ;
@@ -363,9 +362,16 @@ redef : process-input
     then
 ;
 
+|| 0 value dont-decay
 : micros
     microcodes>> machines as 
-    work> process-input process-micros
+    -1 to dont-decay
+    work> 
+        dont-decay not if
+            ['] decay machines each 
+            0 to dont-decay
+        then
+        process-input process-micros
     show> 
         \ track-origin 
         draw-micros 
