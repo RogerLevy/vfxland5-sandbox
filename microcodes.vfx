@@ -53,7 +53,7 @@ trait: %_micro
     :: _gather ( - ) ;
     :: act     ( - ) ;
     :: gather  ( - ) ;
-    \ :: trigger ( - ) ;
+    :: trigger ( - ) ;
     :: _hint    ( - a len ) s" " ;
 trait;
 
@@ -124,7 +124,7 @@ defer _decay
     as> 
         me %micro is? if
             en @ -exit
-            val @ 0.01 >= if val @ dcy @ p* val ! then
+            val @ 0.001 >= if val @ dcy @ p* val ! else 0 val ! then
             upul @ pulse- upul !
             \ dpul @ pulse- dpul !
             \ lpul @ pulse- lpul !
@@ -140,7 +140,7 @@ defer _decay
 
 \ -- Rendering ----------------------------------------------------------------
 
-: val-alpha  $ffffff00 and  val @ 257.0 p/ or ;
+: val-alpha  $ffffff00 and  val @ 0 1.0 clamp 257.0 p/ or ;
 
 : x-flow-color ( - )
 \    $ff0000ff lpul @ mix 
@@ -180,7 +180,7 @@ defer _decay
 redef : icon
     pulse@ 0.01 > if
         white
-        pulse@ ppena!
+        pulse@ 0 1.0 clamp ppena!
         9.5 circ     \ outer pulse circle
     then
     icon-color @ val-alpha rgba8 ICON_RADIUS circf  \ inner circle fill
@@ -208,16 +208,18 @@ class;  \ val = speed
 c: %ability %micro k kp kh kr [non-decaying] ;
 
 class: %rep  %micro derive  non-decaying
+    \ val modulates speed
     prop dur :fixed
     prop t :fixed
-    prop xt :xt
-class;  \ val modulates speed
+    prop xt :xt     
+class;  
 
 class: %timeout  %micro derive  non-decaying
+    \ val modulates speed
     prop dur :fixed
     prop t :fixed
     prop xt :xt
-class;  \ val modulates speed
+class;  
 
 class: %hitbox  %micro derive  non-decaying
     prop w :fixed
@@ -229,8 +231,10 @@ class: %hitbox  %micro derive  non-decaying
 class;
 
 class: %neuron  %micro derive
-    prop thr :fixed
-    prop tst :xt
+    prop thr :fixed  \ value threshold
+    prop tst :xt     \ executed during gather phase
+    prop str :fixed  \ value to output after threshold is broken
+    prop trg         \ whether the neuron also calls TRIGGER on the parent. defaults to true
 class;
 
 c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
@@ -274,13 +278,14 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
 defer __hints
 : hints ( element - ) 
+    context-menu if drop exit then
     [: dup hint __hints ;] swap each ;
 ' hints is __hints
 
 \ -- Class Templates -----------------------------------------------------------
 
 %hitbox >template { 16.0 16.0 w 2! }
-%neuron >template { 2.0 thr ! 0 val ! } 
+%neuron >template { 2.0 thr ! 0 val ! 1.0 str ! trg on } 
 %rep >template { 1.0 dur ! }
 %timeout >template { 1.0 dur ! }
 %move >template { 0 val ! }
@@ -304,19 +309,25 @@ defer __hints
     k @ held?    if kh @ ?dup if pulse-up parent @ { execute } then then
     k @ letgo?   if kr @ ?dup if pulse-up parent @ { execute } then then ;
 
-%rep :: _gather 
-    pdelta val @ p* t +! 
-    t @ dur @ < ?exit
+%rep :: trigger
     pulse-up
     0 t !
     xt @ parent @ { ?execute } ;
 
-%timeout :: _gather 
-    pdelta val @ p* t +! 
-    t @ dur @ < ?exit
+%timeout :: trigger
     pulse-up
     0 t ! 0 val !
     xt @ parent @ { ?execute } ;
+
+%rep :: _gather 
+    pdelta val @ p* t +! 
+    t @ dur @ < ?exit
+    me trigger ;
+
+%timeout :: _gather 
+    pdelta val @ p* t +! 
+    t @ dur @ < ?exit
+    me trigger ;
 
 %sprite :: _act 
     anm @ -exit
@@ -330,14 +341,21 @@ defer __hints
 \     abspos w 2@ box hit-test 
 \     parent @ >x 2@ px 2! ;
  
+%neuron :: trigger
+    0 val ! 
+    parent @ if
+        str @ parent @ >val +!
+        pulse-up
+        trg @ if parent @ trigger then
+    then ;
+
 %neuron :: _gather
     tst @ ?execute
     val @ thr @ < ?exit
-    parent @ if
-        1.0 parent @ >val +!
-        pulse-up
-    then
-    0 val ! ;
+    me trigger ;
+
+%neuron :: _hint ( - a len )
+    trg @ if s" T" else s" " then ;
 
 \ -- Lifecycle ----------------------------------------------------------------
 
