@@ -198,13 +198,41 @@ redef : icon
 
 \ -- Micro Classes -------------------------------------------------------------
 
-c: %origin  %micro [non-decaying] ; 
-c: %move    %micro ang acc ; \ val = speed
-c: %ability %micro k kp kh kr [non-decaying] ; 
-c: %rep     %micro dur t xt [non-decaying] ; \ val modulates speed
-c: %timeout %micro dur t xt [non-decaying] ; \ val modulates speed
-c: %hitbox  %micro w h lyr msk px py [non-decaying] ;
-c: %neuron  %micro thr tst ;
+c: %origin  %micro [non-decaying] ;
+
+class: %move  %micro derive
+    prop ang :fixed
+    prop acc :fixed
+class;  \ val = speed
+
+c: %ability %micro k kp kh kr [non-decaying] ;
+
+class: %rep  %micro derive  non-decaying
+    prop dur :fixed
+    prop t :fixed
+    prop xt :xt
+class;  \ val modulates speed
+
+class: %timeout  %micro derive  non-decaying
+    prop dur :fixed
+    prop t :fixed
+    prop xt :xt
+class;  \ val modulates speed
+
+class: %hitbox  %micro derive  non-decaying
+    prop w :fixed
+    prop h :fixed
+    prop lyr
+    prop msk
+    prop px :fixed
+    prop py :fixed
+class;
+
+class: %neuron  %micro derive
+    prop thr :fixed
+    prop tst :xt
+class;
+
 c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
 \ -- Class Draw Methods --------------------------------------------------------
