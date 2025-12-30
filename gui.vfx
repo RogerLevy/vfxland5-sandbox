@@ -50,7 +50,7 @@ trait;
 : at-me  abspos atp ;
 : box  2over 2+ ;
 : ?push  2dup contains? if 2drop exit then push ;
-: see-thru   0.25 ppena! ;
+: see-thru   0.5 ppena! ;
 \ : click-dims  me click-box@ 2swap 2- ;
 
 \ -- Element Class -------------------------------------------------------------
@@ -129,8 +129,7 @@ class: %ui-box
 
     EC_MAX_SIZE nprop ec  template { ec clear-ec }
 
-    :: click-box@ ( - x1 y1 x2 y2 )
-        abspos w 2@ box ;
+    :: click-box@ ( - x1 y1 x2 y2 ) abspos w 2@ box ;
 class;
 
 0 %ui-box :construct ( - )
@@ -256,6 +255,9 @@ class;
 
 : *label ( a len - label )
     %label add { me text! me } ;
+
+%label :: click-box@ ( - x1 y1 x2 y2 )
+    abspos w @ 16. max h @ box ;
 
 trait: %syncable-value
     prop ra :addr \ remote address
@@ -432,7 +434,8 @@ defer _topmost-element
     then ;
 
 : handle-context-menu
-    rmb pressed? if
+    rmb pressed? 
+    shift? not and if
         hovered if
             hovered open-context-menu
         else
@@ -492,6 +495,23 @@ require %idir%/inspect.vfx
         then
     then ;
 
+\ -- Clone ---------------------------------------------------------------------
+
+: clone ( element - element' )
+    as> \ scope into object. establishes EC
+        cla @ make {     \ create new instance of same class
+            you me dup sizeof move  \ copy data
+            0 dup dup dup dup
+            parent ! prev ! next ! lowest ! highest !
+            0 item-count !
+        me } ;
+
+defer _deep-clone
+: deep-clone ( element - element' )
+    dup clone swap
+    [: _deep-clone over push ;] swap each ;
+' deep-clone is _deep-clone
+
 \ -- Default context menu ------------------------------------------------------
 
 : >root ( element - root )
@@ -502,16 +522,23 @@ require %idir%/inspect.vfx
     you [: abspos me dup >root push x 2! ;] s" Detach" +menu-item { } ;
 
 : +attach-option
-    you [: selection peek me push 0 0 x 2! ;] s" Attach" +menu-item { } ;
+    you [: selection peek dup me push 5. 5. rot >x 2! ;] 
+    s" Attach" +menu-item { } ;
 
 : +delete-option
     bolted? ?exit
     you [: me unload ;] s" Delete" +menu-item { } ;
 
+: +clone-option
+    bolted? ?exit
+    you [: abspos 5. 5. 2+ me deep-clone dup me >root push >x 2! ;] 
+    s" Clone" +menu-item { } ;
+
 %element :: _context-menu ( menu - )
     as>
-    +detach-option
+    +clone-option
     +attach-option
+    +detach-option
     +delete-option
 ;
 

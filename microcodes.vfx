@@ -412,9 +412,10 @@ micros
 
 %micro :: _context-menu ( menu - )
     as>
+    +clone-option
     you [: en toggle ;] s" Toggle" +menu-item { }
-    +detach-option
     +attach-option
+    +detach-option
     +delete-option 
 ;
 
