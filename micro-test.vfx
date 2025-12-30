@@ -62,6 +62,8 @@ c: %rando %origin startx starty ;
     }}
 ;
 
+\ -- Panel/label/Number test ---------------------------------------------------
+
 test
 160 20 at 
 %panel make constant panel
@@ -86,8 +88,9 @@ panel {
     32 0 +at
     0 *fixed constant fixed-y
     panel >y fixed-y >ra !
-
 }
+
+\ -- Inspection ----------------------------------------------------------------
 
 require %idir%/inspect.vfx
 
@@ -103,6 +106,16 @@ panel inspect
             hovered ?dup if unload then
         then
     then ;
+
+\ -- Menu Test -----------------------------------------------------------------
+
+10 120 at *menu {
+    me [: 1 . me .summary cr ;] s" Menu item 1" +menu-item { }
+    me [: 2 . me .summary cr ;] s" Menu item 2" +menu-item { }
+    me [: 3 . me .summary cr ;] s" Menu item 3" +menu-item { }
+}
+
+\ -- Instructions---------------------------------------------------------------
 
 cr
 cr

@@ -219,8 +219,8 @@ defer _topmost-element
 : click-box  me click-box@ 2over atp 2swap 2- rect ;
 
 : gui-overlay ( - )
-    hovered ?dup if { yellow click-box } then 
-    [: { green click-box } ;] selection each ;
+    [: { green click-box } ;] selection each 
+    hovered ?dup if { yellow click-box } then ;
 
 \ -- Panel ---------------------------------------------------------------------
 
@@ -356,6 +356,8 @@ trait: %syncable-value
 
 trait;
 
+\ -- Number ---------------------------------------------------------------------
+
 class: %number
     %label derive
     is-a %syncable-value
@@ -393,3 +395,43 @@ class;
 
 : *int  %number add { val ! %int val-type ! me } ;
 : *fixed  %number add { val ! %fixed val-type ! me } ;
+
+\ -- Menu Item ----------------------------------------------------------------
+
+class: %menu-item
+    %label derive
+    prop xt :addr   \ XT to execute on click
+    prop obj :ref %object
+    template { editable off }
+
+    :: _enter  valof white clr ! ;
+    :: _leave  valof cyan clr ! ;
+
+    : trigger-menu-item ( menu-item - )
+        xt @ 
+        obj @ ?dup if as> then
+        ?execute ;
+
+    :: _mousedown ( btn - )
+        lmb = -exit 
+        me trigger-menu-item ;
+
+class;
+
+0 %menu-item :construct ( - )
+    ui-box:construct   valof cyan clr ! ;
+
+\ -- Menu ---------------------------------------------------------------------
+
+c: %menu %panel ;
+
+: *menu ( - menu )
+    %menu add { 4 4 at me 50. 8. w 2! } ;
+
+: +menu-item ( object|0 xt text len - menu-item )
+    9. h +!        \ grow menu height 
+    %menu-item add { 
+        me text! xt ! obj ! +bolted 
+        w @ 8. + you >w @ max you >w ! \ expand width to fit
+    me } 
+    0 9 +at ;

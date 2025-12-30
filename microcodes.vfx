@@ -62,6 +62,8 @@ class: %element  works-with %_micro  class;
 class: %panel  works-with %_micro  class;
 class: %label  works-with %_micro  class;
 class: %number  works-with %_micro  class;
+class: %menu-item  works-with %_micro  class;
+class: %menu  works-with %_micro  class;
 
 trait: %animator
     prop anm 
@@ -119,13 +121,14 @@ class;
 defer _decay
 : decay ( micro - )
     as> 
-        me %micro is? -exit
-        en @ -exit
-        val @ 0.01 >= if val @ dcy @ p* val ! then
-        upul @ pulse- upul !
-        \ dpul @ pulse- dpul !
-        \ lpul @ pulse- lpul !
-        rpul @ pulse- rpul !
+        me %micro is? if
+            en @ -exit
+            val @ 0.01 >= if val @ dcy @ p* val ! then
+            upul @ pulse- upul !
+            \ dpul @ pulse- dpul !
+            \ lpul @ pulse- lpul !
+            rpul @ pulse- rpul !
+        then
         ['] _decay me each ;
 ['] decay is _decay
 
@@ -335,16 +338,16 @@ defer _delete-micro
 \ -- Main Loop ----------------------------------------------------------------
 
 : process-micros
-    machines process machines sweep ;
+    machines decay
+    machines gui-input 
+    machines process 
+    machines sweep ;
 
 : draw-micros
     0 0 at 
     machines draw 
     machines hints ;
     
-redef : process-input
-    get-mouse machines gui-input ;
-
 : track-origin 
     <space> held? lmb held? and ?exit
     selection #items if
@@ -362,16 +365,10 @@ redef : process-input
     then
 ;
 
-|| 0 value dont-decay
 : micros
     microcodes>> machines as 
-    -1 to dont-decay
     work> 
-        dont-decay not if
-            ['] decay machines each 
-            0 to dont-decay
-        then
-        process-input process-micros
+        get-mouse process-micros
     show> 
         \ track-origin 
         draw-micros 
@@ -389,18 +386,16 @@ micros
 \     prev @ begin ?dup while dup %origin is? not over #children 0> and if 1 +to n then >prev @ repeat 
 \     n ;
 
-: absy  abspos nip >i ;
-0 value next-y
+|| : absy  abspos nip >i ;
+|| 0 value next-y
 
 : {{ ( micro - )
     { e{
     \ me .summary ." absolute: " abspos 2p. cr
     me %origin is? if
         0 ICON_SPACING at
-        me to last-origin
         absy ICON_SPACING + to next-y
     else
-        \ last-origin org !
         prev @ 0= if ICON_SPACING +to next-y then   \ first child advances Y
         0 next-y absy - at          \ Y relative to current object
     then ;
