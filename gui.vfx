@@ -484,7 +484,7 @@ defer _topmost-element
 : click-box  me click-box@ 2over atp 2swap 2- rect ;
 
 : gui-overlay ( - )
-    [: { green click-box } ;] selection each 
+    [: { green 0.5 ppena! click-box } ;] selection each 
     hovered ?dup if { yellow click-box } then ;
 
 \ -- Inspection ----------------------------------------------------------------
@@ -526,7 +526,11 @@ defer _deep-clone
     you [: abspos me dup >root push x 2! ;] s" Detach" +menu-item { } ;
 
 : +attach-option
-    you [: selection peek dup me push 5. 5. rot >x 2! ;] 
+    you [: 
+        selection #items -exit 
+        selection peek dup me push 
+        5. 5. rot >x 2! 
+    ;] 
     s" Attach" +menu-item { } ;
 
 : +delete-option
@@ -535,7 +539,14 @@ defer _deep-clone
 
 : +clone-option
     bolted? ?exit
-    you [: me deep-clone dup me insert-over { 5. 5. x 2+! } ;] 
+    you [: 
+        me deep-clone dup me insert-over 
+        { 
+            5. 5. x 2+! 
+            selection vacate
+            me selection push
+        } 
+    ;] 
     s" Clone" +menu-item { } ;
 
 %element :: _context-menu ( menu - )

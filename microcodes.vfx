@@ -103,13 +103,13 @@ class;
 %micro :: gather
     en @ -exit
     ['] gather me each 
-    val @ 0.01 >= if 
+    val @ abs 0.01 >= if 
         me _gather 
     then ;
 
 %micro :: act 
     en @ -exit
-    val @ 0.01 >= if
+    val @ abs 0.01 >= if
         me _act
     then
     ['] act me each ;
@@ -124,7 +124,8 @@ defer _decay
     as> 
         me %micro is? if
             en @ -exit
-            val @ 0.001 >= if val @ dcy @ p* val ! else 0 val ! then
+            dcy @ 0 1.0 clamp dcy !
+            val @ abs 0.001 >= if val @ dcy @ p* val ! else 0 val ! then
             upul @ pulse- upul !
             \ dpul @ pulse- dpul !
             \ lpul @ pulse- lpul !
@@ -140,7 +141,7 @@ defer _decay
 
 \ -- Rendering ----------------------------------------------------------------
 
-: val-alpha  $ffffff00 and  val @ 0 1.0 clamp 257.0 p/ or ;
+: val-alpha  $ffffff00 and  val @ abs 0 1.0 clamp 257.0 p/ or ;
 
 : x-flow-color ( - )
 \    $ff0000ff lpul @ mix 
@@ -159,7 +160,7 @@ defer _decay
 : sibling-connector
     prev @ if
         prev @ %micro is? -exit
-        $88ccff88 rgba8 x-flow-color
+        $88ccff44 rgba8 x-flow-color
         prev @ { abspos } abspos ICON_RADIUS 1.0 + negate dup changelen
         2swap atp ->line
     then ;
@@ -167,7 +168,7 @@ defer _decay
 : parent-connector
     parent @ if
         parent @ %micro is? -exit
-        $ff888888 rgba8 y-flow-color
+        $ff888844 rgba8 y-flow-color
         abspos parent @ { abspos } ICON_RADIUS 1.0 + negate dup changelen
         2swap atp ->line
     then ;
@@ -194,7 +195,7 @@ redef : icon
     icon connectors ;
 
 %micro :: click-box@
-    abspos 8. 8. 2- 16. 16. box ;
+    abspos 9. 9. 2- 18. 18. box ;
 
 \ -- Micro Classes -------------------------------------------------------------
 
@@ -212,13 +213,15 @@ class: %rep  %micro derive  non-decaying
     prop dur :fixed
     prop t :fixed
     prop xt :xt     
+    prop trg
 class;  
 
-class: %timeout  %micro derive  non-decaying
+class: %timeout   %micro derive  non-decaying
     \ val modulates speed
     prop dur :fixed
     prop t :fixed
     prop xt :xt
+    prop trg
 class;  
 
 class: %hitbox  %micro derive  non-decaying
@@ -237,6 +240,11 @@ class: %neuron  %micro derive
     prop trg         \ whether the neuron also calls TRIGGER on the parent. defaults to true
 class;
 
+class: %rng  %micro derive  non-decaying
+    prop noi         \ noise mode - outputs continuously if true
+    prop ofs         \ output value offset
+class;
+
 c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
 \ -- Class Draw Methods --------------------------------------------------------
@@ -249,7 +257,7 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
 %hitbox :: _draw
     icon
-    white w 2@ rect 
+    white 0.5 ppena! w 2@ rect 
     connectors ;
 
 %rep :: _hint ( - a len )
@@ -285,9 +293,9 @@ defer __hints
 \ -- Class Templates -----------------------------------------------------------
 
 %hitbox >template { 16.0 16.0 w 2! }
-%neuron >template { 2.0 thr ! 0 val ! 1.0 str ! trg on } 
-%rep >template { 1.0 dur ! }
-%timeout >template { 1.0 dur ! }
+%neuron >template { 1.0 thr ! 0 val ! 1.0 str ! trg on } 
+%rep >template { 1.0 dur ! trg on }
+%timeout >template { 1.0 dur ! trg on }
 %move >template { 0 val ! }
 
 \ -- Class Logic ------------------------------------------------------
@@ -302,7 +310,7 @@ defer __hints
 %move :: _act  
     acc @ val +!
     ang @ val @ vec parent @ >x 2+! 
-    val @ 0.01 >= if pulse-up then ;
+    val @ abs 0.01 >= if pulse-up then ;
 
 %ability :: _gather
     k @ pressed? if kp @ ?dup if pulse-up parent @ { execute } then then
@@ -312,20 +320,24 @@ defer __hints
 %rep :: trigger
     pulse-up
     0 t !
-    xt @ parent @ { ?execute } ;
+    parent @ -exit
+    trg @ if parent @ trigger then
+    xt @ ?dup if parent @ { execute } then ;
 
 %timeout :: trigger
     pulse-up
     0 t ! 0 val !
-    xt @ parent @ { ?execute } ;
+    parent @ -exit
+    trg @ if parent @ trigger then    
+    xt @ ?dup if parent @ { execute } then ;
 
 %rep :: _gather 
-    pdelta val @ p* t +! 
+    pdelta val @ abs p* t +! 
     t @ dur @ < ?exit
     me trigger ;
 
 %timeout :: _gather 
-    pdelta val @ p* t +! 
+    pdelta val @ abs p* t +! 
     t @ dur @ < ?exit
     me trigger ;
 
@@ -351,11 +363,25 @@ defer __hints
 
 %neuron :: _gather
     tst @ ?execute
-    val @ thr @ < ?exit
+    val @ abs thr @ < ?exit
     me trigger ;
 
 %neuron :: _hint ( - a len )
     trg @ if s" T" else s" " then ;
+
+%rng :: trigger
+    parent @ -exit
+    2. rnd 1. - val @ p*  \ random -val to val
+    ofs @ +               \ add offset
+    parent @ >val +!
+    pulse-up ;
+
+%rng :: _gather
+    noi @ -exit
+    me trigger ;
+
+%rng :: _hint ( - a len )
+    noi @ if s" N" else s" " then ;
 
 \ -- Lifecycle ----------------------------------------------------------------
 
@@ -383,6 +409,7 @@ defer _delete-micro
 %timeout >template { valof red        icon-color !  3  tile! }
 %hitbox  >template { valof green      icon-color !  6  tile! }   
 %neuron  >template { valof blue       icon-color !  1  tile! }
+%rng     >template { valof purple     icon-color !  7  tile! }
 
 \ -- Main Loop ----------------------------------------------------------------
 
@@ -416,6 +443,7 @@ defer _delete-micro
 
 : micros
     microcodes>> machines as 
+    2 user-zoom !
     work> 
         get-mouse process-micros
     show> 
@@ -458,8 +486,9 @@ micros
 
 %micro :: _context-menu ( menu - )
     as>
-    +clone-option
     you [: en toggle ;] s" Toggle" +menu-item { }
+    you [: ." TBD" cr ;] s" Change" +menu-item { }
+    +clone-option
     +attach-option
     +detach-option
     +delete-option 

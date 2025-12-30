@@ -1,6 +1,6 @@
 \ -- Arrowheads ---------------------------------------------------------------
 
-3.0 constant arrow-size
+4.0 constant arrow-size
 45.0 constant arrow-spread  \ half-angle of arrowhead wings
 
 : arrowhead ( tipx. tipy. angle. - )
