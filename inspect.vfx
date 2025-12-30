@@ -54,6 +54,17 @@ c: %inspector %panel ;
         me
     } ;
 
+: find-inspector ( element - inspector|0 )
+    0 [: { me %inspector is? if drop me then } ;] rot each ;
+
 : inspect ( element - )
+    dup find-inspector if 2drop exit then
     dup %inspector is? if drop exit then
     { -160 0 at me *inspector drop } ;
+
+: toggle-inspector ( element - )
+    dup find-inspector ?dup if
+        nip unload 
+    else
+        inspect
+    then ;

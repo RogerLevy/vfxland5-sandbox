@@ -53,6 +53,12 @@ trait;
 : see-thru   0.5 ppena! ;
 \ : click-dims  me click-box@ 2swap 2- ;
 
+: >root ( element - root )
+    begin dup >parent @ ?dup while nip repeat ;
+
+: from-root ( element x y - )
+    rot >root >x 2@ 2>i 2- at ;
+
 \ -- Element Class -------------------------------------------------------------
 
 class: %element
@@ -64,12 +70,13 @@ class;
     at@p x 2!  gui-ec ecp! in-heap ;
 
 : delete-element ( element - )
-    dup hovered = if 0 to hovered then 
-    dup dlremove dup free drop ;
+    dup hovered = if 0 to hovered then
+    dup { ['] delete me each }   \ recursively delete children
+    dup selection contains? if dup selection remove then
+    dup dlremove free drop ;
 
 %element :: delete
-    me delete-element
-    me selection contains? if me selection remove then ;
+    me delete-element ;
 
 \ -- Element Methods -----------------------------------------------------------
 
@@ -367,7 +374,7 @@ c: %menu %panel ;
 
 : open-context-menu ( element - )
     close-context-menu
-    mouse at
+    dup mouse from-root
     *menu to context-menu
     context-menu swap _context-menu
     context-menu #children 0= if close-context-menu then ;
@@ -488,7 +495,7 @@ require %idir%/inspect.vfx
     desktop:_process
     rmb pressed? if
         shift? if
-            hovered ?dup if inspect then
+            hovered ?dup if toggle-inspector then
         then
         alt? if
             hovered ?dup if unload then
@@ -514,9 +521,6 @@ defer _deep-clone
 
 \ -- Default context menu ------------------------------------------------------
 
-: >root ( element - root )
-    begin dup >parent @ ?dup while nip repeat ;
-
 : +detach-option
     bolted? ?exit
     you [: abspos me dup >root push x 2! ;] s" Detach" +menu-item { } ;
@@ -531,7 +535,7 @@ defer _deep-clone
 
 : +clone-option
     bolted? ?exit
-    you [: abspos 5. 5. 2+ me deep-clone dup me >root push >x 2! ;] 
+    you [: me deep-clone dup me insert-over { 5. 5. x 2+! } ;] 
     s" Clone" +menu-item { } ;
 
 %element :: _context-menu ( menu - )
