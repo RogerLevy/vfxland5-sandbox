@@ -90,30 +90,15 @@ panel {
     panel >y fixed-y >ra !
 }
 
-\ -- Inspection ----------------------------------------------------------------
-
-require %idir%/inspect.vfx
-
-panel inspect
-
-%desktop :: _process
-    desktop:_process
-    rmb pressed? if
-        shift? if
-            hovered ?dup if inspect then
-        then
-        alt? if
-            hovered ?dup if unload then
-        then
-    then ;
+\ panel inspect
 
 \ -- Menu Test -----------------------------------------------------------------
 
-10 120 at *menu {
-    me [: 1 . me .summary cr ;] s" Menu item 1" +menu-item { }
-    me [: 2 . me .summary cr ;] s" Menu item 2" +menu-item { }
-    me [: 3 . me .summary cr ;] s" Menu item 3" +menu-item { }
-}
+\ 10 120 at *menu {
+\     me [: 1 . me .summary cr ;] s" Menu item 1" +menu-item { }
+\     me [: 2 . me .summary cr ;] s" Menu item 2" +menu-item { }
+\     me [: 3 . me .summary cr ;] s" Menu item 3" +menu-item { }
+\ }
 
 \ -- Instructions---------------------------------------------------------------
 

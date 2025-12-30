@@ -60,6 +60,7 @@ trait;
 \ TODO: Propagate IS-A and WORKS-WITH with classifier dependents
 class: %element  works-with %_micro  class;
 class: %panel  works-with %_micro  class;
+class: %inspector  works-with %_micro  class;
 class: %label  works-with %_micro  class;
 class: %number  works-with %_micro  class;
 class: %menu-item  works-with %_micro  class;
@@ -157,6 +158,7 @@ defer _decay
 
 : sibling-connector
     prev @ if
+        prev @ %micro is? -exit
         $88ccff88 rgba8 x-flow-color
         prev @ { abspos } abspos ICON_RADIUS 1.0 + negate dup changelen
         2swap atp ->line
@@ -164,6 +166,7 @@ defer _decay
 
 : parent-connector
     parent @ if
+        parent @ %micro is? -exit
         $ff888888 rgba8 y-flow-color
         abspos parent @ { abspos } ICON_RADIUS 1.0 + negate dup changelen
         2swap atp ->line
@@ -404,3 +407,15 @@ micros
     me %origin is? not >r
     e} }
     r> if ICON_SPACING 0 +at then ;
+
+\ -- Micro Context Menus -------------------------------------------------------
+
+%micro :: _context-menu ( menu - )
+    as>
+    you [: en toggle ;] s" Toggle" +menu-item { }
+    +detach-option
+    +attach-option
+    +delete-option 
+;
+
+

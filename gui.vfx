@@ -36,6 +36,7 @@ trait: %_element
     :: _draw ( - ) ;
     :: delete ( - ) stub ;
     :: draggable? ( - flag ) true ;
+    :: _context-menu ( menu - ) drop ;   \ override to add items / customize the menu
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
@@ -139,88 +140,6 @@ class;
 
 : +select  ( element - ) selection ?push ;
 : select   ( element - ) selection vacate selection push ;
-
-\ -- Mouse ---------------------------------------------------------------------
-
-variable drag-btn
-variable dragging
-
-: pen-in?  me click-box@ at@p 2dup overlap? ;
-
-defer _topmost-element
-[: 
-    [: { 
-        <at pen-in? if drop me then  
-        me _topmost-element 
-    } ;] swap each
-;] is _topmost-element
-
-: topmost-element ( - element|0 )
-    0 me _topmost-element ;
-
-: hover ( element - )
-    dup hovered = if drop exit then
-    hovered ?dup if _leave then
-    to hovered
-    hovered ?dup if _enter then ;
-
-: begin-drag ( btn -- )
-    drag-btn ! dragging on ;
-
-: end-drag ( -- )
-    dragging off ;
-
-: handle-lmb
-    <space> held? ?exit
-    lmb pressed? if
-        hovered if 
-            lmb hovered _mousedown
-            hovered { bolted? } not if
-                hovered ctrl? if +select else select then
-                selection #items if
-                    lmb begin-drag
-                then
-            then
-        else
-            selection vacate
-        then
-    then
-    \ lmb letgo? if
-    \     hovered if
-    \         lmb hovered _mouseup
-    \     then
-    \ then
-
-    drag-btn @ letgo? if
-        end-drag
-    then ;
-
-: do-drag 
-    dragging @ -exit
-    mickey 2>p                          \ get mouse delta
-    [: { 2dup x 2+! } ;] selection each \ apply to all selected
-    2drop ;
-
-: handle-keys
-    <del> pressed? if 
-        ['] delete-element selection each
-        selection vacate
-    then ;
-
-: gui-input ( element - )
-    as> 
-    mouse at 
-    handle-lmb
-    do-drag
-    topmost-element hover 
-    handle-keys
-;
-
-: click-box  me click-box@ 2over atp 2swap 2- rect ;
-
-: gui-overlay ( - )
-    [: { green click-box } ;] selection each 
-    hovered ?dup if { yellow click-box } then ;
 
 \ -- Panel ---------------------------------------------------------------------
 
@@ -435,3 +354,166 @@ c: %menu %panel ;
         w @ 8. + you >w @ max you >w ! \ expand width to fit
     me } 
     0 9 +at ;
+
+\ -- Global Context Menu State ------------------------------------------------
+
+0 value context-menu   \ current open context menu, or 0
+
+: close-context-menu ( - )
+    context-menu ?dup if unload then
+    0 to context-menu ;
+
+: open-context-menu ( element - )
+    close-context-menu
+    mouse at
+    *menu to context-menu
+    context-menu swap _context-menu
+    context-menu #children 0= if close-context-menu then ;
+
+%menu-item :: _mousedown ( btn - )
+    menu-item:_mousedown  close-context-menu  
+    0 to hovered ;
+
+\ -- Mouse ---------------------------------------------------------------------
+
+variable drag-btn
+variable dragging
+
+: pen-in?  me click-box@ at@p 2dup overlap? ;
+
+defer _topmost-element
+[: 
+    [: { 
+        <at pen-in? if drop me then
+        me _topmost-element 
+    } ;] swap each
+;] is _topmost-element
+
+: topmost-element ( - element|0 )
+    0 me _topmost-element ;
+
+: hover ( element - )
+    dup hovered = if drop exit then
+    hovered ?dup if _leave then
+    to hovered
+    hovered ?dup if _enter then ;
+
+: begin-drag ( btn -- )
+    drag-btn ! dragging on ;
+
+: end-drag ( -- )
+    dragging off ;
+
+: handle-lmb
+    <space> held? ?exit
+    lmb pressed? if
+        hovered if
+            lmb hovered _mousedown
+        then
+        hovered if 
+            lmb hovered _mousedown
+            hovered { bolted? } not if
+                hovered ctrl? if +select else select then
+                selection #items if
+                    lmb begin-drag
+                then
+            then
+        else
+            selection vacate
+        then
+    then
+    \ lmb letgo? if
+    \     hovered if
+    \         lmb hovered _mouseup
+    \     then
+    \ then ;
+    drag-btn @ letgo? if
+        end-drag
+    then ;
+
+: handle-context-menu
+    rmb pressed? if
+        hovered if
+            hovered open-context-menu
+        else
+            close-context-menu
+        then
+    then
+    \ close on LMB click outside menu
+    lmb pressed? 
+    <space> pressed? not and if
+        context-menu if
+            hovered context-menu <>
+            hovered context-menu contains? not and
+            if close-context-menu then
+        then
+    then ;
+
+: do-drag 
+    dragging @ -exit
+    mickey 2>p                          \ get mouse delta
+    [: { 2dup x 2+! } ;] selection each \ apply to all selected
+    2drop ;
+
+: handle-keys
+    <del> pressed? if 
+        ['] delete-element selection each
+        selection vacate
+    then ;
+
+: gui-input ( element - )
+    as> 
+    mouse at 
+    topmost-element hover 
+    handle-lmb
+    handle-context-menu
+    do-drag
+    handle-keys
+;
+
+: click-box  me click-box@ 2over atp 2swap 2- rect ;
+
+: gui-overlay ( - )
+    [: { green click-box } ;] selection each 
+    hovered ?dup if { yellow click-box } then ;
+
+\ -- Inspection ----------------------------------------------------------------
+
+require %idir%/inspect.vfx
+
+%desktop :: _process
+    desktop:_process
+    rmb pressed? if
+        shift? if
+            hovered ?dup if inspect then
+        then
+        alt? if
+            hovered ?dup if unload then
+        then
+    then ;
+
+\ -- Default context menu ------------------------------------------------------
+
+: >root ( element - root )
+    begin dup >parent @ ?dup while nip repeat ;
+
+: +detach-option
+    bolted? ?exit
+    you [: abspos me dup >root push x 2! ;] s" Detach" +menu-item { } ;
+
+: +attach-option
+    you [: selection peek me push 0 0 x 2! ;] s" Attach" +menu-item { } ;
+
+: +delete-option
+    bolted? ?exit
+    you [: me unload ;] s" Delete" +menu-item { } ;
+
+%element :: _context-menu ( menu - )
+    as>
+    +detach-option
+    +attach-option
+    +delete-option
+;
+
+%menu-item :: _context-menu ( menu - ) drop ;
+%menu :: _context-menu ( menu - ) drop ;
