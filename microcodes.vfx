@@ -444,8 +444,7 @@ defer __hints
 
 \ -- Lifecycle ----------------------------------------------------------------
 
-0 0 at %desktop object machines
-machines value last-origin
+0 0 at %desktop dmake value machines
 
 defer _delete-micro
 : delete-micro ( micro - )
@@ -550,8 +549,10 @@ micros
 
 \ -- Misc ---------------------------------------------------------------------
 
-\ : clear  ['] unload machines each machines sweep ;
-: clear  machines vacate ;
+: clear  
+    machines delete
+    0 to hovered
+    selection vacate ;
 
 \ -- Save/Load ----------------------------------------------------------------
 
@@ -560,5 +561,5 @@ micros
 
 : load-all
     clear
-    s" machines.json" load-tree machines push ;
+    s" machines.json" load-tree to machines ;
 
