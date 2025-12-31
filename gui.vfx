@@ -527,8 +527,10 @@ require %idir%/inspect.vfx
 \ -- Default context menu ------------------------------------------------------
 
 : +detach-option
-    bolted? ?exit
-    you [: abspos me dup >root push x 2! ;] s" Detach" +menu-item { } ;
+    you { bolted? } ?exit
+    you [: 
+        abspos me dup >root push x 2! 
+    ;] s" Detach" +menu-item { } ;
 
 : +attach-option
     you [: 
@@ -539,11 +541,11 @@ require %idir%/inspect.vfx
     s" Attach" +menu-item { } ;
 
 : +delete-option
-    bolted? ?exit
+    you { bolted? } ?exit     
     you [: me unload ;] s" Delete" +menu-item { } ;
 
 : +clone-option
-    bolted? ?exit
+    you { bolted? } ?exit 
     you [: 
         me deep-clone dup me insert-over 
         { 
@@ -555,13 +557,31 @@ require %idir%/inspect.vfx
     ;] 
     s" Clone" +menu-item { } ;
 
-%element :: _context-menu ( menu - )
-    as>
+: +front-option
+    you { bolted? } ?exit 
+    you [:
+        me dup >parent @ push
+    ;]
+    s" Front" +menu-item { } ;
+
+: +back-option
+    you { bolted? } ?exit 
+    you [:
+        me dup >parent @ unshift
+    ;]
+    s" Back" +menu-item { } ;
+
+: +common-options
     +clone-option
     +attach-option
     +detach-option
-    +delete-option
-;
+    +front-option
+    +back-option
+    +delete-option ;
+
+%element :: _context-menu ( menu - )
+    as> +common-options ;
+
 
 %menu-item :: _context-menu ( menu - ) drop ;
 %menu :: _context-menu ( menu - ) drop ;

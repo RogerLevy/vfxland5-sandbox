@@ -534,10 +534,7 @@ micros
     as>
     you [: en toggle ;] s" Toggle" +menu-item { }
     you [: ." TBD" cr ;] s" Change" +menu-item { }
-    +clone-option
-    +attach-option
-    +detach-option
-    +delete-option 
+    +common-options 
 ;
 
 
