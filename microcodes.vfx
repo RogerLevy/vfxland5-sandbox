@@ -88,7 +88,6 @@ class: %micro
     \ prop dpul :fixed
     \ prop lpul :fixed
     prop rpul :fixed
-    \ prop org :ref %micro
     static icon-color \ rgba8
     static icon-bmp 
     is-a %_micro
@@ -204,6 +203,8 @@ redef : icon
 class: %origin  %micro derive  non-decaying
     prop rx :fixed  \ remote x,y
     prop ry :fixed 
+    prop w :fixed
+    prop h :fixed
 class;
 
 \ : rabspos ( - x. y. )
@@ -258,10 +259,26 @@ class;
 
 c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
+\ -- Class Templates -----------------------------------------------------------
+
+%hitbox >template { 16.0 16.0 w 2! }
+%neuron >template { 1.0 thr ! 0 val ! 1.0 str ! trg on } 
+%rep >template { 1.0 dur ! trg on }
+%timeout >template { 1.0 dur ! trg on }
+%move >template { 0 val ! }
+%origin >template { 100. 100. w 2! }
+
 \ -- Class Draw Methods --------------------------------------------------------
 
-\ %origin :: _draw  
-\     16. 16. light-grey rect ;
+%origin :: click-box@
+    abspos w 2@ 2 2 2/ 2-`` w 2@`` box ;
+
+%origin :: _draw  
+    w 2@ 2>i -2 -2 2/ +at 
+    black see-thru w 2@ rectf
+    at-me
+    icon 
+    connectors ;
 
 %sprite :: _draw
     icon
@@ -292,11 +309,6 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     -1 -1 +at
     white 0.9 ppena! a len print ;
 
-\ %ability :: _draw
-\     icon
-\     _ability-key
-\     connectors ;
-
 defer __hints
 : hints ( element - ) 
     context-menu if drop exit then
@@ -318,14 +330,6 @@ defer __hints
     bmp @ cput 
     ['] render me each 
     2negate +at ;
-
-\ -- Class Templates -----------------------------------------------------------
-
-%hitbox >template { 16.0 16.0 w 2! }
-%neuron >template { 1.0 thr ! 0 val ! 1.0 str ! trg on } 
-%rep >template { 1.0 dur ! trg on }
-%timeout >template { 1.0 dur ! trg on }
-%move >template { 0 val ! }
 
 \ -- Class Logic ------------------------------------------------------
 
@@ -532,8 +536,8 @@ micros
 
 %micro :: _context-menu ( menu - )
     as>
-    you [: en toggle ;] s" Toggle" +menu-item { }
-    you [: ." TBD" cr ;] s" Change" +menu-item { }
+    you [: en toggle ;] you >en @ if s" Disable" else s" Enable" then +menu-item { }
+    you [: ." TBD" cr ;] s" Change (TBD)" +menu-item { }
     +common-options 
 ;
 

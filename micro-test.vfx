@@ -47,7 +47,7 @@ machines {{
     \ *rando {{
     \     *rando {{ }}
     \ }}
-    100 120 at
+    100 230 at
     %origin add {{ 
         50. 50. rx 2!
         e{ 
