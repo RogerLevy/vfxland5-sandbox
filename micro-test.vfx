@@ -40,6 +40,24 @@ c: %rando %origin startx starty ;
 : *sprite ( bmp - sprite )
     %sprite add { bmp ! me } ;
 
+\ -- Viewport (experimental) ---------------------------------------------------
+
+class: %viewport %ui-box derive
+    works-with %_micro
+    prop xt :xt
+    :: _draw
+        abspos 2>i zoom @ dup 2*``
+        w 2@ 2>i zoom @ dup 2*`` al_set_clipping_rectangle 
+        cls 
+        abspos 2>i at
+        xt @ dup if catch dup if nip then then
+        0 0 winw winh al_set_clipping_rectangle 
+        throw ;
+class;
+
+: *viewport ( w h - viewport )
+    %viewport add { 2>p w 2! me } ;
+
 \ -- Test ----------------------------------------------------------------------
 
 machines {{
@@ -122,6 +140,20 @@ panel {
 }
 
 \ panel inspect
+
+\ -- Viewport Test -------------------------------------------------------------
+
+\ include %idir%/dungeon/main.vfx
+\ micros \ re-establish main loop
+
+\ 50 250 at  320 240 *viewport { 
+\     [: step p1 track scn@ draw ;] xt !
+\ } 
+
+50 250 at  320 240 *viewport { 
+    [: red screen  at-me  machines { <at me render } ;] xt !
+} 
+
 
 \ -- Menu Test -----------------------------------------------------------------
 
