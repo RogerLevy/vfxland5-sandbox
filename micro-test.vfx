@@ -140,4 +140,4 @@ cr
 ."  Shift+RMB: inspect" cr
 ."  Del: delete selected" cr
 
-fullscreen winmode
+fullscreen winmode >vfx
