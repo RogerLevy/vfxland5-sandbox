@@ -53,6 +53,8 @@ machines {{
         e{ 
             64 -64 at 
             %origin add {
+                -8 -8 at
+                %hitbox add {{ }}                 
                 0 0 at 
                 owl.png *sprite { } 
             }
@@ -89,9 +91,7 @@ machines {{
             \     [: 0.4 val +! ;] xt !
             \ }}
 
-        }}
-        %hitbox add {{ }} \ -8. -8. x 2+!  16. 16. w 2! }}
-        
+        }}        
     }}
 }}
 

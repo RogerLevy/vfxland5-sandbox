@@ -259,7 +259,7 @@ class;
 
 c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
-\ -- Class Templates -----------------------------------------------------------
+\ -- Defaults ------------------------------------------------------------------
 
 %hitbox >template { 16.0 16.0 w 2! }
 %neuron >template { 1.0 thr ! 0 val ! 1.0 str ! trg on } 
@@ -267,6 +267,21 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 %timeout >template { 1.0 dur ! trg on }
 %move >template { 0 val ! }
 %origin >template { 100. 100. w 2! }
+
+\ -- Icon Configuration --------------------------------------------------------
+
+|| : tile!  micro-icons.ts swap tile icon-bmp ! ;
+
+%micro   >template { $00000080        icon-color !  0 icon-bmp ! }
+%origin  >template { valof light-grey icon-color !  2 tile! }
+%move    >template { valof cyan       icon-color !  0 tile! }
+%ability >template { valof yellow     icon-color !  5 tile! }
+%rep     >template { valof magenta    icon-color !  4 tile! }
+%timeout >template { valof red        icon-color !  3 tile! }
+%hitbox  >template { valof green      icon-color !  6 tile! }   
+%neuron  >template { valof blue       icon-color !  1 tile! }
+%rng     >template { valof purple     icon-color !  7 tile! }
+%sprite  >template { valof white      icon-color !  0 icon-bmp ! }
 
 \ -- Class Draw Methods --------------------------------------------------------
 
@@ -277,18 +292,22 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     w 2@ 2>i -2 -2 2/ +at 
     black see-thru w 2@ rectf
     at-me
-    icon 
+    \ icon 
+    micro-icons.ts 2 tile cput
     connectors ;
 
 %sprite :: _draw
-    icon
-    bmp @ cput 
-    connectors ;
+    bmp @ ?dup if cput else icon then ;
+    \ connectors ;
 
-%hitbox :: _draw
-    icon
-    white 0.5 ppena! w 2@ rect 
-    connectors ;
+\ %hitbox :: click-box@
+\     abspos w 2@`` box ;
+
+%hitbox :: _draw  
+    white see-thru w 2@ rectf
+    at-me
+    icon ;
+    \ connectors ;
 
 %rep :: _hint ( - a len )
     dur @ f" %p" ;
@@ -433,21 +452,6 @@ defer _delete-micro
 ' delete-micro is _delete-micro
 
 %micro :: delete  me delete-micro ;
-
-\ -- Icon Configuration --------------------------------------------------------
-
-|| : tile!  micro-icons.ts swap tile icon-bmp ! ;
-
-%micro   >template { $00000080        icon-color !  0 icon-bmp ! }
-%origin  >template { valof light-grey icon-color !  2 tile! }
-%move    >template { valof cyan       icon-color !  0 tile! }
-%ability >template { valof yellow     icon-color !  5 tile! }
-%rep     >template { valof magenta    icon-color !  4 tile! }
-%timeout >template { valof red        icon-color !  3 tile! }
-%hitbox  >template { valof green      icon-color !  6 tile! }   
-%neuron  >template { valof blue       icon-color !  1 tile! }
-%rng     >template { valof purple     icon-color !  7 tile! }
-%sprite  >template { valof white      icon-color !  0 icon-bmp ! }
 
 \ -- Main Loop ----------------------------------------------------------------
 
