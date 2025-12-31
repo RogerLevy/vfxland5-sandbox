@@ -293,8 +293,8 @@ class;
 
 trait: %syncable-value
     prop ra :addr \ remote address
-    prop val
-    prop val-type :addr
+    prop val <save
+    prop val-type <save
     prop was-editing
 
     :: sync ( - )
@@ -314,11 +314,11 @@ trait;
 class: %number
     %label derive
     is-a %syncable-value
-    template { %int val-type !   clear-on-edit on }
+    template { TYPE_INT val-type !   clear-on-edit on }
 
     : val>str ( - a len )
-        val-type @ %int = if val @ f" %n" exit then
-        val-type @ %fixed = if val @ f" %p" exit then
+        val-type @ TYPE_INT = if val @ f" %n" exit then
+        val-type @ TYPE_FIXED = if val @ f" %p" exit then
         -1 abort" invalid val-type" ;
 
     :: _draw 
@@ -334,7 +334,7 @@ class: %number
                 me text@ ['] evaluate catch if 
                     2drop 
                 else 
-                    val-type @ %fixed = if
+                    val-type @ TYPE_FIXED = if
                         me text@ s" ." strin? not if >p then
                     then
                 then
@@ -346,8 +346,8 @@ class: %number
 
 class;
 
-: *int  %number add { val ! %int val-type ! me } ;
-: *fixed  %number add { val ! %fixed val-type ! me } ;
+: *int  %number add { val ! TYPE_INT val-type ! me } ;
+: *fixed  %number add { val ! TYPE_FIXED val-type ! me } ;
 
 \ -- Menu Item ----------------------------------------------------------------
 

@@ -24,22 +24,26 @@
 						"class":	"%NUMBER",
 						"X":	10,
 						"Y":	26,
-						"W":	100,
-						"H":	100,
-						"TXT":	"",
+						"W":	24,
+						"H":	8,
+						"TXT":	"123",
 						"CLR":	-1,
 						"EDITABLE":	-1,
-						"CLEAR-ON-EDIT":	-1
+						"CLEAR-ON-EDIT":	-1,
+						"VAL":	123,
+						"VAL-TYPE":	1
 					}, {
 						"class":	"%NUMBER",
 						"X":	10,
 						"Y":	42,
-						"W":	100,
-						"H":	100,
-						"TXT":	"",
+						"W":	32,
+						"H":	8,
+						"TXT":	"123.",
 						"CLR":	-1,
 						"EDITABLE":	-1,
-						"CLEAR-ON-EDIT":	-1
+						"CLEAR-ON-EDIT":	-1,
+						"VAL":	8060928,
+						"VAL-TYPE":	2
 					}, {
 						"class":	"%LABEL",
 						"X":	10,
@@ -54,12 +58,14 @@
 						"class":	"%NUMBER",
 						"X":	42,
 						"Y":	58,
-						"W":	100,
-						"H":	100,
-						"TXT":	"",
+						"W":	32,
+						"H":	8,
+						"TXT":	"160.",
 						"CLR":	-1,
 						"EDITABLE":	-1,
-						"CLEAR-ON-EDIT":	-1
+						"CLEAR-ON-EDIT":	-1,
+						"VAL":	10485760,
+						"VAL-TYPE":	2
 					}, {
 						"class":	"%LABEL",
 						"X":	10,
@@ -74,12 +80,14 @@
 						"class":	"%NUMBER",
 						"X":	42,
 						"Y":	74,
-						"W":	100,
-						"H":	100,
-						"TXT":	"",
+						"W":	24,
+						"H":	8,
+						"TXT":	"20.",
 						"CLR":	-1,
 						"EDITABLE":	-1,
-						"CLEAR-ON-EDIT":	-1
+						"CLEAR-ON-EDIT":	-1,
+						"VAL":	1310720,
+						"VAL-TYPE":	2
 					}]
 			}, {
 				"class":	"%ORIGIN",
@@ -202,7 +210,7 @@
 						"X":	46,
 						"Y":	24,
 						"EN":	-1,
-						"VAL":	1,
+						"VAL":	0,
 						"DCY":	1,
 						"DUR":	1,
 						"TRG":	-1
@@ -211,7 +219,7 @@
 						"X":	70,
 						"Y":	24,
 						"EN":	-1,
-						"VAL":	0,
+						"VAL":	0.048095703125,
 						"DCY":	0.9699859619140625,
 						"THR":	1,
 						"STR":	1,
