@@ -550,7 +550,7 @@ micros
 \ -- Misc ---------------------------------------------------------------------
 
 : clear  
-    machines delete
+    ['] delete machines each
     0 to hovered
     selection vacate ;
 
@@ -561,5 +561,7 @@ micros
 
 : load-all
     clear
-    s" machines.json" load-tree to machines ;
+    s" machines.json" load-tree 
+    machines delete
+    to machines ;
 

@@ -76,7 +76,7 @@ class;
 : delete-element ( element - )
     dup hovered = if 0 to hovered then
     dup { ['] delete me each }   \ recursively delete children
-    dup selection contains? if dup selection remove then
+    \ dup selection contains? if dup selection remove then
     dup dlremove free drop ;
 
 %element :: delete
@@ -85,7 +85,9 @@ class;
 \ -- Element Methods -----------------------------------------------------------
 
 %element :: unload ( - )
-    +unloaded ;
+    +unloaded 
+    selection vacate 
+    0 to hovered ;
 
 defer _sweep
 : sweep ( iterable - )
