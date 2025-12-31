@@ -1,6 +1,8 @@
 REQUIRE %idir%/microcodes.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 
+BITMAP %idir%/owl.png
+ 
 : *kpress ( key xt - ability )
     %ability add { kp ! k ! me } ;
 
@@ -35,65 +37,65 @@ c: %rando %origin startx starty ;
         }}
     me }} ;
 
-: test 
-    machines {{
-        64 64 at 
-        \ *rando {{
-\            *rando {{ }}
-        \ }}
-        \ *rando {{
-            \ *rando {{ }}
-        \ }}
-        \ *rando {{
-        \     *rando {{ }}
-        \ }}
-        \ *rando {{
-        \     *rando {{ }}
-        \ }}
-        100 120 at
-        %origin add {{ 
-            -50 0 +at
-            %move add {{ 
-                0.9 dcy !
-                %rng add {{ 
-                    en off
-                    \ noi on
-                    %rep add {{ }}
-                }}
-            }}
-            %move add {{ 
-                0.9 dcy !
-                90. ang !
-                %rng add {{
-                    en off 
-                    \ noi on 
-                    %rep add {{ }}
-                }}
-            }}
-            %ability add {{ }}
-            %rep add {{ }}
-            %timeout add {{ }}
-            %neuron add {{ 
-                %rng add {{
-                    0.2 val !
-                    noi on
-                }}
-                \ %rep add {{ 
-                \     trg off
-                \     0.2 dur ! 
-                \     [: 0.4 val +! ;] xt !
-                \ }}
+: *sprite ( bmp - sprite )
+    %sprite add { bmp ! me } ;
 
+\ -- Test ----------------------------------------------------------------------
+
+machines {{
+    64 64 at 
+    \ *rando {{
+    \     *rando {{ }}
+    \ }}
+    100 120 at
+    %origin add {{ 
+        50. 50. rx 2!
+        e{ 
+            64 -64 at 
+            %origin add {
+                0 0 at 
+                owl.png *sprite { } 
+            }
+        e}
+        -50 0 +at
+        %move add {{ 
+            0.9 dcy !
+            %rng add {{ 
+                en off
+                \ noi on
+                %rep add {{ }}
             }}
-            %hitbox add {{ }} \ -8. -8. x 2+!  16. 16. w 2! }}
-            
         }}
+        %move add {{ 
+            0.9 dcy !
+            90. ang !
+            %rng add {{
+                en off 
+                \ noi on 
+                %rep add {{ }}
+            }}
+        }}
+        %ability add {{ }}
+        %rep add {{ }}
+        %timeout add {{ }}
+        %neuron add {{ 
+            %rng add {{
+                0.2 val !
+                noi on
+            }}
+            \ %rep add {{ 
+            \     trg off
+            \     0.2 dur ! 
+            \     [: 0.4 val +! ;] xt !
+            \ }}
+
+        }}
+        %hitbox add {{ }} \ -8. -8. x 2+!  16. 16. w 2! }}
+        
     }}
-;
+}}
 
-\ -- Panel/label/Number test ---------------------------------------------------
 
-test
 160 20 at 
 %panel make constant panel
 panel machines unshift

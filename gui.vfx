@@ -60,6 +60,9 @@ trait;
 : from-root ( element x y - )
     rot >root >x 2@ 2>i 2- at ;
 
+: relpos ( element - x. y. ) 
+    { abspos } abspos 2swap 2- ;
+
 \ -- Element Class -------------------------------------------------------------
 
 class: %element
