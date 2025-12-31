@@ -18,12 +18,12 @@ ECONTEXT gui-ec
 
 \ -- Base Trait ----------------------------------------------------------------
 
-trait: %_element   
+trait: %_element
     is-a %dltree
     is-a %drawable
     is-a %unloadable
-    prop x :fixed
-    prop y :fixed
+    prop x :fixed <save
+    prop y :fixed <save
     prop flags
     :: click-box@ ( - x1. y1. x2. y2. ) $DEADBEEF dup dup dup ;
     \ :: _click ( n - ) drop ;
@@ -117,6 +117,9 @@ defer __process
 ['] process is __process
 
 %element :: draw
+    \ TODO: fix this workaround
+    vga-8x8 fnt!
+
     at-me  me _draw ['] draw me each ;
 
 \ -- Clone ---------------------------------------------------------------------
@@ -152,8 +155,8 @@ class;
 class: %ui-box
     %element derive
 
-    prop w :fixed
-    prop h :fixed
+    prop w :fixed <save
+    prop h :fixed <save
     template { 100. 100. w 2! } 
 
     EC_MAX_SIZE nprop ec  template { ec clear-ec }
@@ -173,7 +176,7 @@ class;
 
 class: %panel
     %ui-box derive
-    prop clr
+    prop clr <save
     template { black see-thru rgba8@ clr ! }
     :: _draw  clr @ rgba8 w 2@ rectf ;
 class;
@@ -184,7 +187,7 @@ redef : *lstring ( a n - a' )
     dup cell+ allocate throw >r r@ lplace r> ;
 
 trait: %textual
-    prop txt :addr  \ lstring
+    prop txt :lstring <save  \ heap-allocated lstring
     prop fnt :addr 
     prop w :fixed
     prop h :fixed
@@ -220,9 +223,9 @@ variable editing
 class: %label
     %ui-box derive
     is-a %textual
-    prop clr
-    prop editable
-    prop clear-on-edit
+    prop clr <save
+    prop editable <save
+    prop clear-on-edit <save
     template { fnt@ fnt ! $FFFFFFFF clr ! editable on }
 
     :: on-clone
@@ -232,7 +235,7 @@ class: %label
 
     :: _draw  
         editing-me? if red else clr @ rgba8 then
-        txt @ ?dup -exit lcount print ;
+        txt @ ?dup if fnt @ fnt! lcount print then ;
 
     :: _mousedown ( btn - )
         lmb = -exit
@@ -410,12 +413,12 @@ c: %menu %panel ;
 variable drag-btn
 variable dragging
 
-: pen-in?  me click-box@ at@p 2dup overlap? ;
+|| : in?  2>p 2dup me click-box@ overlap? ;
 
 defer _topmost-element
 [: 
     [: { 
-        <at pen-in? if drop me then
+        mouse in? if drop me then
         me _topmost-element 
     } ;] swap each
 ;] is _topmost-element
@@ -495,7 +498,6 @@ defer _topmost-element
 
 : gui-input ( element - )
     as> 
-    mouse at 
     topmost-element hover 
     handle-lmb
     handle-context-menu
