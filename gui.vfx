@@ -37,6 +37,7 @@ trait: %_element
     :: delete ( - ) stub ;
     :: draggable? ( - flag ) true ;
     :: _context-menu ( menu - ) drop ;   \ override to add items / customize the menu
+    :: on-clone ( - ) ;
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
@@ -115,6 +116,24 @@ defer __process
 %element :: draw
     at-me  me _draw ['] draw me each ;
 
+\ -- Clone ---------------------------------------------------------------------
+
+: clone ( element - element' )
+    as> \ scope into object. establishes EC
+        cla @ make {     \ create new instance of same class
+            you me dup sizeof move  \ copy data
+            0 dup dup dup dup
+            parent ! prev ! next ! lowest ! highest !
+            0 item-count !
+            me on-clone
+        me } ;
+
+defer _deep-clone
+: deep-clone ( element - element' )
+    dup clone swap
+    [: _deep-clone over push ;] swap each ;
+' deep-clone is _deep-clone
+
 \ -- Desktop -------------------------------------------------------------------
 
 class: %desktop
@@ -175,7 +194,6 @@ trait: %textual
     :: text! ( a n - ) 
         dup 0< if 2drop exit then
         txt @ >r 
-        0 txt !
         *lstring txt !
         _update-box 
         r> free drop \ ignore ior 
@@ -204,7 +222,8 @@ class: %label
     prop clear-on-edit
     template { fnt@ fnt ! $FFFFFFFF clr ! editable on }
 
-    \ prop cur
+    :: on-clone
+        me text@ *lstring txt ! _update-box ;
 
     : editing-me?  editing @   focus me = and ;
 
@@ -467,7 +486,7 @@ defer _topmost-element
 
 : handle-keys
     <del> pressed? if 
-        ['] delete-element selection each
+        ['] unload selection each
         selection vacate
     then ;
 
@@ -484,7 +503,7 @@ defer _topmost-element
 : click-box  me click-box@ 2over atp 2swap 2- rect ;
 
 : gui-overlay ( - )
-    [: { green 0.5 ppena! click-box } ;] selection each 
+    [: { light-green 0.5 ppena! click-box } ;] selection each 
     hovered ?dup if { yellow click-box } then ;
 
 \ -- Inspection ----------------------------------------------------------------
@@ -501,23 +520,6 @@ require %idir%/inspect.vfx
             hovered ?dup if unload then
         then
     then ;
-
-\ -- Clone ---------------------------------------------------------------------
-
-: clone ( element - element' )
-    as> \ scope into object. establishes EC
-        cla @ make {     \ create new instance of same class
-            you me dup sizeof move  \ copy data
-            0 dup dup dup dup
-            parent ! prev ! next ! lowest ! highest !
-            0 item-count !
-        me } ;
-
-defer _deep-clone
-: deep-clone ( element - element' )
-    dup clone swap
-    [: _deep-clone over push ;] swap each ;
-' deep-clone is _deep-clone
 
 \ -- Default context menu ------------------------------------------------------
 
@@ -545,6 +547,7 @@ defer _deep-clone
             5. 5. x 2+! 
             selection vacate
             me selection push
+            me to hovered
         } 
     ;] 
     s" Clone" +menu-item { } ;

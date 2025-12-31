@@ -53,8 +53,9 @@ trait: %_micro
     :: _gather ( - ) ;
     :: act     ( - ) ;
     :: gather  ( - ) ;
+    :: _hint   ( - a len ) s" " ;
     :: trigger ( - ) ;
-    :: _hint    ( - a len ) s" " ;
+
 trait;
 
 \ TODO: Propagate IS-A and WORKS-WITH with classifier dependents
@@ -114,7 +115,7 @@ class;
     then
     ['] act me each ;
 
-|| 0.025 constant ps
+|| 0.05 constant ps
 
 : pulse- ( val. - val'. ) 
     dup 0> if ps - 0 max else ps + 0 min then ;
@@ -424,22 +425,22 @@ defer _delete-micro
     machines draw 
     machines hints ;
     
-: track-origin 
-    <space> held? lmb held? and ?exit
-    selection #items if
-        selection peek %origin is? if
-            selection peek to last-origin
-        then
-        last-origin {  
-            abspos machines { abspos } 2- 
-            2negate 
-            \ winw winh 2>p 0.5 0.5 2p*   zoom @ >p dup 2p/   2+
-            64. 64. 2+
-            \ 2dup 2p. cr
-            machines >x 2!
-        }
-    then
-;
+\ : track-origin 
+\     <space> held? lmb held? and ?exit
+\     selection #items if
+\         selection peek %origin is? if
+\             selection peek to last-origin
+\         then
+\         last-origin {  
+\             abspos machines { abspos } 2- 
+\             2negate 
+\             \ winw winh 2>p 0.5 0.5 2p*   zoom @ >p dup 2p/   2+
+\             64. 64. 2+
+\             \ 2dup 2p. cr
+\             machines >x 2!
+\         }
+\     then
+\ ;
 
 : micros
     microcodes>> machines as 
