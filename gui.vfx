@@ -408,6 +408,11 @@ require %idir%/inspect.vfx
     ;] s" Detach" option ;
 
 : attach,
+    selection #items if
+        you >parent @ selection peek = ?exit
+    else
+        exit
+    then
     you [: 
         selection #items -exit 
         5 5 selection peek >x 2!
@@ -448,17 +453,23 @@ require %idir%/inspect.vfx
     ;]
     s" Back" option ;
 
+: bolt,
+    you [:
+        bolted? if -bolted else +bolted then
+    ;] 
+    you { bolted? } if s" Unbolt" else s" Bolt" then option ;
+
 : common-options,
     clone,
     attach,
     detach,
     front,
     back,
+    bolt,
     delete, ;
 
 %element :: _context-menu ( menu - )
     as> common-options, ;
-
 
 %menu-item :: _context-menu ( menu - ) drop ;
 %menu :: _context-menu ( menu - ) drop ;

@@ -28,10 +28,11 @@ trait;
 
 \ -- Helpers -------------------------------------------------------------------
 
-: +unloaded  1 flags or! ;
-: unloaded?  flags @ 1 and 0<> ;
-: +bolted    2 flags or! ;
-: bolted?    flags @ 2 and 0<> ;
+: +unloaded  0 flags set-bit ;
+: unloaded?  0 flags test-bit ;
+: +bolted    1 flags set-bit ;
+: -bolted    1 flags reset-bit ;
+: bolted?    1 flags test-bit ;
 
 : abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
 : at-me  abspos atp ;

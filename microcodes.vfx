@@ -554,8 +554,6 @@ micros
 : change,
     you [: ." TBD" cr ;] s" Change (TBD)" option ;
 
-
-
 %micro :: _context-menu ( menu - )
     as>
     toggle,
