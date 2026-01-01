@@ -1,0 +1,129 @@
+ECONTEXT gui-ec
+0 value hovered
+1024 %addr stack selection
+
+\ -- Base Trait ----------------------------------------------------------------
+
+trait: %_element
+    is-a %dltree
+    is-a %drawable
+    is-a %unloadable
+    is-a %xy
+    prop flags <save <readonly
+    :: click-box@ ( - x1. y1. x2. y2. ) $DEADBEEF dup dup dup ;
+    \ :: _click ( n - ) drop ;
+    :: _enter ( - ) ;
+    :: _leave ( - ) ;
+    :: _mousedown ( btn - ) drop ;  \ lbm , rmb , or mmb
+    \ :: _mouseup ( btn - ) drop ;
+    \ :: _mousemove ( - ) ;
+    :: _process ( - ) ;
+    :: _draw ( - ) ;
+    :: delete ( - ) stub ;
+    :: draggable? ( - flag ) true ;
+    :: _context-menu ( menu - ) drop ;   \ override to add items / customize the menu
+    :: on-clone ( - ) ;
+    :: on-attach ( - ) ;
+trait;
+
+\ -- Helpers -------------------------------------------------------------------
+
+: +unloaded  1 flags or! ;
+: unloaded?  flags @ 1 and 0<> ;
+: +bolted    2 flags or! ;
+: bolted?    flags @ 2 and 0<> ;
+
+: abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
+: at-me  abspos atp ;
+: box  2over 2+ ;
+: ?push  2dup contains? if 2drop exit then push ;
+: see-thru   0.5 ppena! ;
+\ : click-dims  me click-box@ 2swap 2- ;
+
+: >root ( element - root )
+    begin dup >parent @ ?dup while nip repeat ;
+
+: from-root ( element x y - )
+    rot >root >x 2@ 2>i 2- at ;
+
+: relpos ( element - x. y. ) 
+    { abspos } abspos 2swap 2- ;
+
+\ -- Element Class -------------------------------------------------------------
+
+class: %element
+    is-a %_element
+    template { gui-ec ecp! in-heap }
+class;
+
+0 %element :construct ( - )
+    at@p x 2!  gui-ec ecp! in-heap ;
+
+: delete-element ( element - )
+    dup hovered = if 0 to hovered then
+    dup { ['] delete me each }   \ recursively delete children
+    \ dup selection contains? if dup selection remove then
+    dup dlremove free drop ;
+
+%element :: delete
+    me delete-element ;
+
+\ -- Element Methods -----------------------------------------------------------
+
+%element :: unload ( - )
+    +unloaded 
+    selection vacate 
+    0 to hovered ;
+
+defer _sweep
+: sweep ( iterable - )
+    [: dup _sweep { unloaded? if me delete then } ;] swap each ;
+['] sweep is _sweep
+
+%element :: vacate
+    ['] unload me each  me sweep ;
+
+%element :: push
+    dup %element is? not abort" ELEMENT:PUSH : Source is not an element."
+    dup dltree:push on-attach ;
+
+%element :: insert-under
+    dup %element is? not abort" ELEMENT:INSERT-UNDER : Source is not an element."
+    dltree:insert-under ;
+
+%element :: insert-over
+    dup %element is? not abort" ELEMENT:INSERT-OVER : Source is not an element."
+    dltree:insert-over ;
+
+%element :: unshift
+    dup %element is? not abort" ELEMENT:UNSHIFT : Source is not an element."
+    dltree:unshift ;
+
+defer __process
+: process ( element - )
+    dup _process ['] __process swap each ;
+['] process is __process
+
+%element :: draw
+    \ TODO: fix this workaround
+    vga-8x8 fnt!
+
+    at-me  me _draw ['] draw me each ;
+
+\ -- Clone ---------------------------------------------------------------------
+
+: clone ( element - element' )
+    as> \ scope into object. establishes EC
+        cla @ make {     \ create new instance of same class
+            you me dup sizeof move  \ copy data
+            0 dup dup dup dup
+            parent ! prev ! next ! lowest ! highest !
+            0 item-count !
+            me on-clone
+        me } ;
+
+defer _deep-clone
+: deep-clone ( element - element' )
+    dup clone swap
+    [: _deep-clone over push ;] swap each ;
+' deep-clone is _deep-clone

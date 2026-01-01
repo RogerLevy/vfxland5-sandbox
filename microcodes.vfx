@@ -34,8 +34,6 @@ REQUIRE %vfxland5%/supershow/autoload.vfx
 REQUIRE %idir%/shapes.vfx
 REQUIRE %idir%/arrow.vfx
 REQUIRE %idir%/colors.vfx
-REQUIRE %idir%/gui.vfx
-REQUIRE %idir%/save.vfx
 
 \ -- Assets -------------------------------------------------------------------
 
@@ -49,6 +47,8 @@ micro-icons.png 20 20 TILESET-FROM micro-icons.ts
 
 \ -- Traits -------------------------------------------------------------------
 
+REQUIRE %idir%/element.vfx
+
 trait: %_micro
     :: _act    ( - ) ;
     :: _gather ( - ) ;
@@ -61,13 +61,16 @@ trait;
 
 \ TODO: Propagate IS-A and WORKS-WITH with classifier dependents
 class: %element  works-with %_micro  class;
-class: %panel  works-with %_micro  class;
-class: %inspector  works-with %_micro  class;
-class: %label  works-with %_micro  class;
-class: %number  works-with %_micro  class;
-class: %menu-item  works-with %_micro  class;
-class: %menu  works-with %_micro  class;
-class: %desktop  works-with %_micro  class;
+\ class: %panel  works-with %_micro  class;
+\ class: %inspector  works-with %_micro  class;
+\ class: %label  works-with %_micro  class;
+\ class: %number  works-with %_micro  class;
+\ class: %menu-item  works-with %_micro  class;
+\ class: %menu  works-with %_micro  class;
+\ class: %desktop  works-with %_micro  class;
+
+REQUIRE %idir%/gui.vfx
+REQUIRE %idir%/save.vfx
 
 trait: %animator
     prop anm <readonly
