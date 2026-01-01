@@ -150,8 +150,9 @@ panel {
 \     [: step p1 track scn@ draw ;] xt !
 \ } 
 
-50 250 at  320 240 *viewport { 
+400 150 at  320 240 *viewport { 
     [: red screen  at-me  machines { <at me render } ;] xt !
+    me inspect
 } 
 
 

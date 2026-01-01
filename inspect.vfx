@@ -4,6 +4,8 @@ borrow nib2>> prop+
 
 class: %inspector 
     %panel derive
+    template { blue see-thru rgba8@ clr ! }
+
     :: _draw  
         panel:_draw
         parent @ ?dup if 
@@ -11,25 +13,25 @@ class: %inspector
             abspos atp
             1.0 thick $ffffff44 rgba8 ->line 
         then ;
-class;
 
-: *inspector ( object - panel )
-    {: obj | property0 n type :}
-    %inspector add { 
-        \ +bolted
+    :: on-attach
+        {: | obj n property0 type0 :}
 
-        blue see-thru rgba8@ clr !
+        ['] delete me each
+
+        parent @ to obj
+
         0 -10 at
         obj >cla @ body>name *label { +bolted editable off }
 
         0 to n
         obj >cla @ -> property-list list-count for
             list-next to property0
-            property0 obj >cla @ >property-type @ to type
+            property0 obj >cla @ >property-type @ to type0
 
-            type TYPE_INT = 
-            type TYPE_CELL = or 
-            type TYPE_FIXED = or 
+            type0 TYPE_INT = 
+            type0 TYPE_CELL = or 
+            type0 TYPE_FIXED = or 
             property0 obj >cla @ >property-size @ cell <= and if
                 \ create label with property name
                 property0 body>name f" %s" *label {
@@ -39,7 +41,7 @@ class;
                 } 
 
                 \ create appropriate number editor
-                type TYPE_FIXED = if
+                type0 TYPE_FIXED = if
                     0 *fixed
                 else
                     0 *int
@@ -52,15 +54,21 @@ class;
                 1 +to n
             then
         loop drop
-        150. n 9 * >p w 2!
-        me
-    } ;
+        150. n 9 * >p w 2! 
+        w @ 10.0 + negate x !
+        0 y !
+        ;
+
+class;
+
+: *inspector ( object - panel )
+    %inspector make dup rot push ;
 
 : find-inspector ( element - inspector|0 )
     0 [: { me %inspector is? if drop me then } ;] rot each ;
 
 : inspect ( element - )
-    dup find-inspector if 2drop exit then
+    dup find-inspector ?dup if unload then
     dup %inspector is? if drop exit then
     { -160 0 at me *inspector drop } ;
 

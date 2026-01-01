@@ -38,6 +38,7 @@ trait: %_element
     :: draggable? ( - flag ) true ;
     :: _context-menu ( menu - ) drop ;   \ override to add items / customize the menu
     :: on-clone ( - ) ;
+    :: on-attach ( - ) ;
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
@@ -99,7 +100,7 @@ defer _sweep
 
 %element :: push
     dup %element is? not abort" ELEMENT:PUSH : Source is not an element."
-    dltree:push ;
+    dup dltree:push on-attach ;
 
 %element :: insert-under
     dup %element is? not abort" ELEMENT:INSERT-UNDER : Source is not an element."
@@ -539,8 +540,8 @@ require %idir%/inspect.vfx
 : +attach-option
     you [: 
         selection #items -exit 
-        selection peek dup me push 
-        5. 5. rot >x 2! 
+        5 5 selection peek >x 2!
+        selection peek me push 
     ;] 
     s" Attach" +menu-item { } ;
 
