@@ -4,36 +4,41 @@ borrow nib2>> prop+
 
 class: %inspector 
     %panel derive
+    prop obj :ref %object <readonly
     template { $2070e080 clr ! }
+
+    || : obj@  obj @ ?dup 0= if parent @ then ;
 
     :: _draw  
         panel:_draw
-        parent @ ?dup if 
-            { abspos } 
-            abspos atp
-            1.0 thick $ffffff44 rgba8 ->line 
+        obj@ ?dup if 
+            dup %element is? if
+                { abspos } 
+                abspos atp
+                1.0 thick $ffffff44 rgba8 ->line 
+            else drop then
         then ;
 
     :: on-attach
-        {: | obj n property0 type0 readonly? :}
+        {: | obj0 n property0 type0 readonly? :}
 
         ['] delete me each
 
-        parent @ to obj
+        obj@ to obj0
 
         0 0 at
-        obj >cla @ body>name *label { +bolted editable off $ffffffff clr ! }
+        obj0 >cla @ body>name *label { +bolted editable off $ffffffff clr ! }
 
         0 to n
-        obj >cla @ -> property-list list-count for
+        obj0 >cla @ -> property-list list-count for
             list-next to property0
-            property0 obj >cla @ >property-type @ to type0
-            property0 obj >cla @ >readonly-flag @ to readonly?
+            property0 obj0 >cla @ >property-type @ to type0
+            property0 obj0 >cla @ >readonly-flag @ to readonly?
 
             type0 TYPE_INT =
             type0 TYPE_CELL = or
             type0 TYPE_FIXED = or
-            property0 obj >cla @ >property-size @ cell <= and if
+            property0 obj0 >cla @ >property-size @ cell <= and if
                 \ create label with property name
                 property0 body>name f" %s" *label {
                     +bolted
@@ -50,7 +55,7 @@ class: %inspector
                 then {
                     +bolted
                     100. n 1 + 9 * >p x 2!
-                    obj property0 prop+ ra !
+                    obj0 property0 prop+ ra !
                     readonly? not editable !
                     readonly? if $a0a0a0ff clr ! then
                 }
@@ -59,24 +64,27 @@ class: %inspector
             then
         loop drop
         150. n 1 + 9 * >p w 2! 
-        w @ 10.0 + negate x !
-        0 y !
-        ;
+        obj0 %element is? if
+            w @ 10.0 + negate x !
+            0 y !
+        then ;
 
 class;
 
 : *inspector ( object - panel )
-    %inspector make dup rot push ;
+    %inspector make { obj ! me }
+    me %element is? if dup me push then ;
 
-: find-inspector ( element - inspector|0 )
+: find-inspector ( object - inspector|0 )
+    dup %iterable is? not if drop 0 exit then
     0 [: { me %inspector is? if drop me then } ;] rot each ;
 
-: inspect ( element - )
-    dup find-inspector ?dup if unload then
+: inspect ( object - )
     dup %inspector is? if drop exit then
-    { -160 0 at me *inspector drop } ;
+    dup find-inspector ?dup if unload then
+    *inspector drop ;
 
-: toggle-inspector ( element - )
+: toggle-inspector ( object - )
     dup find-inspector ?dup if
         nip unload 
     else

@@ -22,8 +22,7 @@ trait: %_element
     is-a %dltree
     is-a %drawable
     is-a %unloadable
-    prop x :fixed <save
-    prop y :fixed <save
+    is-a %xy
     prop flags <save <readonly
     :: click-box@ ( - x1. y1. x2. y2. ) $DEADBEEF dup dup dup ;
     \ :: _click ( n - ) drop ;
