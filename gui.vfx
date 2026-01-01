@@ -251,13 +251,16 @@ c: %menu %panel ;
 : *menu ( - menu )
     %menu add { 4 4 at me 50. 8. w 2! } ;
 
-: +menu-item ( object|0 xt text len - menu-item )
+: *menu-item ( object|0 xt text len - menu-item )
     9. h +!        \ grow menu height 
     %menu-item add { 
         me text! xt ! obj ! +bolted 
         w @ 8. + you >w @ max you >w ! \ expand width to fit
     me } 
     0 9 +at ;
+
+: option ( object|0 xt text len - )
+    *menu-item drop ;
 
 \ -- Global Context Menu State ------------------------------------------------
 
@@ -398,25 +401,25 @@ require %idir%/inspect.vfx
 
 \ -- Default context menu ------------------------------------------------------
 
-: +detach-option
+: detach,
     you { bolted? } ?exit
     you [: 
         abspos me dup >root push x 2! 
-    ;] s" Detach" +menu-item { } ;
+    ;] s" Detach" option ;
 
-: +attach-option
+: attach,
     you [: 
         selection #items -exit 
         5 5 selection peek >x 2!
         selection peek me push 
     ;] 
-    s" Attach" +menu-item { } ;
+    s" Attach" option ;
 
-: +delete-option
+: delete,
     you { bolted? } ?exit     
-    you [: me unload ;] s" Delete" +menu-item { } ;
+    you [: me unload ;] s" Delete" option ;
 
-: +clone-option
+: clone,
     you { bolted? } ?exit 
     you [: 
         me deep-clone dup me insert-over 
@@ -427,34 +430,34 @@ require %idir%/inspect.vfx
             me to hovered
         } 
     ;] 
-    s" Clone" +menu-item { } ;
+    s" Clone" option ;
 
-: +front-option
+: front,
     you >parent @ -exit
     you { bolted? parent @ >highest @ me = or } ?exit 
     you [:
         me dup >parent @ push
     ;]
-    s" Front" +menu-item { } ;
+    s" Front" option ;
 
-: +back-option
+: back,
     you >parent @ -exit
     you { bolted? parent @ >lowest @ me = or } ?exit 
     you [:
         me dup >parent @ unshift
     ;]
-    s" Back" +menu-item { } ;
+    s" Back" option ;
 
-: +common-options
-    +clone-option
-    +attach-option
-    +detach-option
-    +front-option
-    +back-option
-    +delete-option ;
+: common-options,
+    clone,
+    attach,
+    detach,
+    front,
+    back,
+    delete, ;
 
 %element :: _context-menu ( menu - )
-    as> +common-options ;
+    as> common-options, ;
 
 
 %menu-item :: _context-menu ( menu - ) drop ;

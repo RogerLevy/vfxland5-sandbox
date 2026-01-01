@@ -160,9 +160,9 @@ panel {
 \ -- Menu Test -----------------------------------------------------------------
 
 \ 10 120 at *menu {
-\     me [: 1 . me .summary cr ;] s" Menu item 1" +menu-item { }
-\     me [: 2 . me .summary cr ;] s" Menu item 2" +menu-item { }
-\     me [: 3 . me .summary cr ;] s" Menu item 3" +menu-item { }
+\     me [: 1 . me .summary cr ;] s" Menu item 1" option
+\     me [: 2 . me .summary cr ;] s" Menu item 2" option
+\     me [: 3 . me .summary cr ;] s" Menu item 3" option
 \ }
 
 \ -- Instructions---------------------------------------------------------------

@@ -548,11 +548,19 @@ micros
 
 \ -- Micro Context Menus -------------------------------------------------------
 
+: toggle,
+    you [: en toggle ;] you >en @ if s" Disable" else s" Enable" then option ;
+
+: change,
+    you [: ." TBD" cr ;] s" Change (TBD)" option ;
+
+
+
 %micro :: _context-menu ( menu - )
     as>
-    you [: en toggle ;] you >en @ if s" Disable" else s" Enable" then +menu-item { }
-    you [: ." TBD" cr ;] s" Change (TBD)" +menu-item { }
-    +common-options
+    toggle,
+    change,
+    common-options,
 ;
 
 \ -- Misc ---------------------------------------------------------------------
