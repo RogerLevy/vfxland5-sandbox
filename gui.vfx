@@ -24,7 +24,7 @@ trait: %_element
     is-a %unloadable
     prop x :fixed <save
     prop y :fixed <save
-    prop flags
+    prop flags <save <readonly
     :: click-box@ ( - x1. y1. x2. y2. ) $DEADBEEF dup dup dup ;
     \ :: _click ( n - ) drop ;
     :: _enter ( - ) ;
@@ -289,16 +289,16 @@ class: %label
 class;
 
 : *label ( a len - label )
-    %label add { me text! me } ;
+    %label add { me text! you { rgba8@ } clr ! me } ;
 
 %label :: click-box@ ( - x1 y1 x2 y2 )
     abspos w @ 16. max h @ box ;
 
 trait: %syncable-value
-    prop ra :addr \ remote address
+    prop ra :addr <readonly \ remote address
     prop val <save
     prop val-type <save
-    prop was-editing
+    prop was-editing <readonly
 
     :: sync ( - )
         ra @ -exit
@@ -356,8 +356,8 @@ class;
 
 class: %menu-item
     %label derive
-    prop xt :addr   \ XT to execute on click
-    prop obj :ref %object
+    prop xt :addr <readonly  \ XT to execute on click
+    prop obj :ref %object <readonly
     template { editable off }
 
     :: _enter  valof white clr ! ;
@@ -563,14 +563,16 @@ require %idir%/inspect.vfx
     s" Clone" +menu-item { } ;
 
 : +front-option
-    you { bolted? } ?exit 
+    you >parent @ -exit
+    you { bolted? parent @ >highest @ me = or } ?exit 
     you [:
         me dup >parent @ push
     ;]
     s" Front" +menu-item { } ;
 
 : +back-option
-    you { bolted? } ?exit 
+    you >parent @ -exit
+    you { bolted? parent @ >lowest @ me = or } ?exit 
     you [:
         me dup >parent @ unshift
     ;]

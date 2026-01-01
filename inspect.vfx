@@ -4,7 +4,7 @@ borrow nib2>> prop+
 
 class: %inspector 
     %panel derive
-    template { blue see-thru rgba8@ clr ! }
+    template { $2070e080 clr ! }
 
     :: _draw  
         panel:_draw
@@ -15,46 +15,50 @@ class: %inspector
         then ;
 
     :: on-attach
-        {: | obj n property0 type0 :}
+        {: | obj n property0 type0 readonly? :}
 
         ['] delete me each
 
         parent @ to obj
 
-        0 -10 at
-        obj >cla @ body>name *label { +bolted editable off }
+        0 0 at
+        obj >cla @ body>name *label { +bolted editable off $ffffffff clr ! }
 
         0 to n
         obj >cla @ -> property-list list-count for
             list-next to property0
             property0 obj >cla @ >property-type @ to type0
+            property0 obj >cla @ >readonly-flag @ to readonly?
 
-            type0 TYPE_INT = 
-            type0 TYPE_CELL = or 
-            type0 TYPE_FIXED = or 
+            type0 TYPE_INT =
+            type0 TYPE_CELL = or
+            type0 TYPE_FIXED = or
             property0 obj >cla @ >property-size @ cell <= and if
                 \ create label with property name
                 property0 body>name f" %s" *label {
                     +bolted
                     editable off
-                    0. n 9 * >p x 2! 
-                } 
+                    0. n 1 + 9 * >p x 2!
+                    readonly? if valof dark-yellow else valof yellow then clr ! 
+                }
 
-                \ create appropriate number editor
+                \ create number widget (editable or readonly)
                 type0 TYPE_FIXED = if
                     0 *fixed
                 else
                     0 *int
                 then {
                     +bolted
-                    100. n 9 * >p x 2!
+                    100. n 1 + 9 * >p x 2!
                     obj property0 prop+ ra !
-                } 
+                    readonly? not editable !
+                    readonly? if $a0a0a0ff clr ! then
+                }
 
                 1 +to n
             then
         loop drop
-        150. n 9 * >p w 2! 
+        150. n 1 + 9 * >p w 2! 
         w @ 10.0 + negate x !
         0 y !
         ;

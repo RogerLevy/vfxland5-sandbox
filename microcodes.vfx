@@ -70,9 +70,13 @@ class: %menu  works-with %_micro  class;
 class: %desktop  works-with %_micro  class;
 
 trait: %animator
-    prop anm 
-    prop a.ts  prop a.spd  prop a.len
-    prop a.ofs prop a.done prop a.flp
+    prop anm <readonly
+    prop a.ts <readonly  
+    prop a.spd :fixed
+    prop a.len
+    prop a.ofs :fixed
+    prop a.done 
+    prop a.flp
 trait;
 
 \ -- Base Class ---------------------------------------------------------------
@@ -85,8 +89,8 @@ class: %micro
     prop en <save          \ user disable switch
     prop val :fixed <save  \ coefficient, must be >= 0.01 to process
     prop dcy :fixed <save  \ scalar
-    prop upul :fixed       \ aesthetic only - not saved
-    prop rpul :fixed       \ aesthetic only - not saved
+    prop upul :fixed <readonly      \ aesthetic only - not saved
+    prop rpul :fixed <readonly      \ aesthetic only - not saved
     static icon-color \ rgba8
     static icon-bmp
     is-a %_micro

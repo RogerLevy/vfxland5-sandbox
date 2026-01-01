@@ -42,8 +42,8 @@ $93c5fdff COLOR light-blue
 $fef08aff COLOR light-yellow
 $a5f3fcff COLOR light-cyan
 $f9a8d4ff COLOR light-pink
-$d0d0d0ff COLOR light-gray
-$d0d0d0ff COLOR light-grey
+$c0c0c0ff COLOR light-gray
+$c0c0c0ff COLOR light-grey
 $a06020ff COLOR light-brown
 
 \ Named colors

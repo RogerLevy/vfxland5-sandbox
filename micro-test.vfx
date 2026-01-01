@@ -120,6 +120,7 @@ panel machines unshift
 panel {
     150. 100. w 2!
     10 10 at
+    white
     s" Hello, my baby!" *label constant label
     0 16 +at 
     123 *int redef constant int
