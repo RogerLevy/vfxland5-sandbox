@@ -178,6 +178,22 @@ defer _decay
 
 : pulse@  upul @ ( dpul @ + ) ( lpul @ + ) rpul @ + 1.0 min ;
 
+: hint ( element - )
+    {: me | a len :} 
+    me _hint to len to a
+    len -exit
+    me { at-me }
+    5 5 +at 
+    black 0.5 ppena! a len print 
+    -1 -1 +at
+    white 0.9 ppena! a len print ;
+
+\ defer __hints
+\ : hints ( element - ) 
+\     context-menu if drop exit then
+\     [: dup hint __hints ;] swap each ;
+\ ' hints is __hints
+
 redef : icon
     pulse@ 0.01 > if
         white
@@ -186,7 +202,8 @@ redef : icon
     then
     icon-color @ val-alpha rgba8 ICON_RADIUS circf  \ inner circle fill
     icon-color @ rgba8 ICON_RADIUS circ             \ inner circle rim
-    icon-bmp @ cput ;
+    icon-bmp @ cput 
+    context-menu not if me hint then ;
 
 %micro :: .summary  
     object:.summary x 2p? ;
@@ -321,22 +338,6 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 %ability :: _hint ( - a len )
     k @ f" %n" ;
 
-: hint ( element - )
-    {: me | a len :} 
-    me _hint to len to a
-    len -exit
-    me { at-me }
-    5 5 +at 
-    black 0.5 ppena! a len print 
-    -1 -1 +at
-    white 0.9 ppena! a len print ;
-
-defer __hints
-: hints ( element - ) 
-    context-menu if drop exit then
-    [: dup hint __hints ;] swap each ;
-' hints is __hints
-
 \ -- Micro rendering -----------------------------------------------------------
 
 %element :: render
@@ -465,8 +466,8 @@ defer _delete-micro
 
 : draw-micros
     0 0 at 
-    machines draw 
-    machines hints ;
+    machines draw ;
+    \ machines hints ;
     
 \ : track-origin 
 \     <space> held? lmb held? and ?exit

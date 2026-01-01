@@ -49,7 +49,7 @@ class: %viewport %ui-box derive
         abspos 2>i zoom @ dup 2*``
         w 2@ 2>i zoom @ dup 2*`` al_set_clipping_rectangle 
         cls 
-        abspos 2>i at
+        abspos atp
         xt @ dup if catch dup if nip then then
         0 0 winw winh al_set_clipping_rectangle 
         throw ;

@@ -500,10 +500,10 @@ defer _topmost-element
 
 : gui-input ( element - )
     as> 
-    topmost-element hover 
     handle-lmb
-    handle-context-menu
     do-drag
+    topmost-element hover 
+    handle-context-menu
     handle-keys
 ;
 

@@ -2,7 +2,16 @@ public
 
 borrow nib2>> prop+
 
-c: %inspector %panel ;
+class: %inspector 
+    %panel derive
+    :: _draw  
+        panel:_draw
+        parent @ ?dup if 
+            { abspos } 
+            abspos atp
+            1.0 thick $ffffff44 rgba8 ->line 
+        then ;
+class;
 
 : *inspector ( object - panel )
     {: obj | property0 n type :}
