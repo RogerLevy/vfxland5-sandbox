@@ -80,9 +80,11 @@ class;
     0 [: { me %inspector is? if drop me then } ;] rot each ;
 
 : inspect ( object - )
-    dup %inspector is? if drop exit then
-    dup find-inspector ?dup if unload then
-    *inspector drop ;
+    as>
+    me %inspector is? if drop exit then
+    me find-inspector ?dup if unload then
+    me *inspector 
+    me %element is? if me push else drop then ;
 
 : toggle-inspector ( object - )
     dup find-inspector ?dup if

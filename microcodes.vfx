@@ -62,7 +62,7 @@ trait;
 \ TODO: Propagate IS-A and WORKS-WITH with classifier dependents
 class: %element  works-with %_micro  class;
 \ class: %panel  works-with %_micro  class;
-\ class: %inspector  works-with %_micro  class;
+class: %inspector  works-with %_micro  class;
 \ class: %label  works-with %_micro  class;
 \ class: %number  works-with %_micro  class;
 \ class: %menu-item  works-with %_micro  class;
