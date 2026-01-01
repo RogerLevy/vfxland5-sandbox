@@ -118,7 +118,7 @@ machines {{
 %panel make constant panel
 panel machines unshift
 panel {
-    150. 100. w 2!
+    250. 150. w 2!
     10 10 at
     white
     s" Hello, my baby!" *label constant label
@@ -138,6 +138,12 @@ panel {
     32 0 +at
     0 *fixed constant fixed-y
     panel >y fixed-y >ra !
+
+    -32 16 +at
+    s" rnd32 $ff or machines >clr !" *command drop
+
+    0 16 +at
+    150 *repl drop 
 }
 
 \ panel inspect

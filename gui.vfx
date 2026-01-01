@@ -14,10 +14,12 @@ REQUIRE %idir%/element.vfx
 
 class: %desktop
     %element derive
+    prop clr <save
+    template { valof dark-grey clr ! }
 
     :: click-box@ 0 0 winw winh 2>p ;
     :: _process <space> held? lmb? and if mickey 2>p x 2+! then ;
-    :: _draw 0 0 at dark-grey winw winh 2>p rectf ;
+    :: _draw 0 0 at clr @ rgba8 winw winh 2>p rectf ;
 class;
 
 \ -- UI Box --------------------------------------------------------------------
@@ -84,6 +86,9 @@ trait: %textual
         txt @ dup if lcount else 0 then ;
 trait;
 
+: _draw-text
+    txt @ ?dup if fnt @ fnt! lcount print then ;
+
 \ -- Label ---------------------------------------------------------------------
 
 variable editing
@@ -105,7 +110,7 @@ class: %label
 
     :: _draw  
         editing-me? if red else clr @ rgba8 then
-        txt @ ?dup if fnt @ fnt! lcount print then ;
+        _draw-text ;
 
     :: _mousedown ( btn - )
         lmb = -exit
@@ -218,6 +223,74 @@ class;
 
 : *int  %number add { val ! TYPE_INT val-type ! me } ;
 : *fixed  %number add { val ! TYPE_FIXED val-type ! me } ;
+
+\ -- Forth elements -----------------------------------------------------------
+
+class: %command
+    %label derive
+    prop obj :ref %object
+
+    || 2. constant m
+
+    :: click-box@ ( - x1 y1 x2 y2 )
+        abspos m m 2- w 2@ m m 2 2 2* 2+ box ;
+
+    :: _draw
+        m >i negate dup +at
+        white w 2@ m m 2 2 2* 2+ rectf 
+        black w 2@ m m 2 2 2* 2+ rect 
+        m m 2>i +at
+        black _draw-text ;
+
+    :: _mousedown ( btn - )
+        lmb = -exit
+        obj @ ?dup if as> then
+        me text@ evaluate ;
+class;
+
+: *command ( a len - command )
+    %command add { me text! me } ;
+
+class: %repl
+    %label derive
+    prop obj :ref %object
+
+    template { 150. 10. w 2! }
+
+    || redef 2. constant rm
+
+    :: click-box@ ( - x1 y1 x2 y2 )
+        abspos m m 2- w 2@ m m 2 2 2* 2+ box ;
+
+    :: _draw
+        m >i negate dup +at
+        black see-thru w 2@ m m 2 2 2* 2+ rectf 
+        grey w 2@ m m 2 2 2* 2+ rect 
+        m m 2>i +at
+        yellow _draw-text ;
+
+    :: _process
+        editing-me? >r
+        w 2@ 2>r
+        label:_process
+        2r> w 2!
+        r> editing-me? not and if
+            obj @ ?dup if 
+                rot { evaluate } 
+            else 
+                me text@ evaluate
+            then
+            s" " me text!
+        then ;
+
+    :: text! ( a len - )
+        w 2@ 2>r
+        textual:text!
+        2r> w 2! ;
+class;
+
+: *repl ( w - repl )
+    %repl add { >p w ! s" " me text! me } ;
 
 \ -- Menu Item ----------------------------------------------------------------
 
