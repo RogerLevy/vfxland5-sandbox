@@ -49,7 +49,6 @@ class: %viewport %ui-box derive
         abspos 2>i zoom @ dup 2*``
         w 2@ 2>i zoom @ dup 2*`` al_set_clipping_rectangle 
         cls 
-        abspos atp
         xt @ dup if catch dup if nip then then
         0 0 winw winh al_set_clipping_rectangle 
         throw ;
@@ -150,16 +149,22 @@ panel {
 
 \ -- Viewport Test -------------------------------------------------------------
 
-\ include %idir%/dungeon/main.vfx
-\ micros \ re-establish main loop
-
-\ 50 250 at  320 240 *viewport { 
-\     [: step p1 track scn@ draw ;] xt !
-\ } 
-
 400 150 at  320 240 *viewport { 
     [: red screen  at-me  machines { <at me render } ;] xt !
     me inspect
+} 
+
+
+include %idir%/dungeon/main.vfx
+micros \ re-establish main loop
+
+50 250 at  320 240 *viewport { 
+    [: step p1 track 
+        m{ 
+            abspos 2p>f 1e 1e 0e transform
+            scn@ draw animate 
+        m}
+    ;] xt !
 } 
 
 
