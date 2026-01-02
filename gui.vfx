@@ -226,6 +226,50 @@ class;
 : *int  %number add { val ! TYPE_INT val-type ! me } ;
 : *fixed  %number add { val ! TYPE_FIXED val-type ! me } ;
 
+\ -- String Field --------------------------------------------------------------
+
+trait: %syncable-string
+    prop ra :addr <readonly
+    prop str-type <readonly       \ TYPE_CSTRING or TYPE_LSTRING
+    prop was-editing <readonly
+
+    :: sync ( - )
+        ra @ -exit
+        editing-me? not was-editing @ and if
+            str-type @ TYPE_CSTRING = if
+                me text@ ra @ place
+            else
+                ra @ @ free drop
+                me text@ *lstring ra @ !
+            then
+        then
+        editing-me? not if
+            str-type @ TYPE_CSTRING = if
+                ra @ count me text!
+            else
+                ra @ @ ?dup if lcount else s" " then me text!
+            then
+        then
+        editing-me? was-editing ! ;
+trait;
+
+class: %stringfield
+    %label derive
+    is-a %syncable-string
+    template { clear-on-edit off }
+
+    :: _draw
+        editing-me? not if me sync then
+        label:_draw ;
+
+    :: _process
+        label:_process
+        me sync ;
+class;
+
+: *stringfield ( str-type - stringfield )
+    %stringfield add { str-type ! s" " me text! me } ;
+
 \ -- Forth elements -----------------------------------------------------------
 
 class: %command

@@ -1,0 +1,7 @@
+[: step p1 track 
+    m{ 
+        abspos 2p>f 1e 1e 0e transform
+        scn@ draw animate 
+        0 0 at blue s" Heyyy!" print
+    m}
+;] xt !

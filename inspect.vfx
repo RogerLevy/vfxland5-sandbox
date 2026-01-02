@@ -44,7 +44,7 @@ class: %inspector
                     +bolted
                     editable off
                     0. n 1 + 9 * >p x 2!
-                    readonly? if valof dark-yellow else valof yellow then clr ! 
+                    readonly? if valof dark-yellow else valof yellow then clr !
                 }
 
                 \ create number widget (editable or readonly)
@@ -53,6 +53,28 @@ class: %inspector
                 else
                     0 *int
                 then {
+                    +bolted
+                    100. n 1 + 9 * >p x 2!
+                    obj0 property0 prop+ ra !
+                    readonly? not editable !
+                    readonly? if $a0a0a0ff clr ! then
+                }
+
+                1 +to n
+            then
+
+            type0 TYPE_CSTRING =
+            type0 TYPE_LSTRING = or if
+                \ create label with property name
+                property0 body>name f" %s" *label {
+                    +bolted
+                    editable off
+                    0. n 1 + 9 * >p x 2!
+                    readonly? if valof dark-yellow else valof yellow then clr !
+                }
+
+                \ create string field widget
+                type0 *stringfield {
                     +bolted
                     100. n 1 + 9 * >p x 2!
                     obj0 property0 prop+ ra !
@@ -71,20 +93,27 @@ class: %inspector
 
 class;
 
-: *inspector ( object - panel )
-    %inspector make { obj ! me }
-    me %element is? if dup me push then ;
+: *inspector ( object - inspector )
+    %inspector make { obj !
+        obj @ %element is? if
+            me obj @ push
+        else
+            you dup %element is? if
+                me you >root push
+            then
+        then
+    me } ;
 
 : find-inspector ( object - inspector|0 )
     dup %iterable is? not if drop 0 exit then
     0 [: { me %inspector is? if drop me then } ;] rot each ;
 
 : inspect ( object - )
-    as>
-    me %inspector is? if drop exit then
-    me find-inspector ?dup if unload then
-    me *inspector 
-    me %element is? if me push else drop then ;
+    {: obj :} 
+    me %element is? not abort" INSPECT: Current object is not an element."
+    obj %inspector is? ?exit
+    obj find-inspector ?dup if unload then
+    obj *inspector drop ;
 
 : toggle-inspector ( object - )
     dup find-inspector ?dup if
