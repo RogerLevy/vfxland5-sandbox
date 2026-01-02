@@ -412,6 +412,20 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     anm @ -exit
     val @ advance-animation bmp ! ;
 
+also cjson2>>
+
+%sprite :: on-serialize ( cjson - )
+    {: json :}
+    bmp @ is-tile? ?exit  \ tiles not supported yet
+    bmp @ bitmap-file -path 
+    f" %s bmp !" >zpad "forth" json add-string ;
+
+: suppose ( a len - )
+    ['] evaluate catch ?dup if  .throw  2drop  then ;
+
+%sprite :: on-deserialize ( cjson - )
+    "forth" ?j>z ?dup if zcount suppose then ;
+
 : calc-vel ( element - vx. vy. )
     >x 2@ px 2@ 2- ;
 
