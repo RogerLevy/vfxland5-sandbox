@@ -45,6 +45,8 @@ c: %rando %origin startx starty ;
 class: %viewport %ui-box derive
     works-with %_micro
     prop xt :xt
+    256 nprop srcpath :cstring
+
     :: _draw
         abspos 2>i zoom @ dup 2*``
         w 2@ 2>i zoom @ dup 2*`` al_set_clipping_rectangle 
@@ -52,6 +54,19 @@ class: %viewport %ui-box derive
         xt @ dup if catch dup if nip then then
         0 0 winw winh al_set_clipping_rectangle 
         throw ;
+
+    also cjson2>>
+
+    :: on-serialize ( cjson - )
+        {: json :}
+        srcpath c@ -exit
+        srcpath count f" include %s" json memoize ;
+
+    previous
+
+    : memoize-include ( <path> - )
+        bl parse expand >abspath 2dup srcpath place included ;
+
 class;
 
 : *viewport ( w h - viewport )
@@ -159,12 +174,7 @@ include %idir%/dungeon/main.vfx
 micros \ re-establish main loop
 
 50 250 at  320 240 *viewport { 
-    [: step p1 track 
-        m{ 
-            abspos 2p>f 1e 1e 0e transform
-            scn@ draw animate 
-        m}
-    ;] xt !
+    memoize-include %idir%/init-scene-viewport.vfx
 } 
 
 

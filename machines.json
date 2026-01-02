@@ -127,7 +127,7 @@
 				"Y":	230,
 				"FLAGS":	0,
 				"EN":	-1,
-				"VAL":	2,
+				"VAL":	1,
 				"DCY":	1,
 				"RX":	50,
 				"RY":	50,
@@ -266,7 +266,7 @@
 						"Y":	24,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	0.089813232421875,
+						"VAL":	0.2539215087890625,
 						"DCY":	0.9699859619140625,
 						"THR":	1,
 						"STR":	1,
@@ -285,8 +285,8 @@
 					}]
 			}, {
 				"class":	"%VIEWPORT",
-				"X":	571,
-				"Y":	95,
+				"X":	400,
+				"Y":	150,
 				"FLAGS":	0,
 				"W":	320,
 				"H":	240,
@@ -351,11 +351,11 @@
 								"FLAGS":	2,
 								"W":	32,
 								"H":	8,
-								"TXT":	"571.",
+								"TXT":	"400.",
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	-1,
-								"VAL":	37421056,
+								"VAL":	26214400,
 								"VAL-TYPE":	2
 							}, {
 								"class":	"%LABEL",
@@ -373,13 +373,13 @@
 								"X":	100,
 								"Y":	27,
 								"FLAGS":	2,
-								"W":	24,
+								"W":	32,
 								"H":	8,
-								"TXT":	"95.",
+								"TXT":	"150.",
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	-1,
-								"VAL":	6225920,
+								"VAL":	9830400,
 								"VAL-TYPE":	2
 							}, {
 								"class":	"%LABEL",
@@ -457,11 +457,12 @@
 					}]
 			}, {
 				"class":	"%VIEWPORT",
-				"X":	236,
-				"Y":	243,
+				"X":	50,
+				"Y":	250,
 				"FLAGS":	0,
 				"W":	320,
-				"H":	240
+				"H":	240,
+				"forth":	"include C:\\Users\\roger\\Desktop\\dev\\vfxland5_starling\\sandbox\\init-scene-viewport.vfx"
 			}]
 	}
 }

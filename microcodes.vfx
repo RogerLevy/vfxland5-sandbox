@@ -418,13 +418,7 @@ also cjson2>>
     {: json :}
     bmp @ is-tile? ?exit  \ tiles not supported yet
     bmp @ bitmap-file -path 
-    f" %s bmp !" >zpad "forth" json add-string ;
-
-: suppose ( a len - )
-    ['] evaluate catch ?dup if  .throw  2drop  then ;
-
-%sprite :: on-deserialize ( cjson - )
-    "forth" ?j>z ?dup if zcount suppose then ;
+    f" %s bmp !" json memoize ;
 
 : calc-vel ( element - vx. vy. )
     >x 2@ px 2@ 2- ;

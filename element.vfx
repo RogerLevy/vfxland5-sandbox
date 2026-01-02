@@ -1,3 +1,5 @@
+REQUIRE %vfxland5%/cjson/cjson2.vfx
+
 ECONTEXT gui-ec
 0 value hovered
 1024 %addr stack selection
@@ -112,6 +114,37 @@ defer __process
     vga-8x8 fnt!
 
     at-me  me _draw ['] draw me each ;
+
+\ -- Default on-deserialize ----------------------------------------------------
+
+debug @ [if] 
+: cave-crypt  2drop ;
+[else]
+: cave-crypt ( addr len - )  \ works for both encrypt and decrypt
+    {: | mba key :}
+    2dup 2 / + dup to mba c@ to key       
+    bounds ?do
+        i mba <> if     \ skip middle byte
+            i c@ key xor i c!
+        then
+    loop ;
+[then]
+
+: suppose ( a len - )
+    ['] evaluate catch ?dup if  .throw  2drop  then ;
+
+: eval-script ( a len - )
+    2>r 2r@ cave-crypt 2r@ suppose 2r> cave-crypt ;
+
+%element :: on-deserialize ( cjson - )
+    "forth" ?j>z ?dup if zcount eval-script then ;
+
+also cjson2>>
+
+: memoize ( a len cjson - )
+    -rot 2>r 2r@ cave-crypt 2r@ >zpad "forth" rot add-string 2r> cave-crypt ;
+
+previous
 
 \ -- Clone ---------------------------------------------------------------------
 
