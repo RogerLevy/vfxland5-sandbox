@@ -65,7 +65,7 @@ class: %viewport %ui-box derive
     previous
 
     : memoize-include ( <path> - )
-        bl parse expand >abspath 2dup srcpath place included ;
+        bl parse expand slashes 2dup srcpath place included ;
 
 class;
 
