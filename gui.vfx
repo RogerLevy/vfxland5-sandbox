@@ -188,7 +188,7 @@ trait;
 
 \ -- Number ---------------------------------------------------------------------
 
-class: %number
+class: %numberfield
     %label derive
     is-a %syncable-value
     template { TYPE_INT val-type !   clear-on-edit on }
@@ -223,8 +223,8 @@ class: %number
 
 class;
 
-: *int  %number add { val ! TYPE_INT val-type ! me } ;
-: *fixed  %number add { val ! TYPE_FIXED val-type ! me } ;
+: *int  %numberfield add { val ! TYPE_INT val-type ! me } ;
+: *fixed  %numberfield add { val ! TYPE_FIXED val-type ! me } ;
 
 \ -- String Field --------------------------------------------------------------
 
