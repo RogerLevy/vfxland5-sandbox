@@ -4,6 +4,9 @@ ECONTEXT gui-ec
 0 value hovered
 1024 %addr stack selection
 
+redef : *lstring ( a n - a' )
+    dup cell+ allocate throw >r r@ lplace r> ;
+
 \ -- Base Trait ----------------------------------------------------------------
 
 trait: %_element
@@ -12,7 +15,9 @@ trait: %_element
     is-a %unloadable
     is-a %xy
     prop flags <save <readonly
+    prop script :lstring 
     :: click-box@ ( - x1. y1. x2. y2. ) $DEADBEEF dup dup dup ;
+    :: script@ ( - a len ) script @ ?dup if lcount else s" " then ;
     \ :: _click ( n - ) drop ;
     :: _enter ( - ) ;
     :: _leave ( - ) ;
@@ -43,6 +48,14 @@ trait;
 : see-thru   0.5 ppena! ;
 \ : click-dims  me click-box@ 2swap 2- ;
 
+: load-script ( path len - )
+    expand slashes >pad count included ;
+
+: memoize-include ( <path> - )
+    me %_element is? not abort" Current object is not an element."
+    bl parse 2dup *lstring script !
+    load-script ;
+
 : >root ( element - root )
     begin dup >parent @ ?dup while nip repeat ;
 
@@ -66,6 +79,7 @@ class;
     dup hovered = if 0 to hovered then
     dup { ['] delete me each }   \ recursively delete children
     \ dup selection contains? if dup selection remove then
+    dup >script @ free drop      \ free script lstring
     dup dlremove free drop ;
 
 %element :: delete

@@ -41,25 +41,6 @@ class;
 0 %ui-box :construct ( - )
     at@p x 2!   ec ecp! in-heap ;
 
-\ -- Script support ------------------------------------------------------------
-
-class: %ui-box
-    256 nprop srcpath$ :cstring
-class;
-
-%object :: script@ ( - a len ) 2drop ;
-
-%ui-box :: script@ ( - a len ) 
-    srcpath$ count ;
-
-: load-script ( path len - ) 
-    expand slashes >pad count included ;
-
-: memoize-include ( <path> - )
-    me %ui-box is? not abort" Current object is not a %UI-BOX."
-    bl parse srcpath$ place 
-    srcpath$ count load-script ;
-
 \ -- Selection -----------------------------------------------------------------
 
 : +select  ( element - ) selection ?push ;
@@ -75,9 +56,6 @@ class: %panel
 class;
 
 \ -- Textual Trait -------------------------------------------------------------
-
-redef : *lstring ( a n - a' )
-    dup cell+ allocate throw >r r@ lplace r> ;
 
 trait: %textual
     prop txt :lstring <save  \ heap-allocated lstring
