@@ -39,7 +39,9 @@ defer _json>element
     cjson "class" j>s evaluate make {
         \ Read properties into the new element
         cjson me read-props
-        cjson "script" ?get-item ?dup if
+
+        \ Cache the script field if there is one
+        cjson "script" ?j>z ?dup if
             zcount *lstring script !
         then
 
