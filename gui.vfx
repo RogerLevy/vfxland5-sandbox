@@ -29,15 +29,36 @@ class: %ui-box
 
     prop w :fixed <save
     prop h :fixed <save
+
     template { 100. 100. w 2! } 
 
     EC_MAX_SIZE nprop ec  template { ec clear-ec }
 
     :: click-box@ ( - x1 y1 x2 y2 ) abspos w 2@ box ;
+
 class;
 
 0 %ui-box :construct ( - )
     at@p x 2!   ec ecp! in-heap ;
+
+\ -- Script support ------------------------------------------------------------
+
+class: %ui-box
+    256 nprop srcpath$ :cstring
+class;
+
+%object :: script@ ( - a len ) 2drop ;
+
+%ui-box :: script@ ( - a len ) 
+    srcpath$ count ;
+
+: load-script ( path len - ) 
+    expand slashes >pad count included ;
+
+: memoize-include ( <path> - )
+    me %ui-box is? not abort" Current object is not a %UI-BOX."
+    bl parse srcpath$ place 
+    srcpath$ count load-script ;
 
 \ -- Selection -----------------------------------------------------------------
 

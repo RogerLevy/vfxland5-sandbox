@@ -412,13 +412,10 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     anm @ -exit
     val @ advance-animation bmp ! ;
 
-also cjson2>>
-
-%sprite :: on-serialize ( cjson - )
-    {: json :}
-    bmp @ is-tile? ?exit  \ tiles not supported yet
-    bmp @ bitmap-file -path 
-    f" %s bmp !" json memoize ;
+%sprite :: forth@ ( - a len )
+    bmp @ is-tile? if s" " exit then  \ tiles not supported yet
+    bmp @ bitmap-file -path
+    f" %s bmp !" ;
 
 : calc-vel ( element - vx. vy. )
     >x 2@ px 2@ 2- ;

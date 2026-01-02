@@ -26,8 +26,6 @@ trait: %_element
     :: _context-menu ( menu - ) drop ;   \ override to add items / customize the menu
     :: on-clone ( - ) ;
     :: on-attach ( - ) ;
-    :: on-serialize ( cjson - ) drop ;    \ override to add custom JSON data
-    :: on-deserialize ( cjson - ) drop ;  \ override to read custom JSON data
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
