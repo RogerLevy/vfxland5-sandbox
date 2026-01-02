@@ -86,9 +86,6 @@ trait: %textual
         txt @ dup if lcount else 0 then ;
 trait;
 
-: _draw-text
-    txt @ ?dup if fnt @ fnt! lcount print then ;
-
 \ -- Label ---------------------------------------------------------------------
 
 variable editing
@@ -108,9 +105,15 @@ class: %label
 
     : editing-me?  editing @   focus me = and ;
 
+    : _draw-text
+        txt @ ?dup if fnt @ fnt! lcount print then 
+        editing-me? if 
+            me text@ nip 8 * 0 +at '_' glyph 
+        then ;
+
     :: _draw  
         editing-me? if red else clr @ rgba8 then
-        _draw-text ;
+        _draw-text ;        
 
     :: _mousedown ( btn - )
         lmb = -exit

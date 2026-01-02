@@ -504,15 +504,15 @@ defer _delete-micro
         gui-overlay 
         0 0 at micro-icons.png put 
 
-        \ - draw game -
-        machines {
-            0 40 100 100 zoom @ dup 2* al_set_clipping_rectangle 
-            cls
-            0 20 at 
-            \ draw sprites relative to their origin's remote positions
-            me render 
-            0 0 winw winh al_set_clipping_rectangle
-        } 
+        \ - draw game in a fixed viewport -
+        \ machines {
+        \     0 40 100 100 zoom @ dup 2* al_set_clipping_rectangle 
+        \     cls
+        \     0 20 at 
+        \     \ draw sprites relative to their origin's remote positions
+        \     me render 
+        \     0 0 winw winh al_set_clipping_rectangle
+        \ } 
 ;
 
 
