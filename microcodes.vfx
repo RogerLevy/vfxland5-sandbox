@@ -575,7 +575,8 @@ micros
 \ -- Misc ---------------------------------------------------------------------
 
 : clear  
-    ['] delete machines each
+    ['] unload machines each
+    going @ not if sweep then
     0 to hovered
     selection vacate ;
 
