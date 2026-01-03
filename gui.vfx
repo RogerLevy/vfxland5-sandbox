@@ -435,6 +435,7 @@ defer _topmost-element
     lmb pressed? if
         hovered if
             lmb hovered _mousedown
+            hovered -exit
             hovered { bolted? } not if
                 hovered ctrl? if +select else select then
                 selection #items if
