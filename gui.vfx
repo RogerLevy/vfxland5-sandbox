@@ -290,6 +290,7 @@ class: %command
 
     :: _mousedown ( btn - )
         lmb = -exit
+        bolted? not shift? not and ?exit
         obj @ ?dup if as> then
         me text@ evaluate ;
 class;
@@ -499,7 +500,7 @@ defer _topmost-element
 
 : gui-overlay ( - )
     [: { light-green 0.5 ppena! click-box } ;] selection each 
-    hovered ?dup if { yellow click-box } then ;
+    hovered ?dup if { bolted? if green else yellow then click-box } then ;
 
 \ -- Inspection ----------------------------------------------------------------
 
