@@ -1,10 +1,10 @@
 {
 	"root":	{
 		"class":	"%DESKTOP",
-		"X":	189,
-		"Y":	69,
+		"X":	66,
+		"Y":	20,
 		"FLAGS":	0,
-		"CLR":	-1303292417,
+		"CLR":	1448306175,
 		"children":	[{
 				"class":	"%PANEL",
 				"X":	160,
@@ -149,7 +149,7 @@
 				"Y":	230,
 				"FLAGS":	0,
 				"EN":	-1,
-				"VAL":	209,
+				"VAL":	355,
 				"DCY":	1,
 				"RX":	50,
 				"RY":	50,
@@ -724,7 +724,7 @@
 						"Y":	24,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	0.5897674560546875,
+						"VAL":	-0.586456298828125,
 						"DCY":	0.9699859619140625,
 						"THR":	1,
 						"STR":	1,
@@ -748,7 +748,73 @@
 				"FLAGS":	0,
 				"W":	320,
 				"H":	240,
-				"script":	"%idir%/init-scene-viewport.vfx"
+				"script":	"%idir%/init-scene-viewport.vfx",
+				"children":	[{
+						"class":	"%LABEL",
+						"X":	2.0000762939453125,
+						"Y":	-11.999923706054688,
+						"FLAGS":	0,
+						"W":	56,
+						"H":	8,
+						"TXT":	"Dungeon",
+						"CLR":	-1,
+						"EDITABLE":	-1,
+						"CLEAR-ON-EDIT":	0
+					}]
+			}, {
+				"class":	"%PANEL",
+				"X":	218,
+				"Y":	232,
+				"FLAGS":	0,
+				"W":	320,
+				"H":	240,
+				"CLR":	127,
+				"children":	[{
+						"class":	"%SPRITE",
+						"X":	191.00006103515625,
+						"Y":	97.0000762939453,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"forth":	"ROGER.TS 2 tile bmp !"
+					}, {
+						"class":	"%SPRITE",
+						"X":	216.00007629394531,
+						"Y":	95.00006103515625,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"forth":	"ROGER.TS 108 tile bmp !"
+					}, {
+						"class":	"%SPRITE",
+						"X":	237.00007629394531,
+						"Y":	97.00006103515625,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"forth":	"ROGER.TS 117 tile bmp !"
+					}, {
+						"class":	"%SPRITE",
+						"X":	266.00007629394531,
+						"Y":	99.00006103515625,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"forth":	"ROGER.TS 132 tile bmp !"
+					}]
+			}, {
+				"class":	"%SPRITE",
+				"X":	724.00007629394531,
+				"Y":	375.00007629394531,
+				"FLAGS":	0,
+				"EN":	-1,
+				"VAL":	1,
+				"DCY":	1,
+				"forth":	"roger.png bmp !"
 			}]
 	}
 }
