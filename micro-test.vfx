@@ -3,7 +3,10 @@ REQUIRE %idir%/microcodes.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 
 BITMAP %idir%/owl.png
- 
+BITMAP %idir%/roger.png
+roger.png 16 16 TILESET-FROM roger.ts
+
+
 : *kpress ( key xt - ability )
     %ability add { kp ! k ! me } ;
 
@@ -77,6 +80,7 @@ machines {{
                 %hitbox add {{ }}                 
                 0 0 at 
                 owl.png *sprite { } 
+                roger.ts 0 tile *sprite { } 
             }
         e}
         -50 0 +at

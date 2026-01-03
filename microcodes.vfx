@@ -413,7 +413,13 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     val @ advance-animation bmp ! ;
 
 %sprite :: forth@ ( - a len )
-    bmp @ is-tile? if s" " exit then  \ tiles not supported yet
+    bmp @ is-tile? if 
+        bmp @ bmp>parent bmp>ts 
+        dup 0 tile bmp @ swap -`
+        swap body>name``
+        f" %s %n tile bmp !"
+        exit
+    then  
     bmp @ bitmap-file -path
     f" %s bmp !" ;
 
@@ -583,4 +589,3 @@ micros
     s" machines.json" load-tree 
     machines delete
     to machines ;
-
