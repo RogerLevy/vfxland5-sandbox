@@ -85,11 +85,7 @@ class: %inspector
                 1 +to n
             then
         loop drop
-        150. n 1 + 9 * >p w 2! 
-        obj0 %_element is? if
-            w @ 10.0 + negate x !
-            0 y !
-        then ;
+        150. n 1 + 9 * >p w 2! ;
 
 class;
 
@@ -102,6 +98,12 @@ class;
                 me you >root push
             then
         then
+
+        obj @ %_element is? if
+            w @ 10.0 + negate x !
+            0 y !
+        then 
+
     me } ;
 
 : find-inspector ( object - inspector|0 )
