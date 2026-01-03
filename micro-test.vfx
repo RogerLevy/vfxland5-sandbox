@@ -1,3 +1,4 @@
+REQUIRE %idir%/mind.vfx
 REQUIRE %idir%/microcodes.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 
@@ -163,6 +164,10 @@ micros \ re-establish main loop
     memoize-include %idir%/init-scene-viewport.vfx
 } 
 
+
+class: %owl
+    %actor derive
+class;
 
 
 \ -- Menu Test -----------------------------------------------------------------
