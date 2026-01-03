@@ -1,4 +1,5 @@
 REQUIRE %idir%/element.vfx
+REQUIRE %idir%/save.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 
 class: %actor
@@ -7,23 +8,39 @@ class: %actor
 class;
 
 class: %stage
-    prop org :ref %element          \ scene GUI - minds, notes, debug viz
+    prop flyloft :ref %element          \ scene GUI - minds, notes, debug viz
 class;
 
 %actor :: unload
-    mind @ ?dup if unload mind off then  \ unload mind tree when actor dies
+    mind @ ?dup if unload then  \ unload mind tree when actor dies
     actor:unload ;
 
 class: %element
-    prop bod \ :ref %actor
+    prop bod :ref %actor
 class;
 
-: it's-alive ( element actor - )
-    2dup >mind ! swap >bod ! ;
+%element :: delete
+    bod @ ?dup if >mind off then  
+    element:delete ;
 
-\ : init-mind ( actor - ) 
-\     as>
-\     mind @ -exit  \ mind already exists (from save state), skip
-\     mindsrc @ ?dup if
-\         lcount load-tree   dup desktop @ push   me it's-alive
-\     then ;
+: it's-alive ( element - ) mind ! me swap >bod ! ;
+: >stage ( actor - stage ) >parent @ ;
+: my-flyloft ( - element ) me >stage >flyloft @ ;
+
+: init-mind ( - ) 
+    \ load mind template for current actor
+    my-flyloft -exit  \ no flyloft for the stage
+    mind @ -exit  \ if mind already exists (from save state), skip
+    mindsrc @ ?dup if
+        lcount load-tree   dup my-flyloft push   it's-alive
+    then ; 
+
+: hmake  e{ in-heap make e} ;
+
+: *mind ( class - object )
+    \ create a mind for current actor through code
+    my-flyloft 0= abort" No flyloft for current actor's stage!"
+    mind @ ?dup if unload then  \ if mind already exists, delete
+    hmake dup my-flyloft push   dup it's-alive ;
+
+

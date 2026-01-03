@@ -12,7 +12,7 @@ class: %inspector
     :: _draw  
         panel:_draw
         obj@ ?dup if 
-            dup %element is? if
+            dup %_element is? if
                 { abspos } 
                 abspos atp
                 1.0 thick $ffffff44 rgba8 ->line 
@@ -86,7 +86,7 @@ class: %inspector
             then
         loop drop
         150. n 1 + 9 * >p w 2! 
-        obj0 %element is? if
+        obj0 %_element is? if
             w @ 10.0 + negate x !
             0 y !
         then ;
@@ -95,10 +95,10 @@ class;
 
 : *inspector ( object - inspector )
     %inspector make { obj !
-        obj @ %element is? if
+        obj @ %_element is? if
             me obj @ push
         else
-            you dup %element is? if
+            you dup %_element is? if
                 me you >root push
             then
         then
@@ -110,7 +110,7 @@ class;
 
 : inspect ( object - )
     {: obj :} 
-    me %element is? not abort" INSPECT: Current object is not an element."
+    me %_element is? not abort" INSPECT: Current object is not an element."
     obj %inspector is? ?exit
     obj find-inspector ?dup if unload then
     obj *inspector drop ;

@@ -103,19 +103,19 @@ defer _sweep
     ['] unload me each  me sweep ;
 
 %element :: push
-    dup %element is? not abort" ELEMENT:PUSH : Source is not an element."
+    dup %_element is? not abort" ELEMENT:PUSH : Source is not an element."
     dup dltree:push on-attach ;
 
 %element :: insert-under
-    dup %element is? not abort" ELEMENT:INSERT-UNDER : Source is not an element."
+    dup %_element is? not abort" ELEMENT:INSERT-UNDER : Source is not an element."
     dltree:insert-under ;
 
 %element :: insert-over
-    dup %element is? not abort" ELEMENT:INSERT-OVER : Source is not an element."
+    dup %_element is? not abort" ELEMENT:INSERT-OVER : Source is not an element."
     dltree:insert-over ;
 
 %element :: unshift
-    dup %element is? not abort" ELEMENT:UNSHIFT : Source is not an element."
+    dup %_element is? not abort" ELEMENT:UNSHIFT : Source is not an element."
     dltree:unshift ;
 
 defer __process
@@ -126,7 +126,7 @@ defer __process
 %element :: draw
     \ TODO: fix this workaround
     vga-8x8 fnt!
-
+    
     at-me  me _draw ['] draw me each ;
 
 \ -- Clone ---------------------------------------------------------------------
