@@ -10,6 +10,18 @@ REQUIRE %idir%/shapes.vfx
 REQUIRE %idir%/colors.vfx
 REQUIRE %idir%/element.vfx
 
+\ -- Mode Toggle (F12) ---------------------------------------------------------
+
+variable using-mode   \ false = designing (default), true = using
+
+: designing? ( - flag ) using-mode @ not ;
+: using? ( - flag ) using-mode @ ;
+
+: toggle-mode ( - ) 
+    using-mode @ not using-mode ! 
+    using? if ." === USE MODE ===" cr 
+    else ." === DESIGN MODE ===" cr then  ;
+
 \ -- Desktop -------------------------------------------------------------------
 
 class: %desktop
@@ -394,7 +406,7 @@ c: %menu %panel ;
 
 : open-context-menu ( element - )
     close-context-menu
-    dup mouse from-root
+    dup mouse me from-element
     *menu to context-menu
     context-menu swap _context-menu
     context-menu #children 0= if close-context-menu then ;
@@ -408,12 +420,12 @@ c: %menu %panel ;
 variable drag-btn
 variable dragging
 
-|| : in?  2>p 2dup me click-box@ overlap? ;
+: in-me?  2>p 2dup me click-box@ overlap? ;
 
 defer _topmost-element
 [: 
     [: { 
-        mouse in? if drop me then
+        mouse in-me? if drop me then
         me _topmost-element 
     } ;] swap each
 ;] is _topmost-element
@@ -437,9 +449,14 @@ defer _topmost-element
     <space> held? ?exit
     lmb pressed? if
         hovered if
-            lmb hovered _mousedown
-            hovered -exit
-            hovered { bolted? } not if
+            \ Bolted elements always "use" on click
+            \ In using mode, all elements "use" on click
+            hovered { bolted? } using? or if
+                lmb hovered _mousedown
+            else
+                \ Designing mode + not bolted = drag behavior
+                lmb hovered _mousedown
+                hovered -exit
                 hovered ctrl? if +select else select then
                 selection #items if
                     lmb begin-drag
@@ -449,18 +466,13 @@ defer _topmost-element
             selection vacate
         then
     then
-    \ lmb letgo? if
-    \     hovered if
-    \         lmb hovered _mouseup
-    \     then
-    \ then ;
     drag-btn @ letgo? if
         end-drag
     then ;
 
 : handle-context-menu
-    rmb pressed? 
-    shift? not and if
+    designing? -exit
+    rmb pressed? shift? not and if
         hovered if
             hovered open-context-menu
         else
@@ -468,8 +480,7 @@ defer _topmost-element
         then
     then
     \ close on LMB click outside menu
-    lmb pressed? 
-    <space> pressed? not and if
+    lmb pressed? <space> pressed? not and if
         context-menu if
             hovered context-menu <>
             hovered context-menu contains? not and
@@ -484,17 +495,29 @@ defer _topmost-element
     2drop ;
 
 : handle-keys
-    <del> pressed? if 
+    <del> pressed? if
         ['] unload selection each
         selection vacate
     then ;
 
+: handle-mode-toggle
+    <tab> pressed? if toggle-mode then ;
+
+: handle-focused-keys
+    focused -exit
+    event? -exit
+    ALLEGRO_EVENT_KEY_DOWN happened? if
+        the-key focused _keydown
+    then ;
+
 : gui-input ( element - )
-    as> 
+    as>
     handle-lmb
     do-drag
-    topmost-element hover 
+    topmost-element hover
     handle-context-menu
+    handle-mode-toggle
+    handle-focused-keys
     handle-keys
 ;
 

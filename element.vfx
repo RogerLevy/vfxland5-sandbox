@@ -4,6 +4,7 @@ REQUIRE %vfxland5%/supershow/traits.vfx
 
 ECONTEXT gui-ec
 0 value hovered
+0 value focused   \ Element with keyboard focus
 1024 %addr stack selection
 
 redef : *lstring ( a n - a' )
@@ -34,6 +35,9 @@ trait: %_element
     :: _context-menu ( menu - ) drop ;   \ override to add items / customize the menu
     :: on-clone ( - ) ;
     :: on-attach ( - ) ;
+    :: on-focus ( - ) ;       \ Called when element gains keyboard focus
+    :: on-blur ( - ) ;        \ Called when element loses keyboard focus
+    :: _keydown ( key - ) drop ;  \ Keyboard input when focused
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
@@ -49,7 +53,7 @@ trait;
 : box  2over 2+ ;
 : ?push  2dup contains? if 2drop exit then push ;
 : see-thru   0.5 ppena! ;
-\ : click-dims  me click-box@ 2swap 2- ;
+: click-dims  click-box@ 2swap 2- ;
 
 : load-script ( path len - )
     expand slashes >pad count included ;
@@ -62,11 +66,20 @@ trait;
 : >root ( element - root )
     begin dup >parent @ ?dup while nip repeat ;
 
-: from-root ( element x y - )
-    rot >root >x 2@ 2>i 2- at ;
+: from-element ( absx absy element - )
+    { abspos } 2>i 2- at ;
 
-: relpos ( element - x. y. ) 
+: relpos ( element - x. y. )
     { abspos } abspos 2swap 2- ;
+
+\ -- Focus System --------------------------------------------------------------
+
+: focus! ( element - )
+    focused ?dup if on-blur then
+    dup to focused
+    ?dup if on-focus then ;
+
+: unfocus ( - ) 0 focus! ;
 
 \ -- Element Class -------------------------------------------------------------
 

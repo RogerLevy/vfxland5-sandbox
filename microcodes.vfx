@@ -592,6 +592,6 @@ micros
 
 : clear  
     ['] unload machines each
-    going @ not if sweep then
+    going @ not if machines sweep then
     0 to hovered
     selection vacate ;
