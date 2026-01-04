@@ -16,6 +16,10 @@ class: %painter
 
     template { 8 zm ! $FFFFFFFF fgc ! }
 
+    || : update-box
+        \ Set size based on bitmap dimensions * zm
+        sw-albmp @ dup albmpw swap albmph zm @ dup 2* 2>p w 2! ;
+
     \ Initialize from a bitmap ID
     : init-sw-albmp ( bmpid - )
         sw-albmp @ ?dup if al_destroy_bitmap then  \ Free old bitmap
@@ -24,8 +28,7 @@ class: %painter
         ALLEGRO_MEMORY_BITMAP al_set_new_bitmap_flags
         al_clone_bitmap sw-albmp !
         0 al_set_new_bitmap_flags
-        \ Set size based on bitmap dimensions * zm
-        sw-albmp @ dup albmpw swap albmph zm @ dup 2* 2>p w 2! ;
+        update-box ;
 
     : get-blender  0 0 0 sp@ dup cell+ dup cell+ swap rot al_get_blender ;
     : set-blender  al_set_blender ;
@@ -96,6 +99,7 @@ class: %painter
         rmb held? shift? not and if eyedrop then ;
 
     :: _process
+        update-box
         using? -exit ?mouse ;
 
     :: _keydown ( key - )
