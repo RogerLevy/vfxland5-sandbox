@@ -35,11 +35,9 @@ REQUIRE %idir%/shapes.vfx
 REQUIRE %idir%/arrow.vfx
 REQUIRE %idir%/colors.vfx
 
-\ -- Assets -------------------------------------------------------------------
+\ -- Variables------------------------------------------------------------------
 
-\ allocator@ .name cr
 BITMAP micro-icons.png
-\ allocator@ .name cr
 micro-icons.png 20 20 TILESET-FROM micro-icons.ts
 
 8.5 constant ICON_RADIUS
@@ -61,13 +59,7 @@ trait;
 
 \ TODO: Propagate IS-A and WORKS-WITH with classifier dependents
 class: %element  works-with %_micro  class;
-\ class: %panel  works-with %_micro  class;
 class: %inspector  works-with %_micro  class;
-\ class: %label  works-with %_micro  class;
-\ class: %numberfield  works-with %_micro  class;
-\ class: %menu-item  works-with %_micro  class;
-\ class: %menu  works-with %_micro  class;
-\ class: %desktop  works-with %_micro  class;
 
 REQUIRE %idir%/gui.vfx
 REQUIRE %idir%/save.vfx
@@ -100,6 +92,8 @@ class: %micro
     is-a %_micro
     template { in-heap en on 1.0 val ! 0.97 dcy ! -1 icon-color ! }
 class;
+
+
 
 \ -- Processing ---------------------------------------------------------------
 
@@ -520,7 +514,6 @@ class;
 %hud dmake value hud
 hud session push  
 
-
 : draw-hud
     hud -exit
     0 0 at 
@@ -528,18 +521,16 @@ hud session push
 
 : micros
     microcodes>> machines as 
+    display al_hide_mouse_cursor
     2 user-zoom !
     work> 
         get-mouse 
-        \ process-micros
         machines ?dup if decay then
         session ?dup if process-gui then 
     show> 
-        \ draw-machines
-        \ draw-hud
         session ?dup if 0 0 at draw then
         0 0 at gui-overlay 
-        \ 0 0 at micro-icons.png put 
+        draw-cursor 
 ;
 
 

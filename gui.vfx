@@ -22,6 +22,20 @@ variable using-mode   \ false = designing (default), true = using
     using? if ." === USE MODE ===" cr 
     else ." === DESIGN MODE ===" cr then  ;
 
+\ -- Cursors -------------------------------------------------------------------
+
+BITMAP cursors.png
+cursors.png 32 32 TILESET-FROM cursors.ts
+variable use-cursor
+variable design-cursor   
+0 constant pointer
+1 constant hammer  hammer design-cursor !
+2 constant hand
+
+: draw-cursor  
+    mouse at 
+    cursors.ts using? if use-cursor @ else design-cursor @ then tile cput ;
+
 \ -- Desktop -------------------------------------------------------------------
 
 class: %desktop
@@ -30,7 +44,15 @@ class: %desktop
     template { valof dark-grey clr ! +bolted }
 
     :: click-box@ 0 0 winw winh 2>p ;
-    :: _process <space> held? lmb? and if mickey 2>p x 2+! then ;
+    :: _process 
+        <space> held? if
+            hand use-cursor !
+            hand design-cursor !
+            lmb? if mickey 2>p x 2+! then 
+        else 
+            pointer use-cursor !
+            hammer design-cursor ! 
+        then ;
     :: _draw 0 0 at clr @ rgba8 winw winh 2>p rectf ;
 class;
 
