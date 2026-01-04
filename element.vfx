@@ -29,7 +29,8 @@ trait: %_element
     :: _process ( - ) ;
     :: _draw ( - ) ;
     :: delete ( - ) stub ;
-    :: draggable? ( - flag ) true ;
+    \ :: draggable? ( - flag ) true ;
+    :: active? ( - flag ) true ;
     :: _context-menu ( menu - ) drop ;   \ override to add items / customize the menu
     :: on-clone ( - ) ;
     :: on-attach ( - ) ;
@@ -73,6 +74,9 @@ class: %element
     is-a %_element
     template { gui-ec ecp! in-heap }
 class;
+
+%element :: .summary  
+    object:.summary x 2p? ;
 
 0 %element :construct ( - )
     at@p x 2!  gui-ec ecp! in-heap ;
@@ -120,13 +124,15 @@ defer _sweep
 
 defer __process
 : process ( element - )
+    dup active? not if drop exit then
     dup _process ['] __process swap each ;
 ['] process is __process
 
 %element :: draw
+    me active? not if exit then
     \ TODO: fix this workaround
     vga-8x8 fnt!
-    
+
     at-me  me _draw ['] draw me each ;
 
 \ -- Clone ---------------------------------------------------------------------

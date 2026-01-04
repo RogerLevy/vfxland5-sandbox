@@ -1,0 +1,11 @@
+0 0 at %element dmake value session
+
+\ -- Save/Load ----------------------------------------------------------------
+
+: save-all 
+    session s" session.json" save-tree ;
+
+: load-all
+    s" session.json" load-tree 
+    \ session delete   \ TODO: commented out as workaround for instability
+    to session ;

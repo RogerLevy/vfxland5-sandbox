@@ -15,7 +15,7 @@ REQUIRE %idir%/element.vfx
 class: %desktop
     %element derive
     prop clr <save
-    template { valof dark-grey clr ! }
+    template { valof dark-grey clr ! +bolted }
 
     :: click-box@ 0 0 winw winh 2>p ;
     :: _process <space> held? lmb? and if mickey 2>p x 2+! then ;
@@ -497,6 +497,9 @@ defer _topmost-element
     handle-context-menu
     handle-keys
 ;
+
+: process-gui ( element - )
+    dup gui-input dup process sweep ;
 
 : click-box  me click-box@ 2over atp 2swap 2- rect ;
 

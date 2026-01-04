@@ -71,6 +71,7 @@ class: %inspector  works-with %_micro  class;
 
 REQUIRE %idir%/gui.vfx
 REQUIRE %idir%/save.vfx
+REQUIRE %idir%/session.vfx
 
 trait: %animator
     prop anm <readonly
@@ -211,9 +212,6 @@ redef : icon
     icon-color @ rgba8 ICON_RADIUS circ             \ inner circle rim
     icon-bmp @ cput 
     context-menu not if me hint then ;
-
-%micro :: .summary  
-    object:.summary x 2p? ;
 
 %micro :: _draw
     icon connectors ;
@@ -468,6 +466,13 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 \ -- Lifecycle ----------------------------------------------------------------
 
 0 0 at %desktop dmake value machines
+machines session push
+
+%desktop :: active? ( - flag )
+    machines me = ;
+
+%desktop :: forth@ ( - a len )
+    machines me = if s" me to machines" else s" " then ;
 
 defer _delete-micro
 : delete-micro ( micro - )
@@ -480,14 +485,13 @@ defer _delete-micro
 
 \ -- Main Loop ----------------------------------------------------------------
 
-: process-micros
-    machines decay
-    machines gui-input 
-    machines process 
-    machines sweep ;
+\ : process-micros
+\     machines decay
+\     machines process-gui ;
 
-: draw-micros
-    0 0 at 
+: draw-machines
+    machines -exit
+    0 0 at
     machines draw ;
     \ machines hints ;
     
@@ -508,26 +512,34 @@ defer _delete-micro
 \     then
 \ ;
 
+class: %hud
+    %element derive
+    :: forth@  s" me to hud" ;
+class;
+
+%hud dmake value hud
+hud session push  
+
+
+: draw-hud
+    hud -exit
+    0 0 at 
+    hud draw ;
+
 : micros
     microcodes>> machines as 
     2 user-zoom !
     work> 
-        get-mouse process-micros
+        get-mouse 
+        \ process-micros
+        machines ?dup if decay then
+        session ?dup if process-gui then 
     show> 
-        \ - draw GUI -
-        draw-micros 
-        gui-overlay 
-        0 0 at micro-icons.png put 
-
-        \ - draw game in a fixed viewport -
-        \ machines {
-        \     0 40 100 100 zoom @ dup 2* al_set_clipping_rectangle 
-        \     cls
-        \     0 20 at 
-        \     \ draw sprites relative to their origin's remote positions
-        \     me render 
-        \     0 0 winw winh al_set_clipping_rectangle
-        \ } 
+        \ draw-machines
+        \ draw-hud
+        session ?dup if 0 0 at draw then
+        0 0 at gui-overlay 
+        \ 0 0 at micro-icons.png put 
 ;
 
 
@@ -583,13 +595,3 @@ micros
     going @ not if sweep then
     0 to hovered
     selection vacate ;
-
-\ -- Save/Load ----------------------------------------------------------------
-
-: save-all 
-    machines s" machines.json" save-tree ;
-
-: load-all
-    s" machines.json" load-tree 
-    \ machines delete   \ TODO: commented out as workaround for instability
-    to machines ;
