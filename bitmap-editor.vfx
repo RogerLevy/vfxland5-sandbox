@@ -58,8 +58,8 @@ class: %painter
         m{ at@p
             abspos 2p>f zm @ s>f fdup 0e transform
             0 0 at hw-bmp @ put
-        atp m} 
-        focused me = if cyan else grey then w 2@ rect ;
+        atp m}
+        grey w 2@ rect ;
 
     :: _mousedown ( btn - )
         drop  me focus! ;

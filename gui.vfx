@@ -553,8 +553,9 @@ defer _topmost-element
 : click-box  me click-box@ 2over atp 2swap 2- rect ;
 
 : gui-overlay ( - )
-    [: { light-green 0.5 ppena! click-box } ;] selection each 
-    hovered ?dup if { bolted? if green else yellow then click-box } then ;
+    [: { light-green 0.5 ppena! click-box } ;] selection each
+    hovered ?dup if { bolted? if green else yellow then click-box } then
+    focused ?dup if { cyan click-box } then ;
 
 \ -- Inspection ----------------------------------------------------------------
 
