@@ -7,7 +7,7 @@ ECONTEXT gui-ec
 1024 %addr stack selection
 
 redef : *lstring ( a n - a' )
-    dup cell+ allocate throw >r r@ lplace r> ;
+    dup cell+ 256 max allocate throw >r r@ lplace r> ;
 
 \ -- Base Trait ----------------------------------------------------------------
 

@@ -81,8 +81,9 @@ trait: %textual
         ( n ) pad c!  pad 1 txt @ lappend 
         _update-box ;
 
-    :: text@ ( - a len | 0 0 )
-        txt @ dup if lcount else 0 then ;
+    :: text@ ( - a len|0 )
+        txt @ 0= if s" " me text! then
+        txt @ lcount ;
 trait;
 
 \ -- Label ---------------------------------------------------------------------
@@ -120,7 +121,7 @@ class: %label
         me to focus
         editing on 
         original free drop
-        txt @ lcount *lstring to original 
+        me text@ *lstring to original 
         clear-on-edit @ if
             s" " me text! 
         then 
@@ -144,7 +145,7 @@ class: %label
         ALLEGRO_EVENT_KEY_CHAR happened? if 
             the-key <enter> = if
                 editing off
-                me text@ nip 0= if _revert then
+                \ me text@ nip 0= if _revert then
                 exit
             then
             \ the-key <enter> = if
