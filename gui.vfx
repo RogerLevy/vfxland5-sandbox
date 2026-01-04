@@ -124,7 +124,6 @@ trait;
 \ -- Label ---------------------------------------------------------------------
 
 variable editing
-0 value focus
 || 0 value original
 
 class: %label
@@ -138,63 +137,58 @@ class: %label
     :: on-clone
         me text@ *lstring txt ! _update-box ;
 
-    : editing-me?  editing @   focus me = and ;
+    : editing-me?  editing @ focused me = and ;
 
     : _draw-text
-        txt @ ?dup if fnt @ fnt! lcount print then 
-        editing-me? if 
-            me text@ nip 8 * 0 +at '_' glyph 
+        txt @ ?dup if fnt @ fnt! lcount print then
+        editing-me? if
+            me text@ nip 8 * 0 +at '_' glyph
         then ;
 
-    :: _draw  
+    :: _draw
         editing-me? if red else clr @ rgba8 then
-        _draw-text ;        
+        _draw-text ;
 
     :: _mousedown ( btn - )
         lmb = -exit
         editable @ -exit
-        me to focus
-        editing on 
+        me focus!
+        editing on
         original free drop
-        me text@ *lstring to original 
+        me text@ *lstring to original
         clear-on-edit @ if
-            s" " me text! 
-        then 
+            s" " me text!
+        then
     ;
 
     : _revert
         original lcount me text!
-        original free drop ;
+        original free drop
+        0 to original ;
+
+    : _stop-editing
+        editing off
+        esc-quits off ;
 
     :: _process
-        \ TODO: use ACT> (factor out a %statemachine trait)
         repl-game-active @ not if esc-quits on then
         editing-me? -exit
-        <esc> pressed? if   \ doesn't work if put in the event handler
-            editing off
+        <esc> pressed? if
+            _stop-editing
             _revert
-            esc-quits off
+        then ;
+
+    :: _keychar ( key - )
+        editing-me? not if drop exit then
+        dup <enter> = if
+            drop _stop-editing
             exit
         then
-        event? -exit
-        ALLEGRO_EVENT_KEY_CHAR happened? if 
-            the-key <enter> = if
-                editing off
-                \ me text@ nip 0= if _revert then
-                exit
-            then
-            \ the-key <enter> = if
-            \     10 me add-char
-            \     exit
-            \ then
-            the-key <bksp> = if
-                txt @ lcount 1 - 0 max me text!
-                exit
-            then
-            txt @ if
-                the-char me add-char
-            then
-        then ;
+        dup <bksp> = if
+            drop txt @ lcount 1 - 0 max me text!
+            exit
+        then
+        drop the-char me add-char ;
 
 class;
 
@@ -347,24 +341,30 @@ class: %repl
 
     :: _draw
         m >i negate dup +at
-        black see-thru w 2@ m m 2 2 2* 2+ rectf 
-        grey w 2@ m m 2 2 2* 2+ rect 
+        black see-thru w 2@ m m 2 2 2* 2+ rectf
+        grey w 2@ m m 2 2 2* 2+ rect
         m m 2>i +at
         yellow _draw-text ;
 
-    :: _process
-        editing-me? >r
-        w 2@ 2>r
-        label:_process
-        2r> w 2!
-        r> editing-me? not and if
-            obj @ ?dup if 
-                rot { evaluate } 
-            else 
-                me text@ evaluate
-            then
-            s" " me text!
-        then ;
+    : _evaluate
+        obj @ ?dup if
+            { me text@ evaluate }
+        else
+            me text@ evaluate
+        then
+        s" " me text! ;
+
+    :: _keychar ( key - )
+        editing-me? not if drop exit then
+        dup <enter> = if
+            drop _stop-editing _evaluate
+            exit
+        then
+        dup <bksp> = if
+            drop txt @ lcount 1 - 0 max me text!
+            exit
+        then
+        drop the-char me add-char ;
 
     :: text! ( a len - )
         w 2@ 2>r
@@ -527,9 +527,11 @@ defer _topmost-element
 
 : handle-focused-keys
     focused -exit
-    event? -exit
     ALLEGRO_EVENT_KEY_DOWN happened? if
         the-key focused _keydown
+    then
+    ALLEGRO_EVENT_KEY_CHAR happened? if
+        the-key focused _keychar
     then ;
 
 : gui-input ( element - )
@@ -539,7 +541,9 @@ defer _topmost-element
     topmost-element hover
     handle-context-menu
     handle-mode-toggle
-    handle-focused-keys
+    begin event? while
+        handle-focused-keys
+    repeat
     handle-keys
 ;
 

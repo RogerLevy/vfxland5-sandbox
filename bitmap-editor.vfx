@@ -92,23 +92,21 @@ class: %painter
 
     || : ?mouse
         me hovered = -exit
-        lmb held? if dot then 
-        rmb held? if eyedrop then ;
-
-    || : ?keychar
-        focused me = -exit
-        event? -exit
-        ALLEGRO_EVENT_KEY_CHAR happened? if 
-            the-key <,> = if prev-bitmap exit then
-            the-key <.> = if next-bitmap exit then
-        then ;
+        lmb held? <space> held? not and if dot then 
+        rmb held? shift? not and if eyedrop then ;
 
     :: _process
-        using? -exit ?mouse ?keychar ;
+        using? -exit ?mouse ;
 
     :: _keydown ( key - )
         using? not if drop exit then
         dup <s> = ctrl? and if drop save-bitmap exit then
+        drop ;
+
+    :: _keychar ( key - )
+        using? not if drop exit then
+        dup <,> = if drop prev-bitmap exit then
+        dup <.> = if drop next-bitmap exit then
         drop ;
 
     :: delete

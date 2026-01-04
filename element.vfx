@@ -37,7 +37,8 @@ trait: %_element
     :: on-attach ( - ) ;
     :: on-focus ( - ) ;       \ Called when element gains keyboard focus
     :: on-blur ( - ) ;        \ Called when element loses keyboard focus
-    :: _keydown ( key - ) drop ;  \ Keyboard input when focused
+    :: _keydown ( key - ) drop ;  \ Single key press (no repeat)
+    :: _keychar ( key - ) drop ;  \ Key with repeat
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
