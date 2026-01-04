@@ -572,6 +572,20 @@ require %idir%/inspect.vfx
         then
     then ;
 
+\ -- HUD -----------------------------------------------------------------------
+
+class: %hud
+    %element derive
+    :: forth@  s" me to hud" ;
+class;
+
+%hud dmake value hud 
+
+: draw-hud
+    hud -exit
+    0 0 at 
+    hud draw ;
+
 \ -- Default context menu ------------------------------------------------------
 
 : detach,
@@ -632,6 +646,15 @@ require %idir%/inspect.vfx
     ;] 
     you { bolted? } if s" Unbolt" else s" Bolt" then option ;
 
+: sticky,
+    you { bolted? } ?exit
+    hud -exit
+    you >parent @ hud = if
+        you [: abspos me dup >root push x 2! ;] s" Unsticky" option
+    else
+        you [: abspos me hud push x 2! ;] s" Sticky" option
+    then ;
+
 : common-options,
     clone,
     attach,
@@ -639,6 +662,7 @@ require %idir%/inspect.vfx
     front,
     back,
     bolt,
+    sticky,
     delete, ;
 
 %element :: _context-menu ( menu - )

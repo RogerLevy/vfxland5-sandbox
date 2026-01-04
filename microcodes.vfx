@@ -461,6 +461,7 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
 
 0 0 at %desktop dmake value machines
 machines session push
+hud session push
 
 %desktop :: active? ( - flag )
     machines me = ;
@@ -505,19 +506,6 @@ defer _delete-micro
 \         }
 \     then
 \ ;
-
-class: %hud
-    %element derive
-    :: forth@  s" me to hud" ;
-class;
-
-%hud dmake value hud
-hud session push  
-
-: draw-hud
-    hud -exit
-    0 0 at 
-    hud draw ;
 
 : micros
     microcodes>> machines as 
