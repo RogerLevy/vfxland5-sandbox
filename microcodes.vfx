@@ -590,7 +590,6 @@ micros
     machines s" machines.json" save-tree ;
 
 : load-all
-    clear
     s" machines.json" load-tree 
-    machines delete
+    \ machines delete   \ TODO: commented out as workaround for instability
     to machines ;
