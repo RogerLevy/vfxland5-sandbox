@@ -9,8 +9,8 @@ REQUIRE %vfxland5%/supershow/bitmap.vfx
 class: %painter
     %ui-box derive
 
-    prop sw-albmp :addr        \ Software bitmap (memory) for editing
-    prop hw-bmp <save          \ Hardware bitmap ID in registry
+    prop sw-albmp :addr         \ Software bitmap (memory) for editing
+    prop hw-bmp <save <readonly \ Hardware bitmap ID in registry
     prop zm <save
     prop fgc <save
 
