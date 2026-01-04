@@ -45,6 +45,7 @@ class;
 
 : +select  ( element - ) selection ?push ;
 : select   ( element - ) selection vacate selection push ;
+: this     ( - element ) selection peek ;
 
 \ -- Panel ---------------------------------------------------------------------
 
@@ -528,14 +529,14 @@ require %idir%/inspect.vfx
 
 : attach,
     selection #items if
-        you >parent @ selection peek = ?exit
+        you >parent @ this = ?exit
     else
         exit
     then
     you [: 
         selection #items -exit 
-        5 5 selection peek >x 2!
-        selection peek me push 
+        5 5 this >x 2!
+        this me push 
     ;] 
     s" Attach" option ;
 

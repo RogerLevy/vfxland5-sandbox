@@ -192,3 +192,5 @@ cr
 ."  Del: delete selected" cr
 
 fullscreen winmode >vfx
+
+load-all
