@@ -7,6 +7,8 @@ BITMAP %idir%/owl.png
 BITMAP %idir%/roger.png
 roger.png 16 16 TILESET-FROM roger.ts
 
+: paint ( bmpid - )
+    mouse at *paint hud push ;
 
 : *kpress ( key xt - ability )
     %ability add { kp ! k ! me } ;
