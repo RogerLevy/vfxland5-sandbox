@@ -10,6 +10,10 @@ REQUIRE %idir%/shapes.vfx
 REQUIRE %idir%/colors.vfx
 REQUIRE %idir%/element.vfx
 
+: white-connector ( element - )
+    abspos atp 1.0 thick $ffffff44 rgba8
+    { abspos } ->line ;
+
 \ -- Mode Toggle (F12) ---------------------------------------------------------
 
 variable using-mode   \ false = designing (default), true = using
@@ -448,7 +452,9 @@ defer _topmost-element
 [: 
     [: { 
         mouse in-me? if drop me then
-        me _topmost-element 
+        me opened? if
+            me _topmost-element 
+        then
     } ;] swap each
 ;] is _topmost-element
 
@@ -466,6 +472,11 @@ defer _topmost-element
 
 : end-drag ( -- )
     dragging off ;
+
+: handle-rmb 
+    rmb pressed? if
+        hovered ?dup if rmb swap _mousedown then
+    then ;
 
 : handle-lmb
     <space> held? ?exit
@@ -540,6 +551,7 @@ defer _topmost-element
 : gui-input ( element - )
     as>
     handle-lmb
+    handle-rmb
     do-drag
     topmost-element hover
     handle-context-menu

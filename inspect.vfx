@@ -13,9 +13,7 @@ class: %inspector
         panel:_draw
         obj@ ?dup if 
             dup %_element is? if
-                { abspos } 
-                abspos atp
-                1.0 thick $ffffff44 rgba8 ->line 
+                white-connector
             else drop then
         then ;
 

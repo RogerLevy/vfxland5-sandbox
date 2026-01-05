@@ -2,6 +2,7 @@ REQUIRE %idir%/mind.vfx
 REQUIRE %idir%/microcodes.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
 REQUIRE %idir%/painter.vfx
+REQUIRE %idir%/togglebox.vfx
 
 BITMAP %idir%/owl.png
 BITMAP %idir%/roger.png

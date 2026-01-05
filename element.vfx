@@ -28,6 +28,7 @@ trait: %_element
     \ :: _mouseup ( btn - ) drop ;
     \ :: _mousemove ( - ) ;
     :: _process ( - ) ;
+    :: process ( - ) ;
     :: _draw ( - ) ;
     :: delete ( - ) stub ;
     \ :: draggable? ( - flag ) true ;
@@ -39,6 +40,7 @@ trait: %_element
     :: on-blur ( - ) ;        \ Called when element loses keyboard focus
     :: _keydown ( key - ) drop ;  \ Single key press (no repeat)
     :: _keychar ( key - ) drop ;  \ Key with repeat
+    :: opened? ( - flag ) true ;
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
@@ -138,14 +140,12 @@ defer _sweep
     dup %_element is? not abort" ELEMENT:UNSHIFT : Source is not an element."
     dltree:unshift ;
 
-defer __process
-: process ( element - )
-    dup active? not if drop exit then
-    dup _process ['] __process swap each ;
-['] process is __process
+%element :: process ( - )
+    me active? -exit
+    me _process ['] process me each ;
 
 %element :: draw
-    me active? not if exit then
+    me active? -exit
     \ TODO: fix this workaround
     vga-8x8 fnt!
 
