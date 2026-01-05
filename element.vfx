@@ -104,6 +104,7 @@ class;
     dup dlremove free drop ;
 
 %element :: delete
+    me focused = if 0 to focused then 
     me delete-element ;
 
 \ -- Element Methods -----------------------------------------------------------
