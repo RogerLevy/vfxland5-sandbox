@@ -12,8 +12,8 @@
 				"CLR":	1077952767
 			}, {
 				"class":	"%DESKTOP",
-				"X":	266,
-				"Y":	-47,
+				"X":	-226,
+				"Y":	-211,
 				"FLAGS":	2,
 				"CLR":	1077960959,
 				"forth":	"me to machines",
@@ -23,7 +23,7 @@
 						"Y":	230,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	2904,
+						"VAL":	9321,
 						"DCY":	1,
 						"RX":	50,
 						"RY":	50,
@@ -598,7 +598,7 @@
 								"Y":	24,
 								"FLAGS":	0,
 								"EN":	-1,
-								"VAL":	-0.3694000244140625,
+								"VAL":	0,
 								"DCY":	0.9699859619140625,
 								"THR":	1,
 								"STR":	1,
@@ -923,26 +923,6 @@
 									}]
 							}]
 					}, {
-						"class":	"%VIEWPORT",
-						"X":	228,
-						"Y":	19,
-						"FLAGS":	0,
-						"W":	320,
-						"H":	240,
-						"script":	"%idir%/init-scene-viewport.vfx",
-						"children":	[{
-								"class":	"%LABEL",
-								"X":	2.0000762939453125,
-								"Y":	-11.999923706054688,
-								"FLAGS":	0,
-								"W":	56,
-								"H":	8,
-								"TXT":	"Dungeon",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}]
-					}, {
 						"class":	"%PANEL",
 						"X":	226,
 						"Y":	284,
@@ -979,8 +959,8 @@
 								"forth":	"ROGER.TS 117 tile bmp !",
 								"children":	[{
 										"class":	"%PAINTER",
-										"X":	24,
-										"Y":	0,
+										"X":	31,
+										"Y":	17,
 										"FLAGS":	0,
 										"W":	128,
 										"H":	128,
@@ -1048,11 +1028,11 @@
 														"FLAGS":	2,
 														"W":	24,
 														"H":	8,
-														"TXT":	"24.",
+														"TXT":	"31.",
 														"CLR":	-1,
 														"EDITABLE":	-1,
 														"CLEAR-ON-EDIT":	-1,
-														"VAL":	1572864,
+														"VAL":	2031616,
 														"VAL-TYPE":	2
 													}, {
 														"class":	"%LABEL",
@@ -1070,13 +1050,13 @@
 														"X":	100,
 														"Y":	27,
 														"FLAGS":	2,
-														"W":	16,
+														"W":	24,
 														"H":	8,
-														"TXT":	"0.",
+														"TXT":	"17.",
 														"CLR":	-1,
 														"EDITABLE":	-1,
 														"CLEAR-ON-EDIT":	-1,
-														"VAL":	0,
+														"VAL":	1114112,
 														"VAL-TYPE":	2
 													}, {
 														"class":	"%LABEL",
@@ -1711,8 +1691,8 @@
 				"forth":	"me to hud",
 				"children":	[{
 						"class":	"%PANEL",
-						"X":	702,
-						"Y":	5,
+						"X":	705,
+						"Y":	7,
 						"FLAGS":	2,
 						"W":	250,
 						"H":	150,
@@ -1846,6 +1826,37 @@
 								"CLEAR-ON-EDIT":	-1,
 								"VAL":	13,
 								"VAL-TYPE":	1
+							}]
+					}, {
+						"class":	"%VIEWPORT",
+						"X":	634,
+						"Y":	164,
+						"FLAGS":	0,
+						"W":	320,
+						"H":	240,
+						"script":	"%idir%/init-scene-viewport.vfx",
+						"children":	[{
+								"class":	"%LABEL",
+								"X":	2.0000762939453125,
+								"Y":	-11.999923706054688,
+								"FLAGS":	0,
+								"W":	56,
+								"H":	8,
+								"TXT":	"Dungeon",
+								"CLR":	-1,
+								"EDITABLE":	-1,
+								"CLEAR-ON-EDIT":	0
+							}, {
+								"class":	"%COMMAND",
+								"X":	3.0000762939453125,
+								"Y":	246.00007629394531,
+								"FLAGS":	2,
+								"W":	151,
+								"H":	8,
+								"TXT":	"parent @ >active on",
+								"CLR":	-1,
+								"EDITABLE":	-1,
+								"CLEAR-ON-EDIT":	0
 							}]
 					}]
 			}]

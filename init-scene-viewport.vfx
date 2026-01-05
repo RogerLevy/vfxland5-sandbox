@@ -1,4 +1,5 @@
-[: step p1 track 
+[: 
+    active @ if step p1 track then
     m{ 
         abspos 2p>f 1e 1e 0e transform
         scn@ draw animate 

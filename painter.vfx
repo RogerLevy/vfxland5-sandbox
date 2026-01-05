@@ -54,18 +54,18 @@ class: %painter
             0= abort" Error saving bitmap" 
         hw-bmp @ bitmap-file f" Saved bitmap to %s" type cr ;
 
-    \ :: click-box@ ( - x1 y1 x2 y2 ) abspos w 2@ box ;
-
     :: _draw
-        sw-albmp @ -exit
-        m{ at@p
-            abspos 2p>f zm @ s>f fdup 0e transform
-            0 0 at hw-bmp @ put
-        atp m}
+        black see-thru w 2@ rectf 
+        sw-albmp @ if
+            m{ at@p
+                abspos 2p>f zm @ s>f fdup 0e transform
+                0 0 at hw-bmp @ put
+            atp m}
+        then
         grey w 2@ rect ;
 
     :: _mousedown ( btn - )
-        drop  me focus! ;
+        drop  me focus ;
 
     \ Mouse -> bitmap coordinates
     : mouse>bmp ( - x y )

@@ -75,12 +75,13 @@ trait;
 
 \ -- Focus System --------------------------------------------------------------
 
-: focus! ( element - )
+: focus ( element - )
     focused ?dup if on-blur then
     dup to focused
     ?dup if on-focus then ;
 
-: unfocus ( - ) 0 focus! ;
+: unfocus ( - ) 
+    0 focus ;
 
 \ -- Element Class -------------------------------------------------------------
 

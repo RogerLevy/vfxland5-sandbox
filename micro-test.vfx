@@ -1,7 +1,7 @@
 REQUIRE %idir%/mind.vfx
 REQUIRE %idir%/microcodes.vfx
 REQUIRE %vfxland5%/supershow/stage.vfx
-REQUIRE %idir%/bitmap-editor.vfx
+REQUIRE %idir%/painter.vfx
 
 BITMAP %idir%/owl.png
 BITMAP %idir%/roger.png
@@ -52,6 +52,15 @@ c: %rando %origin startx starty ;
 class: %viewport %ui-box derive
     works-with %_micro
     prop xt :xt
+    prop active <readonly
+
+    :: on-focus  active on ;
+    :: on-blur   active off ;
+
+    :: _mousedown 
+        lmb = -exit
+        <space> held? ?exit
+        me focus ;
 
     :: _draw
         abspos 2>i zoom @ dup 2*``
