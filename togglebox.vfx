@@ -4,6 +4,8 @@ class: %togglebox
     template { opn on }
 
     :: opened?  opn @ ;
+    :: open     opn on ;
+    :: close    opn off ;
 
     :: process
         me active? -exit

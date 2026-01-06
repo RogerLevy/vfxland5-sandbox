@@ -210,3 +210,4 @@ cr
 fullscreen winmode >vfx
 
 load-all
+['] close hud each 

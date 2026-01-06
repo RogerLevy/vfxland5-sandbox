@@ -41,6 +41,8 @@ trait: %_element
     :: _keydown ( key - ) drop ;  \ Single key press (no repeat)
     :: _keychar ( key - ) drop ;  \ Key with repeat
     :: opened? ( - flag ) true ;
+    :: open ( - ) ;
+    :: close ( - ) ;
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
