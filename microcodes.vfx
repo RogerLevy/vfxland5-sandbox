@@ -277,7 +277,11 @@ class: %rng  %micro derive  non-decaying
     prop ofs <save         \ output value offset
 class;
 
-c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
+class: %sprite  %micro derive  non-decaying   \ val modulates speed
+    is-a %animator 
+    prop bmp 
+    prop flp <save
+class;
 
 \ -- Defaults ------------------------------------------------------------------
 
@@ -315,8 +319,10 @@ c: %sprite  %micro %animator bmp [non-decaying] ; \ val modulates speed
     icon-bmp @ cput
     connectors ;
 
+|| : ?flip  flp @ 24 << or ; 
+
 %sprite :: _draw
-    bmp @ ?dup if cput else icon then ;
+    bmp @ ?dup if ?flip cput else icon then ;
     \ connectors ;
 
 \ %hitbox :: click-box@

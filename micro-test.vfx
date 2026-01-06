@@ -12,7 +12,7 @@ roger.png 16 16 TILESET-FROM roger.ts
 : 3x  3 user-zoom ! ;
 
 : paint ( bmpid - )
-    mouse at *paint hud push ;
+    mouse at hud { *paint drop } ;
 
 : *kpress ( key xt - ability )
     %ability add { kp ! k ! me } ;

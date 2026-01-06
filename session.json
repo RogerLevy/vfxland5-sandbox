@@ -12,10 +12,10 @@
 				"CLR":	1077952767
 			}, {
 				"class":	"%DESKTOP",
-				"X":	103,
-				"Y":	-40,
+				"X":	125,
+				"Y":	-31,
 				"FLAGS":	2,
-				"CLR":	1077960959,
+				"CLR":	2049598207,
 				"forth":	"me to machines",
 				"children":	[{
 						"class":	"%ORIGIN",
@@ -23,7 +23,7 @@
 						"Y":	230,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	14254,
+						"VAL":	19759,
 						"DCY":	1,
 						"RX":	50,
 						"RY":	50,
@@ -61,6 +61,7 @@
 										"EN":	-1,
 										"VAL":	1,
 										"DCY":	1,
+										"FLP":	0,
 										"forth":	"owl.png bmp !"
 									}, {
 										"class":	"%SPRITE",
@@ -70,6 +71,7 @@
 										"EN":	-1,
 										"VAL":	1,
 										"DCY":	1,
+										"FLP":	0,
 										"forth":	"ROGER.TS 2 tile bmp !"
 									}]
 							}, {
@@ -171,7 +173,7 @@
 								"Y":	24,
 								"FLAGS":	0,
 								"EN":	-1,
-								"VAL":	0.234649658203125,
+								"VAL":	0.092529296875,
 								"DCY":	0.9699859619140625,
 								"THR":	1,
 								"STR":	1,
@@ -198,23 +200,24 @@
 						"CLR":	127,
 						"children":	[{
 								"class":	"%SPRITE",
-								"X":	81.00006103515625,
-								"Y":	103.00006103515625,
+								"X":	17.00006103515625,
+								"Y":	226.00006103515625,
 								"FLAGS":	0,
 								"EN":	-1,
 								"VAL":	0,
 								"DCY":	0.989990234375,
+								"FLP":	1,
 								"forth":	"ROGER.TS 117 tile bmp !",
 								"children":	[{
 										"class":	"%PAINTER",
-										"X":	21,
-										"Y":	19,
+										"X":	-23,
+										"Y":	22,
 										"FLAGS":	0,
 										"W":	128,
 										"H":	128,
 										"HW-BMP":	135,
 										"ZM":	8,
-										"FGC":	-2115895041
+										"FGC":	-1
 									}]
 							}, {
 								"class":	"%SPRITE",
@@ -224,6 +227,7 @@
 								"EN":	-1,
 								"VAL":	1,
 								"DCY":	1,
+								"FLP":	0,
 								"forth":	"ROGER.TS 115 tile bmp !"
 							}, {
 								"class":	"%SPRITE",
@@ -233,6 +237,7 @@
 								"EN":	-1,
 								"VAL":	1,
 								"DCY":	1,
+								"FLP":	0,
 								"forth":	"ROGER.TS 132 tile bmp !"
 							}, {
 								"class":	"%SPRITE",
@@ -242,16 +247,29 @@
 								"EN":	-1,
 								"VAL":	1,
 								"DCY":	1,
+								"FLP":	0,
 								"forth":	"ROGER.TS 108 tile bmp !"
 							}, {
 								"class":	"%SPRITE",
-								"X":	191,
-								"Y":	97,
+								"X":	193,
+								"Y":	227,
 								"FLAGS":	0,
 								"EN":	-1,
 								"VAL":	1,
 								"DCY":	1,
-								"forth":	"ROGER.TS 2 tile bmp !"
+								"FLP":	0,
+								"forth":	"ROGER.TS 2 tile bmp !",
+								"children":	[{
+										"class":	"%PAINTER",
+										"X":	-31,
+										"Y":	21,
+										"FLAGS":	0,
+										"W":	128,
+										"H":	128,
+										"HW-BMP":	20,
+										"ZM":	8,
+										"FGC":	-1
+									}]
 							}]
 					}, {
 						"class":	"%SPRITE",
@@ -261,6 +279,7 @@
 						"EN":	-1,
 						"VAL":	1,
 						"DCY":	1,
+						"FLP":	0,
 						"forth":	"roger.png bmp !"
 					}, {
 						"class":	"%PANEL",
@@ -293,54 +312,6 @@
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	-1,
 								"VAL":	8060928,
-								"VAL-TYPE":	2
-							}, {
-								"class":	"%LABEL",
-								"X":	10,
-								"Y":	58,
-								"FLAGS":	0,
-								"W":	24,
-								"H":	8,
-								"TXT":	"x: ",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}, {
-								"class":	"%NUMBERFIELD",
-								"X":	42,
-								"Y":	58,
-								"FLAGS":	0,
-								"W":	32,
-								"H":	8,
-								"TXT":	"160.",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	-1,
-								"VAL":	10485760,
-								"VAL-TYPE":	2
-							}, {
-								"class":	"%LABEL",
-								"X":	10,
-								"Y":	74,
-								"FLAGS":	0,
-								"W":	24,
-								"H":	8,
-								"TXT":	"y: ",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}, {
-								"class":	"%NUMBERFIELD",
-								"X":	42,
-								"Y":	74,
-								"FLAGS":	0,
-								"W":	24,
-								"H":	8,
-								"TXT":	"20.",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	-1,
-								"VAL":	1310720,
 								"VAL-TYPE":	2
 							}, {
 								"class":	"%COMMAND",
