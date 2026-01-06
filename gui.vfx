@@ -670,6 +670,11 @@ class;
         you [: abspos me hud push x 2! ;] s" Sticky" option
     then ;
 
+: clear,
+    you #children -exit
+    you [: ['] unload me each ;] 
+    s" Clear" option ;
+
 : common-options,
     clone,
     attach,
@@ -678,6 +683,7 @@ class;
     back,
     bolt,
     sticky,
+    clear,
     delete, ;
 
 %element :: _context-menu ( menu - )
