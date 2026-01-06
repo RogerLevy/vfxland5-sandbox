@@ -5,7 +5,7 @@ borrow nib2>> prop+
 class: %inspector 
     %panel derive
     prop obj :ref %object <readonly
-    template { $2070e080 clr ! }
+    template { $2070e0d0 clr ! }
 
     || : obj@  obj @ ?dup 0= if parent @ then ;
 
