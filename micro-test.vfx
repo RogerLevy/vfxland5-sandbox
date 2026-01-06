@@ -8,6 +8,9 @@ BITMAP %idir%/owl.png
 BITMAP %idir%/roger.png
 roger.png 16 16 TILESET-FROM roger.ts
 
+: 2x  2 user-zoom ! ;
+: 3x  3 user-zoom ! ;
+
 : paint ( bmpid - )
     mouse at *paint hud push ;
 
