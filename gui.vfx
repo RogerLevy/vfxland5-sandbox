@@ -617,7 +617,7 @@ class;
     then
     you [: 
         selection #items -exit 
-        5 5 this >x 2!
+        this { you relpos x 2! }
         this me push 
     ;] 
     s" Attach" option ;
