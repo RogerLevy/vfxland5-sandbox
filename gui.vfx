@@ -569,7 +569,7 @@ defer _topmost-element
 
 : gui-overlay ( - )
     [: { light-green 0.5 ppena! click-box } ;] selection each
-    hovered ?dup if { bolted? if green else yellow then click-box } then
+    hovered ?dup if { bolted? if yellow else green then click-box } then
     focused ?dup if { cyan click-box } then ;
 
 \ -- Inspection ----------------------------------------------------------------
@@ -627,13 +627,14 @@ class;
     you [: me unload ;] s" Delete" option ;
 
 : clone,
-    you { bolted? } ?exit 
+    \ you { bolted? } ?exit 
     you [: 
         me deep-clone dup me insert-over 
         { 
             5. 5. x 2+! 
             selection vacate
             me selection push
+            -bolted
             me to hovered
         } 
     ;] 
