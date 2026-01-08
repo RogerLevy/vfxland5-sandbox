@@ -162,6 +162,7 @@ defer _sweep
             0 dup dup dup dup
             parent ! prev ! next ! lowest ! highest !
             0 item-count !
+            script @ ?dup if lcount *lstring script ! then
             me on-clone
         me } ;
 
