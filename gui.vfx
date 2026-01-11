@@ -356,13 +356,13 @@ class: %repl
             { me text@ evaluate }
         else
             me text@ evaluate
-        then
-        s" " me text! ;
+        then ;
 
     :: _keychar ( key - )
         editing-me? not if drop exit then
         dup <enter> = if
-            drop _stop-editing _evaluate
+            drop _stop-editing ['] _evaluate catch .throw
+            s" " me text! 
             exit
         then
         dup <bksp> = if
