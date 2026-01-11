@@ -1,3 +1,8 @@
+me {
+    require %idir%/dungeon/main.vfx
+    micros
+}
+
 [: 
     active @ if step p1 track then
     m{ 

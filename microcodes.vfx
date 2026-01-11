@@ -62,7 +62,6 @@ class: %element  works-with %_micro  class;
 class: %inspector  works-with %_micro  class;
 
 REQUIRE %idir%/gui.vfx
-REQUIRE %idir%/save.vfx
 REQUIRE %idir%/session.vfx
 
 trait: %animator

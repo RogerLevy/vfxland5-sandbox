@@ -9,6 +9,7 @@ REQUIRE %vfxland5%/lib/mouse.vfx
 REQUIRE %idir%/shapes.vfx
 REQUIRE %idir%/colors.vfx
 REQUIRE %idir%/element.vfx
+REQUIRE %idir%/save.vfx
 
 : white-connector ( element - )
     abspos atp 1.0 thick $ffffff44 rgba8

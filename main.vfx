@@ -8,4 +8,5 @@
 \ include %idir%/shapes.vfx
 
 \ include %idir%/microcodes.vfx
-include %idir%/micro-test.vfx
+\ include %idir%/micro-test.vfx
+include %idir%/micro-test2.vfx

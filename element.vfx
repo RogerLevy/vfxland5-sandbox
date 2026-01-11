@@ -61,12 +61,14 @@ trait;
 : click-dims  click-box@ 2swap 2- ;
 
 : load-script ( path len - )
-    expand slashes >pad count included ;
+    expand slashes >pad count required ;
+
+: set-script ( path len - )
+    2dup *lstring script ! load-script ;
 
 : memoize-include ( <path> - )
     me %_element is? not abort" Current object is not an element."
-    bl parse 2dup *lstring script !
-    load-script ;
+    bl parse set-script ;
 
 : >root ( element - root )
     begin dup >parent @ ?dup while nip repeat ;

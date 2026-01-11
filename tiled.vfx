@@ -108,7 +108,8 @@ private
     tsjSrc "tilewidth" j>n`
     tsjSrc "image" j>s -path``
     f" %s %n %n TILESET-FROM %s.ts" .evaluate
-    tsjSrc lastbody get-tsj-properties
+    tsjSrc 
+    tsSrc "source" j>s -path -ext f" %s.ts" evaluate get-tsj-properties
 ;
 
 : find-first-nonzero ( array - n )

@@ -1,0 +1,47 @@
+: 2x  2 user-zoom ! ;
+: 3x  3 user-zoom ! ;
+
+: paint ( bmpid - )
+    mouse at hud { *paint drop } ;
+
+: *kpress ( key xt - ability )
+    %ability add { kp ! k ! me } ;
+
+c: %gravity %move [non-decaying] ;
+%gravity >template { 90. ang ! 0.03 acc ! }
+
+: *sprite ( bmp - sprite )
+    %sprite add { bmp ! me } ;
+
+\ -- Viewport (experimental) ---------------------------------------------------
+
+class: %viewport %ui-box derive
+    works-with %_micro
+    prop xt :xt
+    prop active <readonly
+
+    :: on-focus  active on ;
+    :: on-blur   active off ;
+
+    :: _mousedown 
+        lmb = -exit
+        <space> held? ?exit
+        me focus ;
+
+    :: _draw
+        abspos 2>i zoom @ dup 2*``
+        w 2@ 2>i zoom @ dup 2*`` al_set_clipping_rectangle 
+        cls 
+        xt @ dup if catch dup if nip then then
+        0 0 winw winh al_set_clipping_rectangle 
+        throw ;
+
+class;
+
+: *viewport ( w h - viewport )
+    %viewport add { 2>p w 2! me } ;
+
+class: %owl
+    %actor derive
+class;
+

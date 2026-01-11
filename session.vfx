@@ -4,12 +4,14 @@
 
 also cjson2>>
 
+: session-relpath  s" ." 2swap >relpath ;
+
 : asset>json ( asset - json|0 )
     as>
     me .summary cr
     [defined] %bitmap [if]
         me %bitmap is? if 
-            srcpath$ count f" bitmap %s" 
+            srcpath$ count session-relpath f" bitmap %s" 
             >zpad new-string exit 
         then
     [then]
@@ -21,7 +23,7 @@ also cjson2>>
     [then]
     [defined] %sample [if]
         me %sample is? if 
-            srcpath$ count f" sample %s" 
+            srcpath$ count session-relpath f" sample %s" 
             >zpad new-string exit 
         then 
     [then]
