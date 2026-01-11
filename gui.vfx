@@ -679,7 +679,7 @@ class;
 : common-options,
     clone,
     attach,
-    detach,
+    \ detach,
     front,
     back,
     bolt,
