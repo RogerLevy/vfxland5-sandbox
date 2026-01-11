@@ -2,10 +2,54 @@
 
 \ -- Save/Load ----------------------------------------------------------------
 
+also cjson2>>
+
+: asset>json ( asset - json|0 )
+    as>
+    me .summary cr
+    [defined] %bitmap [if]
+        me %bitmap is? if 
+            srcpath$ count f" bitmap %s" 
+            >zpad new-string exit 
+        then
+    [then]
+    [defined] %tileset [if]
+        me %tileset is? if 
+            me body>name` tw 2@ swap`` bmp @ id>bmp body>name` f" %s %n %n tileset-from %s" 
+            >zpad new-string exit 
+        then 
+    [then]
+    [defined] %sample [if]
+        me %sample is? if 
+            srcpath$ count f" sample %s" 
+            >zpad new-string exit 
+        then 
+    [then]
+    0  
+;
+
+: autoloads>json ( - json )
+    new-array {: jarray :}
+    autoloads list-count for
+        list-next asset>json 0 jarray add-item
+    loop drop 
+    jarray ;
+
 : save-all 
-    session s" session.json" save-tree ;
+    session s" session.json" save-tree 
+    s" session.json" load-json >r 
+    autoloads>json "autoloads" r@ add-item 
+    r> s" session.json" save-json 
+;
 
 : load-all
+    s" session.json" load-json >r
+    r@ "autoloads" ?j>j ?dup if
+        [: j>s ['] .evaluate catch if 2drop then ;] jeach
+    then
+    r> destroy-json
+
     s" session.json" load-tree 
     \ session delete   \ TODO: commented out as workaround for instability
-    to session ;
+    to session 
+;

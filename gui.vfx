@@ -617,6 +617,7 @@ class;
     then
     you [: 
         selection #items -exit 
+        this me = ?exit
         this { you relpos x 2! }
         this me push 
     ;] 

@@ -12,8 +12,8 @@
 				"CLR":	1077952767
 			}, {
 				"class":	"%DESKTOP",
-				"X":	126,
-				"Y":	80,
+				"X":	172,
+				"Y":	24,
 				"FLAGS":	2,
 				"CLR":	2033606399,
 				"forth":	"me to machines",
@@ -23,7 +23,7 @@
 						"Y":	232,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	13229,
+						"VAL":	14542,
 						"DCY":	1,
 						"RX":	50,
 						"RY":	50,
@@ -173,7 +173,7 @@
 								"Y":	24,
 								"FLAGS":	0,
 								"EN":	-1,
-								"VAL":	-0.3041534423828125,
+								"VAL":	-0.2767791748046875,
 								"DCY":	0.9699859619140625,
 								"THR":	1,
 								"STR":	1,
@@ -330,6 +330,16 @@
 						"DCY":	1,
 						"FLP":	0,
 						"forth":	"ROGER.TS 132 tile bmp !"
+					}, {
+						"class":	"%SPRITE",
+						"X":	270,
+						"Y":	211,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"FLP":	0,
+						"forth":	"heyyy.png bmp !"
 					}]
 			}, {
 				"class":	"%HUD",
@@ -606,5 +616,6 @@
 							}]
 					}]
 			}]
-	}
+	},
+	"autoloads":	["bitmap micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap %idir%\\owl.png", "bitmap %idir%\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap %idir%\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap %idir%\\blobby.png", "bitmap %idir%\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap heyyy.png"]
 }
