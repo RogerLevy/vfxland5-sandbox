@@ -132,7 +132,9 @@ class;
 : paint, ( - )
     you [:
         bmp @ *paint {
-            you click-dims drop 8. + 0 x 2!
+            you click-dims 2 -2 2/ x 2!
+            you >bmp @ bmpwh max 48 >= if 4 zm ! then
+            you >bmp @ bmpwh max 96 >= if 2 zm ! then
         }
     ;] s" Paint" option ;
 
