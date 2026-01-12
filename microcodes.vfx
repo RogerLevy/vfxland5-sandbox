@@ -483,6 +483,41 @@ defer _delete-micro
 
 %micro :: delete  me delete-micro ;
 
+\ -- Bookmark -----------------------------------------------------------------
+
+class: %bookmark
+    %label derive
+    prop dx :fixed <save
+    prop dy :fixed <save
+
+    || 2. constant m
+
+    :: click-box@ ( - x1 y1 x2 y2 )
+        abspos m m 2- w 2@ m m 2 2 2* 2+ box ;
+
+    :: _draw
+        _update-box
+        m >i negate dup +at
+        light-green w 2@ m m 2 2 2* 2+ rectf
+        black w 2@ m m 2 2 2* 2+ rect
+        m m 2>i +at
+        black _draw-text ;
+    
+    :: _mousedown ( btn - )
+        lmb = -exit
+        bolted? not shift? not and ?exit
+        dx 2@ machines >x 2! ;
+
+    : bookmark,
+        you [:
+            machines -> x 2@ dx 2!
+        ;] s" Bookmark" option ;
+
+    :: _context-menu ( menu - )
+        as>
+        bookmark,
+        common-options, ;
+class;
 
 \ -- Desktop HUD --------------------------------------------------------------
 

@@ -6,12 +6,20 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	392,
-				"Y":	57,
+				"X":	395,
+				"Y":	-110,
 				"FLAGS":	2,
 				"CLR":	532168959,
 				"forth":	"me to machines",
 				"children":	[{
+						"class":	"%PANEL",
+						"X":	487,
+						"Y":	222,
+						"FLAGS":	2,
+						"W":	320,
+						"H":	240,
+						"CLR":	998438655
+					}, {
 						"class":	"%PANEL",
 						"X":	-153,
 						"Y":	-18,
@@ -20,12 +28,28 @@
 						"H":	240,
 						"CLR":	998438655
 					}, {
+						"class":	"%PANEL",
+						"X":	167,
+						"Y":	-18,
+						"FLAGS":	2,
+						"W":	320,
+						"H":	240,
+						"CLR":	998438655
+					}, {
+						"class":	"%PANEL",
+						"X":	167,
+						"Y":	222,
+						"FLAGS":	2,
+						"W":	320,
+						"H":	240,
+						"CLR":	998438655
+					}, {
 						"class":	"%ORIGIN",
-						"X":	-55,
-						"Y":	308,
+						"X":	91,
+						"Y":	314,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	24578,
+						"VAL":	28755,
 						"DCY":	1,
 						"RX":	50,
 						"RY":	50,
@@ -33,8 +57,8 @@
 						"H":	100,
 						"children":	[{
 								"class":	"%ORIGIN",
-								"X":	-128,
-								"Y":	24,
+								"X":	-111,
+								"Y":	26,
 								"FLAGS":	0,
 								"EN":	-1,
 								"VAL":	1,
@@ -175,7 +199,7 @@
 								"Y":	24,
 								"FLAGS":	0,
 								"EN":	-1,
-								"VAL":	0,
+								"VAL":	0.5588531494140625,
 								"DCY":	0.9699859619140625,
 								"THR":	1,
 								"STR":	1,
@@ -194,8 +218,8 @@
 							}]
 					}, {
 						"class":	"%SPRITE",
-						"X":	86.00006103515625,
-						"Y":	133.00006103515625,
+						"X":	117.00006103515625,
+						"Y":	148.00006103515625,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	0,
@@ -265,8 +289,8 @@
 						"forth":	"heyyy.png bmp !"
 					}, {
 						"class":	"%LABEL",
-						"X":	102.00007629394531,
-						"Y":	236.00007629394531,
+						"X":	-149.99992370605469,
+						"Y":	235.00007629394531,
 						"FLAGS":	0,
 						"W":	256,
 						"H":	8,
@@ -274,6 +298,60 @@
 						"CLR":	-1,
 						"EDITABLE":	0,
 						"CLEAR-ON-EDIT":	0
+					}, {
+						"class":	"%DESKTOP-HUD",
+						"X":	-395,
+						"Y":	110,
+						"FLAGS":	0,
+						"children":	[{
+								"class":	"%TOGGLEBOX",
+								"X":	4,
+								"Y":	529,
+								"FLAGS":	2,
+								"W":	72,
+								"H":	8,
+								"TXT":	"Bookmarks",
+								"CLR":	-1,
+								"EDITABLE":	-1,
+								"CLEAR-ON-EDIT":	0,
+								"OPN":	-1,
+								"children":	[{
+										"class":	"%PANEL",
+										"X":	-5,
+										"Y":	-35,
+										"FLAGS":	2,
+										"W":	9999,
+										"H":	32,
+										"CLR":	127,
+										"children":	[{
+												"class":	"%BOOKMARK",
+												"X":	8,
+												"Y":	12,
+												"FLAGS":	2,
+												"W":	32,
+												"H":	8,
+												"TXT":	"Test",
+												"CLR":	-1,
+												"EDITABLE":	-1,
+												"CLEAR-ON-EDIT":	0,
+												"DX":	441,
+												"DY":	145
+											}, {
+												"class":	"%BOOKMARK",
+												"X":	53,
+												"Y":	12,
+												"FLAGS":	2,
+												"W":	24,
+												"H":	8,
+												"TXT":	"Foo",
+												"CLR":	-1,
+												"EDITABLE":	-1,
+												"CLEAR-ON-EDIT":	0,
+												"DX":	395,
+												"DY":	-110
+											}]
+									}]
+							}]
 					}]
 			}, {
 				"class":	"%DESKTOP",
@@ -667,7 +745,7 @@
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	0,
-								"OPN":	0,
+								"OPN":	-1,
 								"children":	[{
 										"class":	"%PANEL",
 										"X":	-3,
@@ -874,9 +952,9 @@
 							}]
 					}, {
 						"class":	"%PANEL",
-						"X":	702.00007629394531,
-						"Y":	7.0000762939453125,
-						"FLAGS":	0,
+						"X":	713.00007629394531,
+						"Y":	7.62939453125e-05,
+						"FLAGS":	2,
 						"W":	250,
 						"H":	150,
 						"CLR":	127,
@@ -891,19 +969,19 @@
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	0
+							}, {
+								"class":	"%REPL",
+								"X":	7,
+								"Y":	135,
+								"FLAGS":	2,
+								"W":	72,
+								"H":	8,
+								"TXT":	"",
+								"CLR":	-1,
+								"EDITABLE":	-1,
+								"CLEAR-ON-EDIT":	0
 							}]
 					}]
-			}, {
-				"class":	"%REPL",
-				"X":	711.00007629394531,
-				"Y":	138.00007629394531,
-				"FLAGS":	2,
-				"W":	72,
-				"H":	8,
-				"TXT":	"",
-				"CLR":	-1,
-				"EDITABLE":	-1,
-				"CLEAR-ON-EDIT":	0
 			}]
 	},
 	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS"]
