@@ -540,6 +540,13 @@ defer _element-below
     to hovered
     hovered ?dup if _enter then ;
 
+: target-element ( - element|0 )
+    \ Returns selected element if under mouse, otherwise hovered element
+    selection #items if
+        mouse this { in-me? } if this exit then
+    then
+    hovered ;
+
 : begin-drag ( btn -- )
     drag-btn ! dragging on drag-moved off ;
 
@@ -613,8 +620,8 @@ defer _element-below
 : handle-context-menu
     designing? -exit
     rmb pressed? shift? not and if
-        hovered if
-            hovered open-context-menu
+        target-element ?dup if
+            open-context-menu
         else
             close-context-menu
         then
@@ -685,10 +692,10 @@ require %idir%/inspect.vfx
     desktop:_process
     rmb pressed? if
         shift? if
-            hovered ?dup if toggle-inspector then
+            target-element ?dup if toggle-inspector then
         then
         alt? if
-            hovered ?dup if unload then
+            target-element ?dup if unload then
         then
     then ;
 
