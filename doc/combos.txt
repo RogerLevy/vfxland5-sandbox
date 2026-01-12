@@ -1,0 +1,14 @@
+Attaching certain elements and micros to other ones enhances their functionality
+
+
+Painter <- Bitmap  clicking the bitmap selects it in the Painter
+Painter <- Tileset clicking the (opened) tileset selects a tile in the Painter
+
+Command <- Command, Number or Stringfield 
+    - the children will have connector arrows to show order of operation
+    - the children will be executed before the parent command's text
+        when it is triggered
+    - Commands, Numbers, and Stringfields will have an %EXECUTABLE trait
+        - Many other elements can then be executed too, even Bitmaps and Micros
+    - first intended use: a tileset creation widget
+
