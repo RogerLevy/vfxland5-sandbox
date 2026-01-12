@@ -6,8 +6,8 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	59,
-				"Y":	120,
+				"X":	240,
+				"Y":	126,
 				"FLAGS":	2,
 				"CLR":	532168959,
 				"forth":	"me to machines",
@@ -147,8 +147,8 @@
 						"forth":	"blackbeard.png bmp !"
 					}, {
 						"class":	"%DESKTOP-HUD",
-						"X":	-59,
-						"Y":	-120,
+						"X":	-240,
+						"Y":	-126,
 						"FLAGS":	0,
 						"children":	[{
 								"class":	"%TOGGLEBOX",
@@ -592,7 +592,7 @@
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	0,
-								"OPN":	-1,
+								"OPN":	0,
 								"children":	[{
 										"class":	"%PANEL",
 										"X":	-3,
@@ -852,8 +852,8 @@
 							}]
 					}, {
 						"class":	"%PAINTER",
-						"X":	374,
-						"Y":	185,
+						"X":	569,
+						"Y":	153,
 						"FLAGS":	0,
 						"W":	384,
 						"H":	192,

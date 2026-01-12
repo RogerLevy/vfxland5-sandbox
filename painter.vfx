@@ -82,7 +82,6 @@ class: %painter
         display al_get_backbuffer al_set_target_bitmap
         sync ;
 
-
     : f>rgba8 ( f:r f:g f:b f:a - n )
         255e f* f>s 
         255e f* f>s 8 << or
@@ -126,6 +125,18 @@ class: %painter
     :: forth@ 
         hw-bmp @ id>bmp body>name f" %s init-sw-albmp" ;
 
+    || : clear, ( - )
+        you [:
+            sw-albmp @ al_set_target_bitmap 
+            black 0 ppena! screen
+            display al_get_backbuffer al_set_target_bitmap 
+            sync
+        ;] s" Clear" option ;
+
+    :: _context-menu ( menu - )
+        as>
+        clear, 
+        common-options, ;
 
 class;
 
