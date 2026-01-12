@@ -5,6 +5,7 @@
 REQUIRE %idir%/gui.vfx
 REQUIRE %idir%/shapes.vfx
 REQUIRE %vfxland5%/supershow/bitmap.vfx
+REQUIRE %idir%/flood.vfx
 
 class: %painter
     %ui-box derive
@@ -29,6 +30,7 @@ class: %painter
         al_clone_bitmap sw-albmp !
         0 al_set_new_bitmap_flags
         update-box 
+        8 zm !
         hw-bmp @ bmpwh max 48 >= if 4 zm ! then
         hw-bmp @ bmpwh max 96 >= if 3 zm ! then ;
 
@@ -73,11 +75,20 @@ class: %painter
     : mouse>bmp ( - x y )
         mouse abspos 2>i 2- zm @ dup 2/ ;
 
-    : dot ( - )
+    || : dot ( - )
         sw-albmp @ -exit
         sw-albmp @ al_set_target_bitmap
         get-blender replace-mode
             mouse>bmp at fgc @ rgba8 pixel
+        set-blender
+        display al_get_backbuffer al_set_target_bitmap
+        sync ;
+
+    || : flood ( - )
+        sw-albmp @ -exit
+        sw-albmp @ al_set_target_bitmap
+        get-blender replace-mode
+            mouse>bmp at fgc @ rgba8 floodfill
         set-blender
         display al_get_backbuffer al_set_target_bitmap
         sync ;
@@ -106,6 +117,7 @@ class: %painter
     :: _keydown ( key - )
         using? not if drop exit then
         dup <s> = ctrl? and if drop save-bitmap exit then
+        dup <f> = if flood then
         drop ;
 
     :: _keychar ( key - )

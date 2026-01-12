@@ -23,7 +23,7 @@ $804000ff COLOR brown
 $a3e635ff COLOR lime
 
 \ Dark variants
-$b91c1cff COLOR dark-red
+$891c1cff COLOR dark-red
 $16a34aff COLOR dark-green
 $1d4ed8ff COLOR dark-blue
 $ca8a04ff COLOR dark-yellow
