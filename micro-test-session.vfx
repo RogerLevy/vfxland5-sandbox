@@ -48,3 +48,21 @@ class: %owl
     %actor derive
 class;
 
+
+\ -- Bitmap Creation and Loading -----------------------------------------------
+
+: newbmp ( w h - )
+    {: | zbuf[ 1024 ] :}
+    0 z" New Bitmap" z" *.png" ALLEGRO_FILECHOOSER_SAVE file-dialog
+    ?dup if 
+        -ext f" %s.png"
+        zbuf[ zplace
+        al_create_bitmap zbuf[ swap al_save_bitmap 0= abort" Bitmap file create fail!"
+        zbuf[ f" bitmap %z" .evaluate
+        machines { abspos 2>i 2negate } 
+        winw winh 2 2 2/ zoom @ dup 2/  
+        2+ at 
+        zbuf[ zcount -path evaluate machines { *sprite >bmp @ paint }
+    else 
+        2drop
+    then ;
