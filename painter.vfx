@@ -10,7 +10,7 @@ class: %painter
     %ui-box derive
 
     prop sw-albmp :addr         \ Software bitmap (memory) for editing
-    prop hw-bmp <save <readonly \ Hardware bitmap ID in registry
+    prop hw-bmp <readonly       \ Hardware bitmap ID in registry
     prop zm <save
     prop fgc <save
 
@@ -28,7 +28,9 @@ class: %painter
         ALLEGRO_MEMORY_BITMAP al_set_new_bitmap_flags
         al_clone_bitmap sw-albmp !
         0 al_set_new_bitmap_flags
-        update-box ;
+        update-box 
+        hw-bmp @ bmpwh max 48 >= if 4 zm ! then
+        hw-bmp @ bmpwh max 96 >= if 3 zm ! then ;
 
     : get-blender  0 0 0 sp@ dup cell+ dup cell+ swap rot al_get_blender ;
     : set-blender  al_set_blender ;
@@ -121,6 +123,10 @@ class: %painter
         parent @ %sprite is? -exit
         parent @ >bmp @ init-sw-albmp ;
 
+    :: forth@ 
+        hw-bmp @ id>bmp body>name f" %s init-sw-albmp" ;
+
+
 class;
 
 \ Factory: create editor for a bitmap ID
@@ -133,8 +139,6 @@ class;
     you [:
         bmp @ *paint {
             you click-dims 2 -2 2/ x 2!
-            you >bmp @ bmpwh max 48 >= if 4 zm ! then
-            you >bmp @ bmpwh max 96 >= if 2 zm ! then
         }
     ;] s" Paint" option ;
 

@@ -6,8 +6,8 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	395,
-				"Y":	-110,
+				"X":	209,
+				"Y":	112,
 				"FLAGS":	2,
 				"CLR":	532168959,
 				"forth":	"me to machines",
@@ -43,179 +43,6 @@
 						"W":	320,
 						"H":	240,
 						"CLR":	998438655
-					}, {
-						"class":	"%ORIGIN",
-						"X":	91,
-						"Y":	314,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	28755,
-						"DCY":	1,
-						"RX":	50,
-						"RY":	50,
-						"W":	100,
-						"H":	100,
-						"children":	[{
-								"class":	"%ORIGIN",
-								"X":	-111,
-								"Y":	26,
-								"FLAGS":	0,
-								"EN":	-1,
-								"VAL":	1,
-								"DCY":	1,
-								"RX":	0,
-								"RY":	0,
-								"W":	100,
-								"H":	100,
-								"children":	[{
-										"class":	"%HITBOX",
-										"X":	-8,
-										"Y":	-8,
-										"FLAGS":	0,
-										"EN":	-1,
-										"VAL":	1,
-										"DCY":	1,
-										"W":	16,
-										"H":	16,
-										"LYR":	0,
-										"MSK":	0
-									}, {
-										"class":	"%SPRITE",
-										"X":	-23,
-										"Y":	69,
-										"FLAGS":	0,
-										"EN":	-1,
-										"VAL":	1,
-										"DCY":	1,
-										"FLP":	0,
-										"forth":	"owl.png bmp !"
-									}, {
-										"class":	"%SPRITE",
-										"X":	26,
-										"Y":	-9,
-										"FLAGS":	0,
-										"EN":	-1,
-										"VAL":	1,
-										"DCY":	1,
-										"FLP":	0,
-										"forth":	"ROGER.TS 2 tile bmp !"
-									}]
-							}, {
-								"class":	"%MOVE",
-								"X":	-50,
-								"Y":	24,
-								"FLAGS":	0,
-								"EN":	-1,
-								"VAL":	0,
-								"DCY":	0.899993896484375,
-								"ANG":	0,
-								"ACC":	0,
-								"children":	[{
-										"class":	"%RNG",
-										"X":	0,
-										"Y":	24,
-										"FLAGS":	0,
-										"EN":	0,
-										"VAL":	1,
-										"DCY":	1,
-										"NOI":	0,
-										"OFS":	0,
-										"children":	[{
-												"class":	"%REP",
-												"X":	0,
-												"Y":	24,
-												"FLAGS":	0,
-												"EN":	-1,
-												"VAL":	1,
-												"DCY":	1,
-												"DUR":	1,
-												"TRG":	-1
-											}]
-									}]
-							}, {
-								"class":	"%MOVE",
-								"X":	-26,
-								"Y":	24,
-								"FLAGS":	0,
-								"EN":	-1,
-								"VAL":	0,
-								"DCY":	0.899993896484375,
-								"ANG":	90,
-								"ACC":	0,
-								"children":	[{
-										"class":	"%RNG",
-										"X":	0,
-										"Y":	72,
-										"FLAGS":	0,
-										"EN":	0,
-										"VAL":	1,
-										"DCY":	1,
-										"NOI":	0,
-										"OFS":	0,
-										"children":	[{
-												"class":	"%REP",
-												"X":	0,
-												"Y":	24,
-												"FLAGS":	0,
-												"EN":	-1,
-												"VAL":	1,
-												"DCY":	1,
-												"DUR":	1,
-												"TRG":	-1
-											}]
-									}]
-							}, {
-								"class":	"%ABILITY",
-								"X":	-2,
-								"Y":	24,
-								"FLAGS":	0,
-								"EN":	-1,
-								"VAL":	1,
-								"DCY":	1,
-								"K":	0
-							}, {
-								"class":	"%REP",
-								"X":	22,
-								"Y":	24,
-								"FLAGS":	0,
-								"EN":	-1,
-								"VAL":	1,
-								"DCY":	1,
-								"DUR":	1,
-								"TRG":	-1
-							}, {
-								"class":	"%TIMEOUT",
-								"X":	46,
-								"Y":	28,
-								"FLAGS":	0,
-								"EN":	-1,
-								"VAL":	0,
-								"DCY":	1,
-								"DUR":	1,
-								"TRG":	-1
-							}, {
-								"class":	"%NEURON",
-								"X":	70,
-								"Y":	24,
-								"FLAGS":	0,
-								"EN":	-1,
-								"VAL":	0.5588531494140625,
-								"DCY":	0.9699859619140625,
-								"THR":	1,
-								"STR":	1,
-								"TRG":	-1,
-								"children":	[{
-										"class":	"%RNG",
-										"X":	0,
-										"Y":	26,
-										"FLAGS":	0,
-										"EN":	-1,
-										"VAL":	1,
-										"DCY":	1,
-										"NOI":	-1,
-										"OFS":	0
-									}]
-							}]
 					}, {
 						"class":	"%SPRITE",
 						"X":	117.00006103515625,
@@ -299,9 +126,19 @@
 						"EDITABLE":	0,
 						"CLEAR-ON-EDIT":	0
 					}, {
+						"class":	"%SPRITE",
+						"X":	209,
+						"Y":	183,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"FLP":	0,
+						"forth":	"asdf.png bmp !"
+					}, {
 						"class":	"%DESKTOP-HUD",
-						"X":	-395,
-						"Y":	110,
+						"X":	-209,
+						"Y":	-112,
 						"FLAGS":	0,
 						"children":	[{
 								"class":	"%TOGGLEBOX",
@@ -314,7 +151,7 @@
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	0,
-								"OPN":	-1,
+								"OPN":	0,
 								"children":	[{
 										"class":	"%PANEL",
 										"X":	-5,
@@ -981,8 +818,18 @@
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	0
 							}]
+					}, {
+						"class":	"%PAINTER",
+						"X":	524,
+						"Y":	161,
+						"FLAGS":	0,
+						"W":	384,
+						"H":	192,
+						"ZM":	3,
+						"FGC":	-1,
+						"forth":	"ASDF.PNG init-sw-albmp"
 					}]
 			}]
 	},
-	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS"]
+	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap .\\asdf.png"]
 }
