@@ -37,21 +37,25 @@ also cjson2>>
     loop drop 
     jarray ;
 
+cstring sessionpath$
+s" session.json" sessionpath$ place
+
 : save-all 
-    session s" session.json" save-tree 
-    s" session.json" load-json >r 
+    session sessionpath$ count  save-tree 
+    sessionpath$ count load-json >r 
     autoloads>json "autoloads" r@ add-item 
-    r> s" session.json" save-json 
+    r> sessionpath$ count save-json 
 ;
 
 : load-all
-    s" session.json" load-json >r
+    sessionpath$ count load-json >r
     r@ "autoloads" ?j>j ?dup if
         [: j>s ['] .evaluate catch if 2drop then ;] jeach
     then
     r> destroy-json
 
-    s" session.json" load-tree 
+    sessionpath$ count load-tree 
     \ session delete   \ TODO: commented out as workaround for instability
     to session 
 ;
+
