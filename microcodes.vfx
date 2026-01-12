@@ -483,6 +483,16 @@ defer _delete-micro
 
 %micro :: delete  me delete-micro ;
 
+
+\ -- Desktop HUD --------------------------------------------------------------
+
+: dhud ( - desktop-hud )
+    machines ?dup if
+        >highest @ dup %desktop-hud is? ?exit 
+        drop
+    then
+    %desktop-hud make dup machines push ;
+
 \ -- Main Loop ----------------------------------------------------------------
 
 \ : process-micros

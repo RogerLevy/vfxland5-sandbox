@@ -596,12 +596,24 @@ class: %hud
     :: forth@  s" me to hud" ;
 class;
 
-%hud dmake value hud 
+%hud dmake value hud
 
 : draw-hud
     hud -exit
     0 0 at 
     hud draw ;
+
+\ -- Desktop-specific HUDs -----------------------------------------------------
+    
+class: %desktop-hud
+    %element derive
+    :: active? parent @ ?dup if active? else false then ;
+    :: _process
+        parent @ ?dup if
+            dup >x 2@ 2negate x 2!  \ stay fixed on screen
+            me swap push            \ stay on top
+        then ;
+class;
 
 \ -- Default context menu ------------------------------------------------------
 
