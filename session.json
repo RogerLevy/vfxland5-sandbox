@@ -9,22 +9,70 @@
 				"X":	50,
 				"Y":	250,
 				"FLAGS":	2,
-				"CLR":	1077952767
+				"CLR":	870408703
 			}, {
 				"class":	"%DESKTOP",
-				"X":	172,
-				"Y":	24,
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	2086259455
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	521651455
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	1102651135
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	-676358913
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	1261536511
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	836143615
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	152015615
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	476815103,
+				"forth":	"me to machines"
+			}, {
+				"class":	"%DESKTOP",
+				"X":	180,
+				"Y":	63,
 				"FLAGS":	2,
 				"CLR":	2033606399,
 				"script":	"%idir%/micro-test-session.vfx",
-				"forth":	"me to machines",
 				"children":	[{
 						"class":	"%ORIGIN",
-						"X":	99,
-						"Y":	232,
+						"X":	92,
+						"Y":	226,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	15680,
+						"VAL":	6755,
 						"DCY":	1,
 						"RX":	50,
 						"RY":	50,
@@ -174,7 +222,7 @@
 								"Y":	24,
 								"FLAGS":	0,
 								"EN":	-1,
-								"VAL":	0.1610260009765625,
+								"VAL":	-0.8598785400390625,
 								"DCY":	0.9699859619140625,
 								"THR":	1,
 								"STR":	1,
@@ -192,77 +240,9 @@
 									}]
 							}]
 					}, {
-						"class":	"%PANEL",
-						"X":	370.00007629394531,
-						"Y":	10.000076293945312,
-						"FLAGS":	0,
-						"W":	250,
-						"H":	150,
-						"CLR":	127,
-						"children":	[{
-								"class":	"%LABEL",
-								"X":	10,
-								"Y":	10,
-								"FLAGS":	0,
-								"W":	120,
-								"H":	8,
-								"TXT":	"Hello, my baby!",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}, {
-								"class":	"%NUMBERFIELD",
-								"X":	95,
-								"Y":	39,
-								"FLAGS":	0,
-								"W":	32,
-								"H":	8,
-								"TXT":	"123.",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	-1,
-								"VAL":	8060928,
-								"VAL-TYPE":	2
-							}, {
-								"class":	"%COMMAND",
-								"X":	10,
-								"Y":	90,
-								"FLAGS":	2,
-								"W":	224,
-								"H":	8,
-								"TXT":	"rnd32 $ff or machines >clr !",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}, {
-								"class":	"%REPL",
-								"X":	10,
-								"Y":	106,
-								"FLAGS":	2,
-								"W":	160,
-								"H":	8,
-								"TXT":	"",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}, {
-								"class":	"%NUMBERFIELD",
-								"X":	143,
-								"Y":	39,
-								"FLAGS":	0,
-								"W":	16,
-								"H":	8,
-								"TXT":	"13",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	-1,
-								"VAL":	13,
-								"VAL-TYPE":	1
-							}]
-					}, {
 						"class":	"%SPRITE",
-						"X":	336.00006103515625,
-						"Y":	309.00006103515625,
+						"X":	86.00006103515625,
+						"Y":	133.00006103515625,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	0,
@@ -271,29 +251,18 @@
 						"forth":	"ROGER.TS 117 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	417,
-						"Y":	344,
+						"X":	-97,
+						"Y":	66,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
 						"DCY":	1,
 						"FLP":	0,
-						"forth":	"ROGER.TS 2 tile bmp !",
-						"children":	[{
-								"class":	"%PAINTER",
-								"X":	24,
-								"Y":	0,
-								"FLAGS":	0,
-								"W":	128,
-								"H":	128,
-								"HW-BMP":	20,
-								"ZM":	8,
-								"FGC":	-1
-							}]
+						"forth":	"ROGER.TS 2 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	382,
-						"Y":	265,
+						"X":	3,
+						"Y":	93,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -313,8 +282,8 @@
 							}]
 					}, {
 						"class":	"%SPRITE",
-						"X":	488,
-						"Y":	299,
+						"X":	59,
+						"Y":	83,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -323,8 +292,8 @@
 						"forth":	"ROGER.TS 132 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	508,
-						"Y":	299,
+						"X":	85,
+						"Y":	79,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -333,14 +302,25 @@
 						"forth":	"ROGER.TS 132 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	270,
-						"Y":	211,
+						"X":	52,
+						"Y":	35,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
 						"DCY":	1,
 						"FLP":	0,
 						"forth":	"heyyy.png bmp !"
+					}, {
+						"class":	"%LABEL",
+						"X":	159.00007629394531,
+						"Y":	15.000076293945312,
+						"FLAGS":	0,
+						"W":	120,
+						"H":	8,
+						"TXT":	"Hello, my baby!",
+						"CLR":	-1,
+						"EDITABLE":	-1,
+						"CLEAR-ON-EDIT":	0
 					}]
 			}, {
 				"class":	"%HUD",
@@ -615,7 +595,38 @@
 											}]
 									}]
 							}]
+					}, {
+						"class":	"%PANEL",
+						"X":	702.00007629394531,
+						"Y":	7.0000762939453125,
+						"FLAGS":	0,
+						"W":	250,
+						"H":	150,
+						"CLR":	127,
+						"children":	[{
+								"class":	"%COMMAND",
+								"X":	8,
+								"Y":	9,
+								"FLAGS":	2,
+								"W":	224,
+								"H":	8,
+								"TXT":	"rnd32 $ff or machines >clr !",
+								"CLR":	-1,
+								"EDITABLE":	-1,
+								"CLEAR-ON-EDIT":	0
+							}]
 					}]
+			}, {
+				"class":	"%REPL",
+				"X":	711.00007629394531,
+				"Y":	138.00007629394531,
+				"FLAGS":	2,
+				"W":	72,
+				"H":	8,
+				"TXT":	"",
+				"CLR":	-1,
+				"EDITABLE":	-1,
+				"CLEAR-ON-EDIT":	0
 			}]
 	},
 	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS"]

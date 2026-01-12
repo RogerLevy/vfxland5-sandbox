@@ -1,6 +1,9 @@
 : 2x  2 user-zoom ! ;
 : 3x  3 user-zoom ! ;
 
+: desktop ( n - )
+    0 9 clamp session el@ to machines ; 
+
 : paint ( bmpid - )
     mouse at hud { *paint drop } ;
 
