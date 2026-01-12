@@ -678,9 +678,21 @@ class;
     you [: ['] unload me each ;] 
     s" Clear" option ;
 
+: save-tree-dialog ( element - )
+    0 z" Save JSON" z" *.json" ALLEGRO_FILECHOOSER_SAVE file-dialog
+    ?dup if 
+        -ext f" %s.json" save-tree
+    else 
+        drop
+    then ;
+
+: save,
+    you [: me save-tree-dialog ;] s" Save" option ;
+
 : common-options,
     clone,
     attach,
+    save,
     \ detach,
     front,
     back,
