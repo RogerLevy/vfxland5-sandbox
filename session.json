@@ -6,8 +6,8 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	240,
-				"Y":	126,
+				"X":	-34,
+				"Y":	105,
 				"FLAGS":	2,
 				"CLR":	532168959,
 				"forth":	"me to machines",
@@ -51,16 +51,24 @@
 						"EN":	-1,
 						"VAL":	0,
 						"DCY":	0.989990234375,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
 						"FLP":	1,
 						"forth":	"ROGER.TS 117 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	-89,
-						"Y":	73,
+						"X":	-51,
+						"Y":	106,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
 						"DCY":	1,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
 						"FLP":	0,
 						"forth":	"ROGER.TS 2 tile bmp !"
 					}, {
@@ -71,6 +79,10 @@
 						"EN":	-1,
 						"VAL":	1,
 						"DCY":	1,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
 						"FLP":	0,
 						"forth":	"ROGER.TS 115 tile bmp !",
 						"children":	[{
@@ -81,6 +93,10 @@
 								"EN":	-1,
 								"VAL":	1,
 								"DCY":	1,
+								"RX":	0,
+								"RY":	0,
+								"W":	0,
+								"H":	0,
 								"FLP":	0,
 								"forth":	"ROGER.TS 108 tile bmp !"
 							}]
@@ -92,6 +108,10 @@
 						"EN":	-1,
 						"VAL":	1,
 						"DCY":	1,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
 						"FLP":	1,
 						"forth":	"ROGER.TS 132 tile bmp !"
 					}, {
@@ -102,6 +122,10 @@
 						"EN":	-1,
 						"VAL":	1,
 						"DCY":	1,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
 						"FLP":	0,
 						"forth":	"ROGER.TS 132 tile bmp !"
 					}, {
@@ -112,6 +136,10 @@
 						"EN":	-1,
 						"VAL":	1,
 						"DCY":	1,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
 						"FLP":	0,
 						"forth":	"heyyy.png bmp !"
 					}, {
@@ -127,28 +155,61 @@
 						"CLEAR-ON-EDIT":	0
 					}, {
 						"class":	"%SPRITE",
-						"X":	224,
-						"Y":	41,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"FLP":	0,
-						"forth":	"asdf.png bmp !"
-					}, {
-						"class":	"%SPRITE",
 						"X":	245,
 						"Y":	150,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
 						"DCY":	1,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
 						"FLP":	0,
 						"forth":	"blackbeard.png bmp !"
 					}, {
+						"class":	"%SPRITE",
+						"X":	241,
+						"Y":	170,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
+						"FLP":	0,
+						"forth":	"asdf-body.png bmp !",
+						"children":	[{
+								"class":	"%PAINTER",
+								"X":	133,
+								"Y":	-129,
+								"FLAGS":	0,
+								"W":	900,
+								"H":	900,
+								"ZM":	3,
+								"FGC":	0,
+								"forth":	"ASDF-BODY.PNG init-sw-albmp"
+							}]
+					}, {
+						"class":	"%SPRITE",
+						"X":	223,
+						"Y":	94,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
+						"FLP":	0,
+						"forth":	"asdf.png bmp !"
+					}, {
 						"class":	"%DESKTOP-HUD",
-						"X":	-240,
-						"Y":	-126,
+						"X":	34,
+						"Y":	-105,
 						"FLAGS":	0,
 						"children":	[{
 								"class":	"%TOGGLEBOX",
@@ -250,26 +311,18 @@
 				"CLR":	476815103
 			}, {
 				"class":	"%DESKTOP",
-				"X":	314,
-				"Y":	72,
+				"X":	431,
+				"Y":	67,
 				"FLAGS":	2,
 				"CLR":	2033606399,
 				"script":	"%idir%/micro-test-session.vfx",
 				"children":	[{
-						"class":	"%PANEL",
-						"X":	-153,
-						"Y":	-18,
-						"FLAGS":	2,
-						"W":	320,
-						"H":	240,
-						"CLR":	998438655
-					}, {
 						"class":	"%ORIGIN",
 						"X":	-53,
 						"Y":	302,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	21829,
+						"VAL":	22044,
 						"DCY":	1,
 						"RX":	50,
 						"RY":	50,
@@ -307,6 +360,10 @@
 										"EN":	-1,
 										"VAL":	1,
 										"DCY":	1,
+										"RX":	0,
+										"RY":	0,
+										"W":	0,
+										"H":	0,
 										"FLP":	0,
 										"forth":	"owl.png bmp !"
 									}, {
@@ -317,6 +374,10 @@
 										"EN":	-1,
 										"VAL":	1,
 										"DCY":	1,
+										"RX":	0,
+										"RY":	0,
+										"W":	0,
+										"H":	0,
 										"FLP":	0,
 										"forth":	"ROGER.TS 2 tile bmp !"
 									}]
@@ -419,7 +480,7 @@
 								"Y":	24,
 								"FLAGS":	0,
 								"EN":	-1,
-								"VAL":	-0.511505126953125,
+								"VAL":	-0.455322265625,
 								"DCY":	0.9699859619140625,
 								"THR":	1,
 								"STR":	1,
@@ -436,88 +497,6 @@
 										"OFS":	0
 									}]
 							}]
-					}, {
-						"class":	"%SPRITE",
-						"X":	86.00006103515625,
-						"Y":	133.00006103515625,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	0,
-						"DCY":	0.989990234375,
-						"FLP":	1,
-						"forth":	"ROGER.TS 117 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
-						"X":	-97,
-						"Y":	66,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"FLP":	0,
-						"forth":	"ROGER.TS 2 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
-						"X":	3,
-						"Y":	93,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"FLP":	0,
-						"forth":	"ROGER.TS 115 tile bmp !",
-						"children":	[{
-								"class":	"%SPRITE",
-								"X":	1,
-								"Y":	13,
-								"FLAGS":	0,
-								"EN":	-1,
-								"VAL":	1,
-								"DCY":	1,
-								"FLP":	0,
-								"forth":	"ROGER.TS 108 tile bmp !"
-							}]
-					}, {
-						"class":	"%SPRITE",
-						"X":	120,
-						"Y":	174,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"FLP":	1,
-						"forth":	"ROGER.TS 132 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
-						"X":	85,
-						"Y":	79,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"FLP":	0,
-						"forth":	"ROGER.TS 132 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
-						"X":	52,
-						"Y":	35,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"FLP":	0,
-						"forth":	"heyyy.png bmp !"
-					}, {
-						"class":	"%LABEL",
-						"X":	378.00007629394531,
-						"Y":	139.00007629394531,
-						"FLAGS":	0,
-						"W":	256,
-						"H":	8,
-						"TXT":	"Hello, my baby!\nHello, my honey!",
-						"CLR":	-1,
-						"EDITABLE":	0,
-						"CLEAR-ON-EDIT":	0
 					}]
 			}, {
 				"class":	"%HUD",
@@ -736,6 +715,10 @@
 										"EN":	-1,
 										"VAL":	1,
 										"DCY":	1,
+										"RX":	0,
+										"RY":	0,
+										"W":	0,
+										"H":	0,
 										"FLP":	0,
 										"forth":	"ROGER.TS 2 tile bmp !"
 									}, {
@@ -796,72 +779,51 @@
 												"CLEAR-ON-EDIT":	0
 											}]
 									}]
+							}, {
+								"class":	"%PANEL",
+								"X":	711.00007629394531,
+								"Y":	-1.9999237060546875,
+								"FLAGS":	0,
+								"W":	250,
+								"H":	150,
+								"CLR":	127,
+								"children":	[{
+										"class":	"%COMMAND",
+										"X":	8,
+										"Y":	9,
+										"FLAGS":	2,
+										"W":	224,
+										"H":	8,
+										"TXT":	"rnd32 $ff or machines >clr !",
+										"CLR":	-1,
+										"EDITABLE":	-1,
+										"CLEAR-ON-EDIT":	0
+									}, {
+										"class":	"%COMMAND",
+										"X":	8,
+										"Y":	26,
+										"FLAGS":	2,
+										"W":	64,
+										"H":	8,
+										"TXT":	"loadbmp",
+										"CLR":	-1,
+										"EDITABLE":	-1,
+										"CLEAR-ON-EDIT":	0
+									}, {
+										"class":	"%REPL",
+										"X":	7,
+										"Y":	135,
+										"FLAGS":	2,
+										"W":	112,
+										"H":	8,
+										"TXT":	"",
+										"CLR":	-1,
+										"EDITABLE":	-1,
+										"CLEAR-ON-EDIT":	0
+									}]
 							}]
-					}, {
-						"class":	"%PANEL",
-						"X":	713.00007629394531,
-						"Y":	7.62939453125e-05,
-						"FLAGS":	2,
-						"W":	250,
-						"H":	150,
-						"CLR":	127,
-						"children":	[{
-								"class":	"%COMMAND",
-								"X":	8,
-								"Y":	9,
-								"FLAGS":	2,
-								"W":	224,
-								"H":	8,
-								"TXT":	"rnd32 $ff or machines >clr !",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}, {
-								"class":	"%COMMAND",
-								"X":	8,
-								"Y":	26,
-								"FLAGS":	2,
-								"W":	64,
-								"H":	8,
-								"TXT":	"loadbmp",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}, {
-								"class":	"%COMMAND",
-								"X":	8,
-								"Y":	43,
-								"FLAGS":	2,
-								"W":	56,
-								"H":	8,
-								"TXT":	"newbmp",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}, {
-								"class":	"%REPL",
-								"X":	7,
-								"Y":	135,
-								"FLAGS":	2,
-								"W":	72,
-								"H":	8,
-								"TXT":	"",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0
-							}]
-					}, {
-						"class":	"%PAINTER",
-						"X":	569,
-						"Y":	153,
-						"FLAGS":	0,
-						"W":	384,
-						"H":	192,
-						"ZM":	3,
-						"FGC":	-1994646273,
-						"forth":	"ASDF.PNG init-sw-albmp"
 					}]
 			}]
 	},
-	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap .\\asdf.png", "bitmap ..\\player2\\dat\\gfx\\blackbeard.png"]
+	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap .\\asdf.png", "bitmap ..\\player2\\dat\\gfx\\blackbeard.png", "bitmap .\\asdf-body.png"]
 }

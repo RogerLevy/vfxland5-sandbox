@@ -1,6 +1,6 @@
-[ ] per-desktop hud
+[x] per-desktop hud
 [ ] select-through
-[ ] improve inspection UX
+[x] improve inspection UX
 [ ] save EVERYTHING in SAVE-ALL (like Painters)
 [ ] hex numberfields ("$00FF00FF")
 [ ] shift+select
@@ -14,12 +14,12 @@
 [ ] Painter improvements
     [ ] Editable %PALETTE (with save/load functionality)
     [ ] Global current color
-    [ ] Flood fill
+    [x] Flood fill
     [ ] Continuous brush
     [ ] Brush sizes
     [ ] Draw line
     [ ] Special modes
         [ ] Replace color
         [ ] Protect color
-[ ] multitline text size calculation
+[ ] multiline text size calculation
 [ ] proper text editor

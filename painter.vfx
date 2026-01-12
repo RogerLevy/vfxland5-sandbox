@@ -72,8 +72,8 @@ class: %painter
         drop  me focus ;
 
     \ Mouse -> bitmap coordinates
-    : mouse>bmp ( - x y )
-        mouse abspos 2>i 2- zm @ dup 2/ ;
+    : mouse>bmp ( - x. y. )
+        mouse 2>p abspos 2- zm @ dup 2/ ;
 
     || : dot ( - )
         sw-albmp @ -exit
@@ -84,11 +84,51 @@ class: %painter
         display al_get_backbuffer al_set_target_bitmap
         sync ;
 
+    \ very raggedy:
+    \ || : stroke ( - )
+    \     sw-albmp @ -exit
+    \     sw-albmp @ al_set_target_bitmap
+    \     get-blender replace-mode
+    \         mouse>bmp 2>i at fgc @ rgba8 
+    \         mickey at@ 2+ 2>p line
+    \     set-blender
+    \     display al_get_backbuffer al_set_target_bitmap
+    \     sync ;
+
+    \ less raggedy:
+    \ || : stroke ( - )
+    \     sw-albmp @ -exit
+    \     e{
+    \         sw-albmp @ al_set_target_bitmap
+    \         1. thick
+    \         get-blender replace-mode
+    \             fgc @ rgba8
+    \             mouse>bmp 2>i at
+    \             at@ 2>p mickey 2>p zm @ dup 2/ 2-  line
+    \         set-blender
+    \         display al_get_backbuffer al_set_target_bitmap
+    \         sync
+    \     e} ;
+
+    || : stroke ( - )
+        sw-albmp @ -exit
+        e{
+            sw-albmp @ al_set_target_bitmap
+            1. thick
+            get-blender replace-mode
+                fgc @ rgba8
+                mouse>bmp atp
+                at@p mickey 2>p zm @ dup 2/ 2-  line
+            set-blender
+            display al_get_backbuffer al_set_target_bitmap
+            sync
+        e} ;
+
     || : flood ( - )
         sw-albmp @ -exit
         sw-albmp @ al_set_target_bitmap
         get-blender replace-mode
-            mouse>bmp at fgc @ rgba8 floodfill
+            mouse>bmp atp fgc @ rgba8 floodfill
         set-blender
         display al_get_backbuffer al_set_target_bitmap
         sync ;
@@ -102,12 +142,12 @@ class: %painter
     : eyedrop ( - )
         {: | fcolor[ 16 ] :}
         sw-albmp @ -exit
-        fcolor[ sw-albmp @ mouse>bmp al_get_pixel 
+        fcolor[ sw-albmp @ mouse>bmp 2>i al_get_pixel 
         fcolor[ 4f@ f>rgba8 fgc ! ;
 
     || : ?mouse
         me hovered = -exit
-        lmb held? <space> held? not and if dot then 
+        lmb held? <space> held? not and if stroke then 
         rmb held? shift? not and if eyedrop then ;
 
     :: _process
