@@ -7,15 +7,27 @@ REQUIRE %idir%/shapes.vfx
 REQUIRE %vfxland5%/supershow/bitmap.vfx
 REQUIRE %idir%/flood.vfx
 
+bitmap painter-cursors.png
+painter-cursors.png 32 32 tileset-from painter-cursors.ts
+
+variable fgc
+
 class: %painter
     %ui-box derive
 
     prop sw-albmp :addr         \ Software bitmap (memory) for editing
     prop hw-bmp <readonly       \ Hardware bitmap ID in registry
     prop zm <save
-    prop fgc <save
+    \ prop fgc <save
 
     template { 8 zm ! $FFFFFFFF fgc ! }
+
+    :: cursor-bmp ( - bmp ) 
+        using?   rmb held? if 
+            painter-cursors.ts 1 tile 
+            exit
+        then
+        painter-cursors.ts 0 tile ;
 
     || : update-box
         \ Set size based on bitmap dimensions * zm
@@ -66,7 +78,8 @@ class: %painter
                 0 0 at hw-bmp @ put
             atp m}
         then
-        grey w 2@ rect ;
+        grey w 2@ rect 
+        4 -6 +at  fgc @ rgba8  5. 5. circf  grey 5. 5. circ ;
 
     :: _mousedown ( btn - )
         drop  me focus ;

@@ -43,6 +43,7 @@ trait: %_element
     :: opened? ( - flag ) true ;
     :: open ( - ) ;
     :: close ( - ) ;
+    :: cursor-bmp ( - bmp ) stub ;
 trait;
 
 \ -- Helpers -------------------------------------------------------------------

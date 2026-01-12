@@ -6,8 +6,8 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	-34,
-				"Y":	105,
+				"X":	24,
+				"Y":	112,
 				"FLAGS":	2,
 				"CLR":	532168959,
 				"forth":	"me to machines",
@@ -155,8 +155,8 @@
 						"CLEAR-ON-EDIT":	0
 					}, {
 						"class":	"%SPRITE",
-						"X":	287,
-						"Y":	216,
+						"X":	249,
+						"Y":	231,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -169,8 +169,8 @@
 						"forth":	"blackbeard.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	362,
-						"Y":	113,
+						"X":	360,
+						"Y":	115,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -183,8 +183,8 @@
 						"forth":	"asdf-body.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	254,
-						"Y":	101,
+						"X":	344,
+						"Y":	32,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -197,8 +197,8 @@
 						"forth":	"asdf.png bmp !"
 					}, {
 						"class":	"%DESKTOP-HUD",
-						"X":	34,
-						"Y":	-105,
+						"X":	-24,
+						"Y":	-112,
 						"FLAGS":	0,
 						"children":	[{
 								"class":	"%TOGGLEBOX",
@@ -811,8 +811,17 @@
 										"CLEAR-ON-EDIT":	0
 									}]
 							}]
+					}, {
+						"class":	"%PAINTER",
+						"X":	579,
+						"Y":	184,
+						"FLAGS":	0,
+						"W":	256,
+						"H":	256,
+						"ZM":	8,
+						"forth":	"BLACKBEARD.PNG init-sw-albmp"
 					}]
 			}]
 	},
-	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap .\\asdf.png", "bitmap ..\\player2\\dat\\gfx\\blackbeard.png", "bitmap .\\asdf-body.png"]
+	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\painter-cursors.png", "PAINTER-CURSORS.PNG 32 32 tileset-from PAINTER-CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap .\\asdf.png", "bitmap ..\\player2\\dat\\gfx\\blackbeard.png", "bitmap .\\asdf-body.png"]
 }
