@@ -1,6 +1,6 @@
 class: %togglebox
     %label derive
-    prop opn
+    prop opn <save
     template { opn on }
 
     :: opened?  opn @ ;
