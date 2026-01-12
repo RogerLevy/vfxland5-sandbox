@@ -423,6 +423,20 @@ c: %menu %panel ;
 : option ( object|0 xt text len - )
     *menu-item drop ;
 
+\ -- HUD -----------------------------------------------------------------------
+
+class: %hud
+    %element derive
+    :: forth@  s" me to hud" ;
+class;
+
+%hud dmake value hud
+
+: draw-hud
+    hud -exit
+    0 0 at 
+    hud draw ;
+
 \ -- Global Context Menu State ------------------------------------------------
 
 0 value context-menu   \ current open context menu, or 0
@@ -431,12 +445,20 @@ c: %menu %panel ;
     context-menu ?dup if unload then
     0 to context-menu ;
 
+: corral 
+    x 2@ 0 0 2max x 2!
+    winw zoom @ / winh zoom @ / 
+    2>p w 2@ 2-`` x 2@`` 2min x 2! ;
+
 : open-context-menu ( element - )
     close-context-menu
-    dup mouse me from-element
-    *menu to context-menu
-    context-menu swap _context-menu
-    context-menu #children 0= if close-context-menu then ;
+    dup mouse me from-element    
+    hud {
+        *menu to context-menu
+        context-menu swap _context-menu
+        context-menu #children 0= if close-context-menu exit then
+        context-menu ?dup if { corral } then
+    } ;
 
 %menu-item :: _mousedown ( btn - )
     menu-item:_mousedown  close-context-menu  
@@ -588,20 +610,6 @@ require %idir%/inspect.vfx
             hovered ?dup if unload then
         then
     then ;
-
-\ -- HUD -----------------------------------------------------------------------
-
-class: %hud
-    %element derive
-    :: forth@  s" me to hud" ;
-class;
-
-%hud dmake value hud
-
-: draw-hud
-    hud -exit
-    0 0 at 
-    hud draw ;
 
 \ -- Desktop-specific HUDs -----------------------------------------------------
     

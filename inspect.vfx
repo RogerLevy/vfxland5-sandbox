@@ -88,29 +88,28 @@ class: %inspector
 class;
 
 : *inspector ( object - inspector )
-    %inspector make { obj !
-        obj @ %_element is? if
-            me obj @ push
-        else
-            you dup %_element is? if
-                me you >root push
+    hud -exit
+    hud {
+        %inspector make { obj !
+            me hud push
+            obj @ %_element is? if
+                \ position to the left of the element
+                obj @ { abspos } w @ 8. + 0 2- x 2!
+            else
+                mouse 2>p x 2!
             then
-        then
+            corral
+        me }
+    } ;
 
-        obj @ %_element is? if
-            w @ 10.0 + negate x !
-            0 y !
-        then 
-
-    me } ;
-
+|| 0 value obj0
 : find-inspector ( object - inspector|0 )
-    dup %iterable is? not if drop 0 exit then
-    0 [: { me %inspector is? if drop me then } ;] rot each ;
+    hud 0= if drop 0 exit then
+    to obj0
+    0 [: { me %inspector is? if me >obj @ obj0 = if drop me then then } ;] hud each ;
 
 : inspect ( object - )
-    {: obj :} 
-    me %_element is? not abort" INSPECT: Current object is not an element."
+    {: obj :}
     obj %inspector is? ?exit
     obj find-inspector ?dup if unload then
     obj *inspector drop ;
