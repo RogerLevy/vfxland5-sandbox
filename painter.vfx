@@ -92,7 +92,7 @@ class: %painter
         sw-albmp @ -exit
         sw-albmp @ al_set_target_bitmap
         get-blender replace-mode
-            mouse>bmp at fgc @ rgba8 pixel
+            mouse>bmp atp fgc @ rgba8 pixel
         set-blender
         display al_get_backbuffer al_set_target_bitmap
         sync ;
@@ -124,6 +124,7 @@ class: %painter
     \     e} ;
 
     || : stroke ( - )
+        mickey or 0= if dot exit then
         sw-albmp @ -exit
         e{
             sw-albmp @ al_set_target_bitmap
@@ -131,7 +132,7 @@ class: %painter
             get-blender replace-mode
                 fgc @ rgba8
                 mouse>bmp atp
-                at@p mickey 2>p zm @ dup 2/ 2-  line
+                at@p mickey 2>p zm @ dup 2/ 2-  line 
             set-blender
             display al_get_backbuffer al_set_target_bitmap
             sync
