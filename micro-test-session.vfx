@@ -55,8 +55,7 @@ class;
     {: | zbuf[ 1024 ] :}
     0 z" New Bitmap" z" *.png" ALLEGRO_FILECHOOSER_SAVE file-dialog
     ?dup if 
-        -ext f" %s.png"
-        zbuf[ zplace
+        -ext f" %s.png" zbuf[ zplace
         al_create_bitmap zbuf[ swap al_save_bitmap 0= abort" Bitmap file create fail!"
         zbuf[ f" bitmap %z" .evaluate
         machines { abspos 2>i 2negate } 
@@ -66,3 +65,18 @@ class;
     else 
         2drop
     then ;
+
+: loadbmp ( - )
+    {: | zbuf[ 1024 ] :}
+    0 z" Load Bitmap" z" *.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.pcx;*.gif" ALLEGRO_FILECHOOSER_FILE_MUST_EXIST file-dialog
+    ?dup if 
+        zbuf[ zplace
+        zbuf[ f" bitmap %z" .evaluate
+        machines { abspos 2>i 2negate } 
+        winw winh 2 2 2/ zoom @ dup 2/  
+        2+ at 
+        zbuf[ zcount -path evaluate machines { *sprite drop }
+    else
+        2drop
+    then ;
+
