@@ -547,18 +547,39 @@ defer _element-below
     then
     hovered ;
 
+|| 0 value click-candidate  \ element that might receive a cycle-click
+|| 0 value last-click-x
+|| 0 value last-click-y
+
+: mouse-moved-since-click? ( - flag )
+    mouse last-click-y <> swap last-click-x <> or ;
+
+: record-click-position ( - )
+    mouse to last-click-y to last-click-x ;
+
+: preview-selection ( - element|0 )
+    \ In designing mode, preview what would be selected on click
+    designing? not if hovered exit then
+    \ If mouse moved, would select topmost
+    mouse-moved-since-click? if hovered exit then
+    selection #items 0= if hovered exit then
+    \ If selected element is under mouse and mouse hasn't moved, show cycle target
+    mouse this { in-me? } if
+        this me element-below ?dup if exit then
+        topmost-selectable exit
+    then
+    hovered ;
+
 : begin-drag ( btn -- )
     drag-btn ! dragging on drag-moved off ;
 
 : end-drag ( -- )
     dragging off drag-moved off ;
 
-: handle-rmb 
+: handle-rmb
     rmb pressed? if
-        hovered ?dup if rmb swap _mousedown then
+        target-element ?dup if rmb swap _mousedown then
     then ;
-
-|| 0 value click-candidate  \ element that might receive a cycle-click
 
 : cycle-select ( - )
     \ Cycle to element below the current selection
@@ -585,24 +606,24 @@ defer _element-below
                 \ Designing mode + not bolted = drag behavior
                 lmb hovered _mousedown
                 hovered -exit
-                selection #items if
-                    hovered this = if
-                        \ Clicking on already-selected element - set up for cycling
-                        this to click-candidate
-                        this { bolted? } not if lmb begin-drag then
-                        exit
-                    then
-                    mouse this { in-me? } if
-                        \ Selected element is under mouse - set up cycling and drag
-                        this to click-candidate
-                        this { bolted? } not if lmb begin-drag then
-                        exit
+                \ Only allow cycling if mouse hasn't moved since last click
+                mouse-moved-since-click? not if
+                    selection #items if
+                        mouse this { in-me? } if
+                            \ Selected element is under mouse - set up cycling
+                            this to click-candidate
+                            this { bolted? } not if lmb begin-drag then
+                            record-click-position
+                            exit
+                        then
                     then
                 then
+                \ Normal selection (mouse moved or first click)
                 hovered ctrl? if +select else select then
                 selection #items if
                     lmb begin-drag
                 then
+                record-click-position
             then
         else
             selection vacate
@@ -681,7 +702,13 @@ defer _element-below
 
 : gui-overlay ( - )
     [: { light-green 0.5 ppena! click-box } ;] selection each
-    hovered ?dup if { bolted? if yellow else green then click-box } then
+    designing? if
+        \ In designing mode, preview what would be selected on click
+        preview-selection ?dup if { bolted? if yellow else green then click-box } then
+    else
+        \ In using mode, show hover
+        hovered ?dup if { bolted? if yellow else green then click-box } then
+    then
     focused ?dup if { cyan click-box } then ;
 
 \ -- Inspection ----------------------------------------------------------------
