@@ -468,6 +468,7 @@ class;
 
 variable drag-btn
 variable dragging
+variable drag-moved  \ true if mouse actually moved during drag
 
 : in-me?  2>p 2dup me click-box@ overlap? ;
 
@@ -485,6 +486,54 @@ defer _topmost-element
 : topmost-element ( - element|0 )
     0 me _topmost-element ;
 
+\ Same as topmost-element but skips root and desktops (for cycling)
+|| 0 value top-selectable
+
+defer _topmost-selectable
+[:
+    dup active? not if drop exit then
+    [: {
+        me active? mouse in-me? and parent @ and me %desktop is? not and if
+            me to top-selectable
+        then
+        me opened? if me _topmost-selectable then
+    } ;] swap each
+;] is _topmost-selectable
+
+: topmost-selectable ( - element|0 )
+    0 to top-selectable
+    me _topmost-selectable
+    top-selectable ;
+
+\ Find element below 'skip' under mouse (for cycling selection)
+\ "Below" = earlier in traversal (visually underneath)
+\ Returns 0 if skip not found or nothing below it
+|| 0 value skip-element
+|| 0 value found-skip
+|| 0 value below-element
+
+defer _element-below
+[:  ( element - )
+    dup active? not if drop exit then
+    [: {
+        me active? mouse in-me? and parent @ and me %desktop is? not and if
+            me skip-element = if
+                true to found-skip
+            else
+                found-skip not if me to below-element then
+            then
+        then
+        me opened? if me _element-below then
+    } ;] swap each
+;] is _element-below
+
+: element-below ( skip-elem root - elem|0 )
+    swap to skip-element
+    false to found-skip
+    0 to below-element
+    _element-below
+    below-element ;
+
 : hover ( element - )
     dup hovered = if drop exit then
     hovered ?dup if _leave then
@@ -492,23 +541,35 @@ defer _topmost-element
     hovered ?dup if _enter then ;
 
 : begin-drag ( btn -- )
-    drag-btn ! dragging on ;
+    drag-btn ! dragging on drag-moved off ;
 
 : end-drag ( -- )
-    dragging off ;
+    dragging off drag-moved off ;
 
 : handle-rmb 
     rmb pressed? if
         hovered ?dup if rmb swap _mousedown then
     then ;
 
+|| 0 value click-candidate  \ element that might receive a cycle-click
+
+: cycle-select ( - )
+    \ Cycle to element below the current selection
+    selection #items 0= if exit then
+    this me element-below ?dup if
+        select
+    else
+        topmost-selectable ?dup if select then
+    then ;
+
 : handle-lmb
     <space> held? ?exit
     lmb pressed? if
+        0 to click-candidate
         hovered if
             \ Bolted elements always "use" on click
             \ In using mode, all elements "use" on click
-            focused if 
+            focused if
                 hovered focused <> if unfocus then
             then
             hovered { bolted? } using? or if
@@ -517,6 +578,20 @@ defer _topmost-element
                 \ Designing mode + not bolted = drag behavior
                 lmb hovered _mousedown
                 hovered -exit
+                selection #items if
+                    hovered this = if
+                        \ Clicking on already-selected element - set up for cycling
+                        this to click-candidate
+                        this { bolted? } not if lmb begin-drag then
+                        exit
+                    then
+                    mouse this { in-me? } if
+                        \ Selected element is under mouse - set up cycling and drag
+                        this to click-candidate
+                        this { bolted? } not if lmb begin-drag then
+                        exit
+                    then
+                then
                 hovered ctrl? if +select else select then
                 selection #items if
                     lmb begin-drag
@@ -527,7 +602,12 @@ defer _topmost-element
         then
     then
     drag-btn @ letgo? if
+        \ If released without actual movement and had a cycle candidate, cycle
+        drag-moved @ not click-candidate and if
+            cycle-select
+        then
         end-drag
+        0 to click-candidate
     then ;
 
 : handle-context-menu
@@ -548,9 +628,10 @@ defer _topmost-element
         then
     then ;
 
-: do-drag 
+: do-drag
     dragging @ -exit
     mickey 2>p                          \ get mouse delta
+    2dup or if drag-moved on then       \ track if any movement
     [: { 2dup x 2+! } ;] selection each \ apply to all selected
     2drop ;
 

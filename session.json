@@ -22,15 +22,15 @@
 					}, {
 						"class":	"%PANEL",
 						"X":	-153,
-						"Y":	-18,
+						"Y":	-17,
 						"FLAGS":	2,
 						"W":	320,
 						"H":	240,
 						"CLR":	998438655
 					}, {
 						"class":	"%PANEL",
-						"X":	167,
-						"Y":	-18,
+						"X":	168,
+						"Y":	-17,
 						"FLAGS":	2,
 						"W":	320,
 						"H":	240,
@@ -155,8 +155,8 @@
 						"CLEAR-ON-EDIT":	0
 					}, {
 						"class":	"%SPRITE",
-						"X":	245,
-						"Y":	150,
+						"X":	287,
+						"Y":	216,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -169,8 +169,8 @@
 						"forth":	"blackbeard.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	241,
-						"Y":	170,
+						"X":	362,
+						"Y":	113,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -180,22 +180,11 @@
 						"W":	0,
 						"H":	0,
 						"FLP":	0,
-						"forth":	"asdf-body.png bmp !",
-						"children":	[{
-								"class":	"%PAINTER",
-								"X":	133,
-								"Y":	-129,
-								"FLAGS":	0,
-								"W":	900,
-								"H":	900,
-								"ZM":	3,
-								"FGC":	0,
-								"forth":	"ASDF-BODY.PNG init-sw-albmp"
-							}]
+						"forth":	"asdf-body.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	223,
-						"Y":	94,
+						"X":	254,
+						"Y":	101,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
