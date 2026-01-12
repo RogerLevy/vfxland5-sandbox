@@ -20,4 +20,4 @@ cr
 
 fullscreen winmode >vfx
 load-all
-['] close hud each 
+\ ['] close hud each 
