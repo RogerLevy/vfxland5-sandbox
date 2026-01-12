@@ -276,7 +276,7 @@ class: %rng  %micro derive  non-decaying
     prop ofs <save         \ output value offset
 class;
 
-class: %sprite  %micro derive  non-decaying   \ val modulates speed
+class: %sprite  %origin derive  non-decaying   \ val modulates speed
     is-a %animator 
     prop bmp 
     prop flp <save
