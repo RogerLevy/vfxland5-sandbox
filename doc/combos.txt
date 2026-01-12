@@ -8,7 +8,7 @@ Command <- Command, Number or Stringfield
     - the children will have connector arrows to show order of operation
     - the children will be executed before the parent command's text
         when it is triggered
-    - Commands, Numbers, and Stringfields will have an %EXECUTABLE trait
+    - Commands, Numberfields, and Stringfields will have an %EXECUTABLE trait
         - Many other elements can then be executed too, even Bitmaps and Micros
     - first intended use: a tileset creation widget
 

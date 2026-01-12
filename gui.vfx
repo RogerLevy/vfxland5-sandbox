@@ -450,11 +450,12 @@ variable dragging
 : in-me?  2>p 2dup me click-box@ overlap? ;
 
 defer _topmost-element
-[: 
-    [: { 
-        mouse in-me? if drop me then
+[:
+    dup active? not if drop exit then
+    [: {
+        me active? mouse in-me? and if drop me then
         me opened? if
-            me _topmost-element 
+            me _topmost-element
         then
     } ;] swap each
 ;] is _topmost-element

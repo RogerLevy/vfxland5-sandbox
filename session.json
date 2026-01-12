@@ -6,73 +6,26 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	50,
-				"Y":	250,
+				"X":	392,
+				"Y":	57,
 				"FLAGS":	2,
-				"CLR":	870408703
-			}, {
-				"class":	"%DESKTOP",
-				"X":	50,
-				"Y":	250,
-				"FLAGS":	2,
-				"CLR":	2086259455
-			}, {
-				"class":	"%DESKTOP",
-				"X":	50,
-				"Y":	250,
-				"FLAGS":	2,
-				"CLR":	521651455
-			}, {
-				"class":	"%DESKTOP",
-				"X":	50,
-				"Y":	250,
-				"FLAGS":	2,
-				"CLR":	1102651135
-			}, {
-				"class":	"%DESKTOP",
-				"X":	50,
-				"Y":	250,
-				"FLAGS":	2,
-				"CLR":	-676358913
-			}, {
-				"class":	"%DESKTOP",
-				"X":	50,
-				"Y":	250,
-				"FLAGS":	2,
-				"CLR":	1261536511
-			}, {
-				"class":	"%DESKTOP",
-				"X":	50,
-				"Y":	250,
-				"FLAGS":	2,
-				"CLR":	836143615
-			}, {
-				"class":	"%DESKTOP",
-				"X":	50,
-				"Y":	250,
-				"FLAGS":	2,
-				"CLR":	152015615
-			}, {
-				"class":	"%DESKTOP",
-				"X":	50,
-				"Y":	250,
-				"FLAGS":	2,
-				"CLR":	476815103,
-				"forth":	"me to machines"
-			}, {
-				"class":	"%DESKTOP",
-				"X":	180,
-				"Y":	63,
-				"FLAGS":	2,
-				"CLR":	2033606399,
-				"script":	"%idir%/micro-test-session.vfx",
+				"CLR":	532168959,
+				"forth":	"me to machines",
 				"children":	[{
+						"class":	"%PANEL",
+						"X":	-153,
+						"Y":	-18,
+						"FLAGS":	2,
+						"W":	320,
+						"H":	240,
+						"CLR":	998438655
+					}, {
 						"class":	"%ORIGIN",
-						"X":	92,
-						"Y":	226,
+						"X":	-55,
+						"Y":	308,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	6755,
+						"VAL":	24578,
 						"DCY":	1,
 						"RX":	50,
 						"RY":	50,
@@ -222,7 +175,7 @@
 								"Y":	24,
 								"FLAGS":	0,
 								"EN":	-1,
-								"VAL":	-0.8598785400390625,
+								"VAL":	0,
 								"DCY":	0.9699859619140625,
 								"THR":	1,
 								"STR":	1,
@@ -251,8 +204,8 @@
 						"forth":	"ROGER.TS 117 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	-97,
-						"Y":	66,
+						"X":	-89,
+						"Y":	73,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -312,14 +265,333 @@
 						"forth":	"heyyy.png bmp !"
 					}, {
 						"class":	"%LABEL",
-						"X":	159.00007629394531,
-						"Y":	15.000076293945312,
+						"X":	102.00007629394531,
+						"Y":	236.00007629394531,
 						"FLAGS":	0,
-						"W":	120,
+						"W":	256,
 						"H":	8,
-						"TXT":	"Hello, my baby!",
+						"TXT":	"Hello, my baby!\nHello, my honey!",
 						"CLR":	-1,
-						"EDITABLE":	-1,
+						"EDITABLE":	0,
+						"CLEAR-ON-EDIT":	0
+					}]
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	2086259455
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	521651455
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	1102651135
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	-676358913
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	1261536511
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	836143615
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	152015615
+			}, {
+				"class":	"%DESKTOP",
+				"X":	50,
+				"Y":	250,
+				"FLAGS":	2,
+				"CLR":	476815103
+			}, {
+				"class":	"%DESKTOP",
+				"X":	314,
+				"Y":	72,
+				"FLAGS":	2,
+				"CLR":	2033606399,
+				"script":	"%idir%/micro-test-session.vfx",
+				"children":	[{
+						"class":	"%PANEL",
+						"X":	-153,
+						"Y":	-18,
+						"FLAGS":	2,
+						"W":	320,
+						"H":	240,
+						"CLR":	998438655
+					}, {
+						"class":	"%ORIGIN",
+						"X":	-53,
+						"Y":	302,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	21829,
+						"DCY":	1,
+						"RX":	50,
+						"RY":	50,
+						"W":	100,
+						"H":	100,
+						"children":	[{
+								"class":	"%ORIGIN",
+								"X":	-128,
+								"Y":	24,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"RX":	0,
+								"RY":	0,
+								"W":	100,
+								"H":	100,
+								"children":	[{
+										"class":	"%HITBOX",
+										"X":	-8,
+										"Y":	-8,
+										"FLAGS":	0,
+										"EN":	-1,
+										"VAL":	1,
+										"DCY":	1,
+										"W":	16,
+										"H":	16,
+										"LYR":	0,
+										"MSK":	0
+									}, {
+										"class":	"%SPRITE",
+										"X":	-23,
+										"Y":	69,
+										"FLAGS":	0,
+										"EN":	-1,
+										"VAL":	1,
+										"DCY":	1,
+										"FLP":	0,
+										"forth":	"owl.png bmp !"
+									}, {
+										"class":	"%SPRITE",
+										"X":	26,
+										"Y":	-9,
+										"FLAGS":	0,
+										"EN":	-1,
+										"VAL":	1,
+										"DCY":	1,
+										"FLP":	0,
+										"forth":	"ROGER.TS 2 tile bmp !"
+									}]
+							}, {
+								"class":	"%MOVE",
+								"X":	-50,
+								"Y":	24,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	0,
+								"DCY":	0.899993896484375,
+								"ANG":	0,
+								"ACC":	0,
+								"children":	[{
+										"class":	"%RNG",
+										"X":	0,
+										"Y":	24,
+										"FLAGS":	0,
+										"EN":	0,
+										"VAL":	1,
+										"DCY":	1,
+										"NOI":	0,
+										"OFS":	0,
+										"children":	[{
+												"class":	"%REP",
+												"X":	0,
+												"Y":	24,
+												"FLAGS":	0,
+												"EN":	-1,
+												"VAL":	1,
+												"DCY":	1,
+												"DUR":	1,
+												"TRG":	-1
+											}]
+									}]
+							}, {
+								"class":	"%MOVE",
+								"X":	-26,
+								"Y":	24,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	0,
+								"DCY":	0.899993896484375,
+								"ANG":	90,
+								"ACC":	0,
+								"children":	[{
+										"class":	"%RNG",
+										"X":	0,
+										"Y":	72,
+										"FLAGS":	0,
+										"EN":	0,
+										"VAL":	1,
+										"DCY":	1,
+										"NOI":	0,
+										"OFS":	0,
+										"children":	[{
+												"class":	"%REP",
+												"X":	0,
+												"Y":	24,
+												"FLAGS":	0,
+												"EN":	-1,
+												"VAL":	1,
+												"DCY":	1,
+												"DUR":	1,
+												"TRG":	-1
+											}]
+									}]
+							}, {
+								"class":	"%ABILITY",
+								"X":	-2,
+								"Y":	24,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"K":	0
+							}, {
+								"class":	"%REP",
+								"X":	-12,
+								"Y":	-19,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"DUR":	1,
+								"TRG":	-1
+							}, {
+								"class":	"%TIMEOUT",
+								"X":	46,
+								"Y":	28,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	0,
+								"DCY":	1,
+								"DUR":	1,
+								"TRG":	-1
+							}, {
+								"class":	"%NEURON",
+								"X":	70,
+								"Y":	24,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	-0.511505126953125,
+								"DCY":	0.9699859619140625,
+								"THR":	1,
+								"STR":	1,
+								"TRG":	-1,
+								"children":	[{
+										"class":	"%RNG",
+										"X":	0,
+										"Y":	26,
+										"FLAGS":	0,
+										"EN":	-1,
+										"VAL":	1,
+										"DCY":	1,
+										"NOI":	-1,
+										"OFS":	0
+									}]
+							}]
+					}, {
+						"class":	"%SPRITE",
+						"X":	86.00006103515625,
+						"Y":	133.00006103515625,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	0,
+						"DCY":	0.989990234375,
+						"FLP":	1,
+						"forth":	"ROGER.TS 117 tile bmp !"
+					}, {
+						"class":	"%SPRITE",
+						"X":	-97,
+						"Y":	66,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"FLP":	0,
+						"forth":	"ROGER.TS 2 tile bmp !"
+					}, {
+						"class":	"%SPRITE",
+						"X":	3,
+						"Y":	93,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"FLP":	0,
+						"forth":	"ROGER.TS 115 tile bmp !",
+						"children":	[{
+								"class":	"%SPRITE",
+								"X":	1,
+								"Y":	13,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"FLP":	0,
+								"forth":	"ROGER.TS 108 tile bmp !"
+							}]
+					}, {
+						"class":	"%SPRITE",
+						"X":	120,
+						"Y":	174,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"FLP":	1,
+						"forth":	"ROGER.TS 132 tile bmp !"
+					}, {
+						"class":	"%SPRITE",
+						"X":	85,
+						"Y":	79,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"FLP":	0,
+						"forth":	"ROGER.TS 132 tile bmp !"
+					}, {
+						"class":	"%SPRITE",
+						"X":	52,
+						"Y":	35,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"FLP":	0,
+						"forth":	"heyyy.png bmp !"
+					}, {
+						"class":	"%LABEL",
+						"X":	378.00007629394531,
+						"Y":	139.00007629394531,
+						"FLAGS":	0,
+						"W":	256,
+						"H":	8,
+						"TXT":	"Hello, my baby!\nHello, my honey!",
+						"CLR":	-1,
+						"EDITABLE":	0,
 						"CLEAR-ON-EDIT":	0
 					}]
 			}, {
@@ -339,6 +611,7 @@
 						"CLR":	1256095999,
 						"EDITABLE":	-1,
 						"CLEAR-ON-EDIT":	0,
+						"OPN":	-1,
 						"children":	[{
 								"class":	"%COMMAND",
 								"X":	81.00006103515625,
@@ -394,6 +667,7 @@
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	0,
+								"OPN":	0,
 								"children":	[{
 										"class":	"%PANEL",
 										"X":	-3,
@@ -454,7 +728,8 @@
 										"TXT":	"Togglebox",
 										"CLR":	-1,
 										"EDITABLE":	-1,
-										"CLEAR-ON-EDIT":	0
+										"CLEAR-ON-EDIT":	0,
+										"OPN":	-1
 									}]
 							}, {
 								"class":	"%TOGGLEBOX",
@@ -467,6 +742,7 @@
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	0,
+								"OPN":	0,
 								"children":	[{
 										"class":	"%MOVE",
 										"X":	6,
@@ -573,6 +849,7 @@
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	0,
+								"OPN":	0,
 								"children":	[{
 										"class":	"%VIEWPORT",
 										"X":	-3.9999237060546875,
