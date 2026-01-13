@@ -605,9 +605,9 @@ defer _element-below
         hovered if
             \ Bolted elements always "use" on click
             \ In using mode, all elements "use" on click
-            focused if
-                hovered focused <> if unfocus then
-            then
+            \ focused if
+            \     hovered focused <> if unfocus then
+            \ then
             hovered { bolted? } using? or if
                 lmb hovered _mousedown
             else
