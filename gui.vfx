@@ -395,10 +395,11 @@ class: %menu-item
     %label derive
     prop xt :addr <readonly  \ XT to execute on click
     prop obj :ref %object <readonly
+    prop _clr
     template { editable off }
 
-    :: _enter  valof white clr ! ;
-    :: _leave  valof cyan clr ! ;
+    :: _enter  clr @ _clr ! valof white clr ! ;
+    :: _leave  _clr @ clr ! ;
 
     : trigger-menu-item ( menu-item - )
         xt @ 
