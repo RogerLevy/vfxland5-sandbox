@@ -460,8 +460,8 @@ class;
 
 : open-context-menu ( element - )
     close-context-menu
-    dup mouse me from-element    
     hud {
+        mouse 2>p atp
         *menu to context-menu
         context-menu swap _context-menu
         context-menu #children 0= if close-context-menu exit then
