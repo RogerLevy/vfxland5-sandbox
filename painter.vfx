@@ -204,7 +204,9 @@ class: %painter
             editable @ if stroke else eyedrop then 
         then
         rmb held? shift? not and if eyedrop then 
-        mouse>bmp  to lasty to lastx ;
+        editable @ if
+            mouse>bmp to lasty to lastx 
+        then ;
 
     :: _process
         update-box
