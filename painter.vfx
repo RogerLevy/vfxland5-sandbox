@@ -96,8 +96,9 @@ class: %painter
         display al_get_backbuffer al_set_target_bitmap ;
 
     \ Navigate bitmaps in registry
-    : prev-bitmap ( - ) hw-bmp @ 1 - 1 max init-sw-albmp ;
-    : next-bitmap ( - ) hw-bmp @ 1 + init-sw-albmp ;
+    || : ?*  shift? if 10 * then ;
+    : prev-bitmap ( - ) hw-bmp @ 1 ?* - 1 max init-sw-albmp ;
+    : next-bitmap ( - ) hw-bmp @ 1 ?* + init-sw-albmp ;
 
     \ Save to disk
     : save-bitmap ( - )
