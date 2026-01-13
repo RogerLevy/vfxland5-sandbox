@@ -12,8 +12,6 @@ painter-cursors.png 32 32 tileset-from painter-cursors.ts
 
 variable fgc
 
-
-
 : bresenham-line  ( srcx srcy destx desty xt - ) ( - )
     {: srcx srcy destx desty xt
         | dx dy sx sy err x y e2 :}
@@ -56,9 +54,10 @@ class: %painter
     prop hw-bmp <readonly       \ Hardware bitmap ID in registry
     prop zm <save
     prop editable <save
+    prop d :fixed <save                \ Brush diameter
     \ prop fgc <save
 
-    template { 8 zm ! $FFFFFFFF fgc ! editable on }
+    template { 8 zm ! 1. d ! $FFFFFFFF fgc ! editable on }
 
     :: cursor-bmp ( - bmp ) 
         using? if  
@@ -86,10 +85,6 @@ class: %painter
         \ 8 zm !
         \ hw-bmp @ bmpwh max 48 >= if 4 zm ! then
         \ hw-bmp @ bmpwh max 96 >= if 3 zm ! then ;
-
-    : get-blender  0 0 0 sp@ dup cell+ dup cell+ swap rot al_get_blender ;
-    : set-blender  al_set_blender ;
-    : replace-mode  ALLEGRO_ADD ALLEGRO_ONE ALLEGRO_ZERO set-blender ;
 
     \ Sync software -> hardware
     || : sync ( - )
@@ -161,16 +156,29 @@ class: %painter
             mouse>bmp  to lasty to lastx 
         then ;
 
+    : premul
+        ppenr@ ppena@ p* ppenr! 
+        ppeng@ ppena@ p* ppeng! 
+        ppenb@ ppena@ p* ppenb! ;
+
+    || 0 value rad
+
+    || : odot  0.5 0.5 +atp rad circf ;
+    || : dot  rad circf ;
+    || : odd?  1.0 and 0<> ;
+
     || : stroke ( - )
         sw-albmp @ -exit
         e{
-            sw-albmp @ al_set_target_bitmap
+            sw-albmp @ al_set_target_bitmap 
             -1.0 thick
-            get-blender replace-mode
+            
+            get-blender fgc @ $ff and if premul-mode else replace-mode then
                 fgc @ rgba8
-                \ lastx lasty 0.5 0.5 2+ atp
-                \ mouse>bmp 0.5 0.5 2+ line 
-                lastx lasty 2>i mouse>bmp 2>i ['] pixel bresenham-line
+                d @ 2 / to rad
+                lastx lasty 2>i mouse>bmp 2>i 
+                    d @ odd? if ['] odot else ['] dot then bresenham-line
+                \ mouse>bmp 2>i at  white see-thru premul 8. circf
             set-blender
             display al_get_backbuffer al_set_target_bitmap
             sync
