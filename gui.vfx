@@ -608,6 +608,19 @@ defer _element-below
         hovered if
             \ Handy elements: always draggable regardless of mode (unless bolted)
             hovered handy? hovered { bolted? } not and if
+                \ Support cycling for handy elements too
+                mouse-moved-since-click? not if
+                    selection #items if
+                        mouse this { in-me? } if
+                            \ Selected element is under mouse - set up cycling
+                            this to click-candidate
+                            lmb begin-drag
+                            record-click-position
+                            exit
+                        then
+                    then
+                then
+                \ Normal selection (mouse moved or first click)
                 hovered ctrl? if +select else select then
                 lmb begin-drag
                 record-click-position
