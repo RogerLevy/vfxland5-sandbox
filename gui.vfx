@@ -430,7 +430,7 @@ c: %menu %panel ;
     0 9 +at ;
 
 : option ( object|0 xt text len - )
-    *menu-item drop ;
+    *menu-item { designing? if valof light-red clr ! then } ;
 
 \ -- HUD -----------------------------------------------------------------------
 
@@ -844,15 +844,15 @@ class;
     you [: me save-tree-dialog ;] s" Save" option ;
 
 : common-options,
-    clone,
-    attach,
+    
+    designing? if clone, then
+    designing? if attach, then
     save,
-    \ detach,
     front,
     back,
-    bolt,
-    sticky,
-    clear,
+    designing? if bolt, then
+    designing? if sticky, then
+    designing? if clear, then
     delete, ;
 
 %element :: _context-menu ( menu - )
