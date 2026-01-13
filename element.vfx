@@ -25,6 +25,7 @@ trait: %_element
     :: _enter ( - ) ;
     :: _leave ( - ) ;
     :: _mousedown ( btn - ) drop ;  \ lbm , rmb , or mmb
+    :: _mousewheel ( n - ) drop ;   \ delta
     \ :: _mouseup ( btn - ) drop ;
     \ :: _mousemove ( - ) ;
     :: _process ( - ) ;

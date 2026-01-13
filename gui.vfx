@@ -703,6 +703,12 @@ defer _element-below
         the-key focused _keychar
     then ;
 
+: handle-focused-mouse-wheel
+    focused -exit
+    ALLEGRO_EVENT_MOUSE_AXES happened? if
+        the-wheel focused _mousewheel
+    then ; 
+
 : gui-input ( element - )
     as>
     topmost-element hover  \ Update hover FIRST so hovered is current
@@ -713,6 +719,7 @@ defer _element-below
     handle-mode-toggle
     begin event? while
         handle-focused-keys
+        handle-focused-mouse-wheel
     repeat
     handle-keys
 ;
