@@ -6,6 +6,7 @@ class: %togglebox
     :: opened?  opn @ ;
     :: open     opn on ;
     :: close    opn off ;
+    :: handy?   true ;
 
     :: process
         me active? -exit

@@ -90,9 +90,8 @@ class: %micro
     static icon-bmp
     is-a %_micro
     template { in-heap en on 1.0 val ! 0.97 dcy ! -1 icon-color ! }
+    :: handy? true ;
 class;
-
-
 
 \ -- Processing ---------------------------------------------------------------
 

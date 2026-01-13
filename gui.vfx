@@ -100,6 +100,7 @@ class: %panel
     %ui-box derive
     prop clr <save
     template { black see-thru rgba8@ clr ! }
+    :: handy? true ;
     :: _draw  clr @ rgba8 w 2@ rectf ;
 class;
 
@@ -586,7 +587,9 @@ defer _element-below
 
 : handle-rmb
     rmb pressed? if
-        target-element ?dup if rmb swap _mousedown then
+        target-element ?dup if
+            dup handy? if drop else rmb swap _mousedown then
+        then
     then ;
 
 : cycle-select ( - )
@@ -603,11 +606,15 @@ defer _element-below
     lmb pressed? if
         0 to click-candidate
         hovered if
+            \ Handy elements: always draggable regardless of mode (unless bolted)
+            hovered handy? hovered { bolted? } not and if
+                hovered ctrl? if +select else select then
+                lmb begin-drag
+                record-click-position
+                exit
+            then
             \ Bolted elements always "use" on click
             \ In using mode, all elements "use" on click
-            \ focused if
-            \     hovered focused <> if unfocus then
-            \ then
             hovered { bolted? } using? or if
                 lmb hovered _mousedown
             else
@@ -647,7 +654,11 @@ defer _element-below
     then ;
 
 : handle-context-menu
-    designing? -exit
+    \ Allow context menu in designing mode, or for handy elements in any mode
+    designing? not if
+        target-element dup 0= if drop exit then
+        handy? not ?exit
+    then
     rmb pressed? shift? not and if
         target-element ?dup if
             open-context-menu
@@ -691,10 +702,10 @@ defer _element-below
 
 : gui-input ( element - )
     as>
+    topmost-element hover  \ Update hover FIRST so hovered is current
     handle-lmb
     handle-rmb
     do-drag
-    topmost-element hover
     handle-context-menu
     handle-mode-toggle
     begin event? while

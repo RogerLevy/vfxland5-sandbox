@@ -33,6 +33,7 @@ trait: %_element
     :: delete ( - ) stub ;
     \ :: draggable? ( - flag ) true ;
     :: active? ( - flag ) true ;
+    :: handy? ( - flag ) false ;  \ Override to make element always draggable/context-menuable
     :: _context-menu ( menu - ) drop ;   \ override to add items / customize the menu
     :: on-clone ( - ) ;
     :: on-attach ( - ) ;
