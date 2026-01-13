@@ -55,6 +55,9 @@ trait;
 : +bolted    1 flags set-bit ;
 : -bolted    1 flags reset-bit ;
 : bolted?    1 flags test-bit ;
+: +clipped   2 flags set-bit ;
+: -clipped   2 flags reset-bit ;
+: clipped?   2 flags test-bit ;
 
 : abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
 : at-me  abspos atp ;
