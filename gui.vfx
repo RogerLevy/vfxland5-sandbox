@@ -740,9 +740,6 @@ require %idir%/inspect.vfx
         shift? if
             target-element ?dup if toggle-inspector then
         then
-        alt? if
-            target-element ?dup if unload then
-        then
     then ;
 
 \ -- Desktop-specific HUDs -----------------------------------------------------
