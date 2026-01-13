@@ -12,6 +12,43 @@ painter-cursors.png 32 32 tileset-from painter-cursors.ts
 
 variable fgc
 
+
+
+: bresenham-line  ( srcx srcy destx desty xt - ) ( - )
+    {: srcx srcy destx desty xt
+        | dx dy sx sy err x y e2 :}
+
+    srcx to x
+    srcy to y
+
+    destx srcx - abs to dx
+    desty srcy - abs to dy
+
+    srcx destx < if  1 else -1 then to sx
+    srcy desty < if  1 else -1 then to sy
+
+    dx dy - to err
+
+    begin
+        x y at xt execute
+
+        x destx = y desty = and if exit then
+
+        err 2 * to e2
+
+        e2 dy negate >= if
+            err dy - to err
+            x sx + to x
+        then
+
+        e2 dx <= if
+            err dx + to err
+            y sy + to y
+        then
+    again
+;
+
+
 class: %painter
     %ui-box derive
 
@@ -89,17 +126,6 @@ class: %painter
     : mouse>bmp ( - x. y. )
         pmouse abspos 2- zm @ >p dup 2p/ 2pfloor ;
 
-    || : dot ( - )
-        sw-albmp @ -exit
-        sw-albmp @ al_set_target_bitmap
-        get-blender replace-mode
-            mouse>bmp 0.5 0.5 2+ atp 
-            fgc @ rgba8 
-            0.5 circf
-        set-blender
-        display al_get_backbuffer al_set_target_bitmap
-        sync ;
-
     \ very raggedy:
     \ || : stroke ( - )
     \     sw-albmp @ -exit
@@ -135,17 +161,16 @@ class: %painter
             mouse>bmp  to lasty to lastx 
         then ;
 
-
     || : stroke ( - )
-        pmickey or 0= if dot exit then
         sw-albmp @ -exit
         e{
             sw-albmp @ al_set_target_bitmap
-            1.0 thick
+            -1.0 thick
             get-blender replace-mode
                 fgc @ rgba8
-                lastx lasty 0.5 0.5 2+ atp
-                mouse>bmp 0.5 0.5 2+ line 
+                \ lastx lasty 0.5 0.5 2+ atp
+                \ mouse>bmp 0.5 0.5 2+ line 
+                lastx lasty 2>i mouse>bmp 2>i ['] pixel bresenham-line
             set-blender
             display al_get_backbuffer al_set_target_bitmap
             sync
