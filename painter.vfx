@@ -205,9 +205,18 @@ class: %painter
         fcolor[ sw-albmp @ mouse>bmp 2>i al_get_pixel 
         fcolor[ 4f@ f>rgba8 fgc ! ;
     
-    || : ?mouse
+    :: _mousewheel ( n - )
+        {: n | old. rx. ry. factor. :}
         me hovered = -exit
+        zm @ >p to old.
+        n zm @ + 1 16 clamp zm !
+        pmouse abspos 2- to ry. to rx.
+        1.0 zm @ >p old. p/ - to factor.
+        rx. factor. p* ry. factor. p* x 2+! ;
+
+    || : ?mouse
         editable @ if me focused = -exit then
+        me hovered = -exit
         lmb held? <space> held? not and if 
             editable @ if stroke else eyedrop then 
         then
