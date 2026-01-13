@@ -6,8 +6,8 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	-131,
-				"Y":	76,
+				"X":	-140.5,
+				"Y":	107.5,
 				"FLAGS":	2,
 				"CLR":	532168959,
 				"forth":	"me to machines",
@@ -59,8 +59,8 @@
 						"forth":	"ROGER.TS 117 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	-51,
-						"Y":	106,
+						"X":	174.5,
+						"Y":	199,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -124,7 +124,7 @@
 								"ZM":	8,
 								"EDITABLE":	-1,
 								"D":	1,
-								"forth":	"361982483 init-sw-albmp"
+								"forth":	"363031427 init-sw-albmp"
 							}]
 					}, {
 						"class":	"%SPRITE",
@@ -167,8 +167,8 @@
 						"CLEAR-ON-EDIT":	0
 					}, {
 						"class":	"%SPRITE",
-						"X":	235,
-						"Y":	234,
+						"X":	225,
+						"Y":	246,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -181,8 +181,8 @@
 						"forth":	"blackbeard.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	356,
-						"Y":	111,
+						"X":	344.5,
+						"Y":	117.5,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -209,8 +209,8 @@
 						"forth":	"pic1.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	341.5,
-						"Y":	34,
+						"X":	326.5,
+						"Y":	38,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -223,8 +223,8 @@
 						"forth":	"asdf.png bmp !"
 					}, {
 						"class":	"%DESKTOP-HUD",
-						"X":	131,
-						"Y":	-76,
+						"X":	140.5,
+						"Y":	-107.5,
 						"FLAGS":	0,
 						"children":	[{
 								"class":	"%TOGGLEBOX",
@@ -296,16 +296,42 @@
 										"CLR":	127,
 										"children":	[{
 												"class":	"%PAINTER",
-												"X":	-71.089706420898438,
-												"Y":	-33.388046264648438,
+												"X":	84.769149780273438,
+												"Y":	88.313323974609375,
 												"FLAGS":	0,
-												"W":	416,
-												"H":	416,
-												"ZM":	13,
+												"W":	80,
+												"H":	80,
+												"ZM":	5,
 												"EDITABLE":	-1,
 												"D":	1,
-												"forth":	"BLACKBEARD.PNG init-sw-albmp"
+												"forth":	"362988803 init-sw-albmp"
 											}]
+									}]
+							}, {
+								"class":	"%SPRITE",
+								"X":	451,
+								"Y":	360,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"RX":	0,
+								"RY":	0,
+								"W":	0,
+								"H":	0,
+								"FLP":	1,
+								"forth":	"asdfasdf.png bmp !",
+								"children":	[{
+										"class":	"%PAINTER",
+										"X":	32,
+										"Y":	-32,
+										"FLAGS":	0,
+										"W":	512,
+										"H":	512,
+										"ZM":	8,
+										"EDITABLE":	-1,
+										"D":	1,
+										"forth":	"ASDFASDF.PNG init-sw-albmp"
 									}]
 							}]
 					}]
@@ -359,8 +385,8 @@
 				"CLR":	476815103
 			}, {
 				"class":	"%DESKTOP",
-				"X":	431,
-				"Y":	67,
+				"X":	516.5,
+				"Y":	-63,
 				"FLAGS":	2,
 				"CLR":	2033606399,
 				"script":	"%idir%/micro-test-session.vfx",
@@ -370,7 +396,7 @@
 						"Y":	302,
 						"FLAGS":	0,
 						"EN":	-1,
-						"VAL":	22044,
+						"VAL":	22128,
 						"DCY":	1,
 						"RX":	50,
 						"RY":	50,
@@ -528,7 +554,7 @@
 								"Y":	24,
 								"FLAGS":	0,
 								"EN":	-1,
-								"VAL":	-0.455322265625,
+								"VAL":	0.534698486328125,
 								"DCY":	0.9699859619140625,
 								"THR":	1,
 								"STR":	1,
@@ -862,7 +888,7 @@
 										"X":	7,
 										"Y":	135,
 										"FLAGS":	2,
-										"W":	112,
+										"W":	72,
 										"H":	8,
 										"TXT":	"",
 										"CLR":	-1,
@@ -884,5 +910,5 @@
 					}]
 			}]
 	},
-	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\painter-cursors.png", "PAINTER-CURSORS.PNG 32 32 tileset-from PAINTER-CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap .\\asdf.png", "bitmap ..\\player2\\dat\\gfx\\blackbeard.png", "bitmap .\\asdf-body.png", "bitmap .\\sony-cxa.png", "bitmap .\\pic1.png"]
+	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\painter-cursors.png", "PAINTER-CURSORS.PNG 32 32 tileset-from PAINTER-CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap .\\asdf.png", "bitmap ..\\player2\\dat\\gfx\\blackbeard.png", "bitmap .\\asdf-body.png", "bitmap .\\sony-cxa.png", "bitmap .\\pic1.png", "bitmap .\\asdfasdf.png"]
 }
