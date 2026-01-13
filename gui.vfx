@@ -64,7 +64,7 @@ class: %desktop
     :: click-box@ 0 0 winw winh 2>p ;
     :: _process 
         <space> held? if
-            lmb? if mickey 2>p x 2+! then 
+            lmb? if pmickey x 2+! then 
         then ;
     :: _draw 0 0 at clr @ rgba8 winw winh 2>p rectf ;
 class;
@@ -666,7 +666,7 @@ defer _element-below
 
 : do-drag
     dragging @ -exit
-    mickey 2>p                          \ get mouse delta
+    pmickey                             \ get mouse delta
     2dup or if drag-moved on then       \ track if any movement
     [: { 2dup x 2+! } ;] selection each \ apply to all selected
     2drop ;
