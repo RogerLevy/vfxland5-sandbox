@@ -6,8 +6,8 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	-766,
-				"Y":	165,
+				"X":	-99,
+				"Y":	171.5,
 				"FLAGS":	2,
 				"CLR":	532168959,
 				"forth":	"me to machines",
@@ -123,7 +123,7 @@
 								"H":	128,
 								"ZM":	8,
 								"EDITABLE":	-1,
-								"forth":	"932672667 init-sw-albmp"
+								"forth":	"328701451 init-sw-albmp"
 							}]
 					}, {
 						"class":	"%SPRITE",
@@ -166,8 +166,8 @@
 						"CLEAR-ON-EDIT":	0
 					}, {
 						"class":	"%SPRITE",
-						"X":	249,
-						"Y":	231,
+						"X":	235,
+						"Y":	234,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -180,8 +180,8 @@
 						"forth":	"blackbeard.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	360,
-						"Y":	115,
+						"X":	356,
+						"Y":	111,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -194,8 +194,22 @@
 						"forth":	"asdf-body.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	344,
-						"Y":	31,
+						"X":	619,
+						"Y":	89.5,
+						"FLAGS":	0,
+						"EN":	-1,
+						"VAL":	1,
+						"DCY":	1,
+						"RX":	0,
+						"RY":	0,
+						"W":	0,
+						"H":	0,
+						"FLP":	0,
+						"forth":	"pic1.png bmp !"
+					}, {
+						"class":	"%SPRITE",
+						"X":	341.5,
+						"Y":	34,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -218,8 +232,8 @@
 						"forth":	"PIC1.PNG init-sw-albmp"
 					}, {
 						"class":	"%DESKTOP-HUD",
-						"X":	766,
-						"Y":	-165,
+						"X":	99,
+						"Y":	-171.5,
 						"FLAGS":	0,
 						"children":	[{
 								"class":	"%TOGGLEBOX",
