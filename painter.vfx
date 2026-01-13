@@ -18,14 +18,18 @@ class: %painter
     prop sw-albmp :addr         \ Software bitmap (memory) for editing
     prop hw-bmp <readonly       \ Hardware bitmap ID in registry
     prop zm <save
+    prop editable <save
     \ prop fgc <save
 
-    template { 8 zm ! $FFFFFFFF fgc ! }
+    template { 8 zm ! $FFFFFFFF fgc ! editable on }
 
     :: cursor-bmp ( - bmp ) 
-        using?   rmb held? if 
-            painter-cursors.ts 1 tile 
-            exit
+        using? if  
+            rmb held?  
+            editable @ not or if 
+                painter-cursors.ts 1 tile 
+                exit
+            then
         then
         painter-cursors.ts 0 tile ;
 
@@ -41,10 +45,10 @@ class: %painter
         ALLEGRO_MEMORY_BITMAP al_set_new_bitmap_flags
         al_clone_bitmap sw-albmp !
         0 al_set_new_bitmap_flags
-        update-box 
-        8 zm !
-        hw-bmp @ bmpwh max 48 >= if 4 zm ! then
-        hw-bmp @ bmpwh max 96 >= if 3 zm ! then ;
+        update-box ;
+        \ 8 zm !
+        \ hw-bmp @ bmpwh max 48 >= if 4 zm ! then
+        \ hw-bmp @ bmpwh max 96 >= if 3 zm ! then ;
 
     : get-blender  0 0 0 sp@ dup cell+ dup cell+ swap rot al_get_blender ;
     : set-blender  al_set_blender ;
@@ -79,20 +83,19 @@ class: %painter
             atp m}
         then
         grey w 2@ rect 
-        4 -6 +at  fgc @ rgba8  5. 5. circf  grey 5. 5. circ ;
-
-    :: _mousedown ( btn - )
-        drop  me focus ;
+        4 -6 +at  fgc @ rgba8  5. circf  grey 5. circ ;
 
     \ Mouse -> bitmap coordinates
     : mouse>bmp ( - x. y. )
-        mouse 2>p abspos 2- zm @ dup 2/ ;
+        pmouse abspos 2- zm @ >p dup 2p/ 2pfloor ;
 
     || : dot ( - )
         sw-albmp @ -exit
         sw-albmp @ al_set_target_bitmap
         get-blender replace-mode
-            mouse>bmp atp fgc @ rgba8 pixel
+            mouse>bmp 0.5 0.5 2+ atp 
+            fgc @ rgba8 
+            0.5 circf
         set-blender
         display al_get_backbuffer al_set_target_bitmap
         sync ;
@@ -123,16 +126,26 @@ class: %painter
     \         sync
     \     e} ;
 
+    || 0 value lastx
+    || 0 value lasty
+
+    :: _mousedown ( btn - )
+        lmb = -exit  editable @ if 
+            me focus 
+            mouse>bmp  to lasty to lastx 
+        then ;
+
+
     || : stroke ( - )
-        mickey or 0= if dot exit then
+        pmickey or 0= if dot exit then
         sw-albmp @ -exit
         e{
             sw-albmp @ al_set_target_bitmap
-            1. thick
+            1.0 thick
             get-blender replace-mode
                 fgc @ rgba8
-                mouse>bmp atp
-                at@p mickey 2>p zm @ dup 2/ 2-  line 
+                lastx lasty 0.5 0.5 2+ atp
+                mouse>bmp 0.5 0.5 2+ line 
             set-blender
             display al_get_backbuffer al_set_target_bitmap
             sync
@@ -158,11 +171,15 @@ class: %painter
         sw-albmp @ -exit
         fcolor[ sw-albmp @ mouse>bmp 2>i al_get_pixel 
         fcolor[ 4f@ f>rgba8 fgc ! ;
-
+    
     || : ?mouse
         me hovered = -exit
-        lmb held? <space> held? not and if stroke then 
-        rmb held? shift? not and if eyedrop then ;
+        editable @ if me focused = -exit then
+        lmb held? <space> held? not and if 
+            editable @ if stroke else eyedrop then 
+        then
+        rmb held? shift? not and if eyedrop then 
+        mouse>bmp  to lasty to lastx ;
 
     :: _process
         update-box
