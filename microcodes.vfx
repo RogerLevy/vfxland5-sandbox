@@ -409,6 +409,10 @@ class;
     abspos bmp @ bmpwh 2>p 2 2 2/ 2-
     bmp @ bmpwh 2>p box ;
 
+%sprite :: _mousedown ( btn - )
+    rmb = -exit
+    using? if me open-context-menu then ;
+
 %sprite :: _act 
     anm @ -exit
     val @ advance-animation bmp ! ;
