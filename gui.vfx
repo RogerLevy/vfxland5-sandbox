@@ -813,20 +813,22 @@ class;
     ;]
     s" Back" option ;
 
-: bolt,
-    you [:
+: bolt, 
+    you [: 
         bolted? if -bolted else +bolted then
     ;] 
     you { bolted? } if s" Unbolt" else s" Bolt" then option ;
 
-: sticky,
+: default-sticky,
     you { bolted? } ?exit
     hud -exit
-    you >parent @ hud = if
-        you [: abspos me dup >root push x 2! ;] s" Unsticky" option
-    else
-        you [: abspos me hud push x 2! ;] s" Sticky" option
+    you >parent @ hud <> if
+    \     you [: abspos me dup >root push x 2! ;] s" Unsticky" option
+    \ else
+        you [: abspos me hud push x 2! ;] s" Global Sticky" option 
     then ;
+
+defer sticky,  ['] default-sticky, is sticky,
 
 : clear,
     you #children -exit
