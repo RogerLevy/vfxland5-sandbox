@@ -51,19 +51,32 @@ class;
 
 \ -- Bitmap Creation and Loading -----------------------------------------------
 
+: find-next-pic# ( - n )
+    \ Find highest picNNN.png in current directory and return next number
+    {: | buf[ 256 ] max :}
+    0 to max
+    z" pic*.png" [: ( zpath - )
+        zcount -path buf[ place          \ Get just filename
+        buf[ count s" pic" strin? not if drop exit then  \ Must start with "pic"
+        buf[ 3 + c@  [char] 0 [char] 9 1+ within not if drop exit then  \ First digit must be 0-9
+        buf[ count 3 - 3 buf[ 3 + digit-string? if   \ Parse 3-digit number
+            max max to max
+        else drop then
+    ;] find-files
+    max 1 + ;
+
 : newbmp ( w h - )
-    {: | zbuf[ 1024 ] :}
-    0 z" New Bitmap" z" *.png" ALLEGRO_FILECHOOSER_SAVE file-dialog
-    ?dup if 
-        -ext f" %s.png" zbuf[ zplace
-        al_create_bitmap zbuf[ swap al_save_bitmap 0= abort" Bitmap file create fail!"
-        zbuf[ f" bitmap %z" .evaluate
-        machines { abspos 2>i 2negate } 
-        winw winh 2 2 2/ zoom @ dup 2/  
-        2+ at 
-        zbuf[ zcount -path evaluate machines { *sprite >bmp @ paint }
-    else 
-        2drop
+    {: w h | zbuf[ 1024 ] default[ 256 ] :}
+    find-next-pic# f" pic%03d.png" default[ place
+    default[ count z>zbuf zbuf z" New Bitmap" z" *.png" ALLEGRO_FILECHOOSER_SAVE file-dialog
+    ?dup if
+        -ext f" %s.png" zbuf zplace
+        w h al_create_bitmap zbuf swap al_save_bitmap 0= abort" Bitmap file create fail!"
+        zbuf f" bitmap %z" .evaluate
+        machines { abspos 2>i 2negate }
+        winw winh 2 2 2/ zoom @ dup 2/
+        2+ at
+        zbuf zcount -path evaluate machines { *sprite >bmp @ paint }
     then ;
 
 : loadbmp ( - )
