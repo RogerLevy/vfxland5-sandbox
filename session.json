@@ -297,7 +297,20 @@
 								"W":	0,
 								"H":	0,
 								"FLP":	1,
-								"forth":	"asdfasdf.png bmp !"
+								"forth":	"asdfasdf.png bmp !",
+								"children":	[{
+										"class":	"%PAINTER",
+										"X":	32,
+										"Y":	-486.5,
+										"FLAGS":	0,
+										"W":	512,
+										"H":	512,
+										"ZM":	8,
+										"EDITABLE":	-1,
+										"D":	1,
+										"BGC":	-522137376,
+										"forth":	"ASDFASDF.PNG init-sw-albmp"
+									}]
 							}]
 					}]
 			}, {
@@ -870,6 +883,7 @@
 								"ZM":	16,
 								"EDITABLE":	0,
 								"D":	1,
+								"BGC":	-522137376,
 								"forth":	"SONY-CXA.PNG init-sw-albmp"
 							}]
 					}]

@@ -55,7 +55,6 @@ class: %painter
     prop zm <save
     prop editable <save
     prop d :fixed <save                \ Brush diameter
-    prop touched 
     prop bgc <save
 
     template { 8 zm ! 1. d ! $FFFFFFFF fgc ! editable on  $e0e0d0e0 bgc ! }
@@ -100,13 +99,6 @@ class: %painter
     || : ?*  shift? if 10 * then ;
     : prev-bitmap ( - ) hw-bmp @ 1 ?* - 1 max init-sw-albmp ;
     : next-bitmap ( - ) hw-bmp @ 1 ?* + init-sw-albmp ;
-
-    \ Save to disk
-    || : save-bitmap ( - )
-        sync
-        hw-bmp @ bitmap-file expand >zpad hw-bmp @ ?bmp>parent id>albmp al_save_bitmap 
-            0= abort" Error saving bitmap" 
-        hw-bmp @ bitmap-file f" Saved bitmap to %s" type cr ;
 
     :: _draw
         bgc @ rgba8
@@ -169,6 +161,7 @@ class: %painter
     || : odot  0.5 0.5 +atp rad circf ;
     || : dot  rad circf ;
     || : odd?  1.0 and 0<> ;
+    || : touch  hw-bmp @ id>bmp >touched on ;
 
     || : stroke ( - )
         sw-albmp @ -exit
@@ -184,7 +177,7 @@ class: %painter
                 \ mouse>bmp 2>i at  white see-thru premul 8. circf
             set-blender
             display al_get_backbuffer al_set_target_bitmap
-            sync touched on 
+            sync touch
         e} ;
 
     || : flood ( - )
@@ -194,10 +187,10 @@ class: %painter
             mouse>bmp atp fgc @ rgba8 floodfill
         set-blender
         display al_get_backbuffer al_set_target_bitmap
-        sync touched on ;
+        sync touch ;
 
     : f>rgba8 ( f:r f:g f:b f:a - n )
-        255e f* f>s 
+        255e f* f>s
         255e f* f>s 8 << or
         255e f* f>s 16 << or
         255e f* f>s 24 << or ;
@@ -268,8 +261,8 @@ class: %painter
         clear, 
         common-options, ;
 
-    :: save ( - )
-        touched @ -exit touched off save-bitmap ;
+    \ :: save ( - )
+    \     touched @ -exit touched off save-bitmap ;
 
 class;
 
@@ -283,6 +276,8 @@ class;
     you [:
         bmp @ *paint {
             you click-dims 2 -2 2/ x 2!
+            w 2@ 2p. cr
+            corral
         }
     ;] s" Paint" option ;
 

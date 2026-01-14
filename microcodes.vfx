@@ -560,7 +560,7 @@ class;
 \     then
 \ ;
 
-: ?save  <s> pressed? ctrl? and -exit save-all ;
+: ?save  <s> pressed? ctrl? and -exit save-all save-bitmaps ;
 
 : micros
     microcodes>> machines as 

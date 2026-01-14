@@ -469,10 +469,16 @@ class;
     context-menu ?dup if unload then
     0 to context-menu ;
 
-: corral 
-    x 2@ 0 0 2max x 2!
-    winw zoom @ / winh zoom @ / 
-    2>p w 2@ 2-`` x 2@`` 2min x 2! ;
+: corral
+    \ Clamp element to screen bounds, result in relative coordinates
+    abspos                                      ( get absolute position )
+    0. 0. 2max                                  ( clamp min to 0,0 )
+    winw zoom @ / winh zoom @ / 2>p w 2@ 2-    ( calculate max bounds )
+    2min                                        ( clamp to max )
+    parent @ if
+        parent @ { abspos } 2-                  ( convert to relative )
+    then
+    x 2! ;
 
 : open-context-menu ( element - )
     close-context-menu
