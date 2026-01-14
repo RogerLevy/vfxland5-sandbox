@@ -189,12 +189,6 @@ class: %painter
         display al_get_backbuffer al_set_target_bitmap
         sync touch ;
 
-    : f>rgba8 ( f:r f:g f:b f:a - n )
-        255e f* 0.5e f+ f>s
-        255e f* 0.5e f+ f>s 8 << or
-        255e f* 0.5e f+ f>s 16 << or
-        255e f* 0.5e f+ f>s 24 << or ;
-
     : eyedrop ( - )
         {: | fcolor[ 16 ] :}
         sw-albmp @ -exit

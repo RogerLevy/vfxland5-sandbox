@@ -1,6 +1,6 @@
-|| create areacolor 16 allot
+|| variable areacolor 
 || 0 value b
-|| create tempcolor 16 allot
+|| variable tempcolor 
 || 0 value w
 || 0 value h
 
@@ -10,8 +10,8 @@
     y 0< ?exit
     x w >= ?exit
     y h >= ?exit
-    tempcolor b x y al_get_pixel
-    tempcolor 16 areacolor 16 compare 0= if
+    b x y pixel@ tempcolor !
+    tempcolor @ areacolor @ = if
         x y at pixel
         x 1 + y recurse
         x y 1 + recurse
@@ -21,7 +21,8 @@
 
 : floodfill
     al_get_target_bitmap to b
+    b at@ pixel@ rgba8@ = ?exit
     b albmpw to w
     b albmph to h
-    areacolor b at@ al_get_pixel 
+    b at@ pixel@ areacolor !
     e{ at@ (flood-fill) e} ;
