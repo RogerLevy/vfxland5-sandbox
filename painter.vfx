@@ -190,15 +190,15 @@ class: %painter
         sync touch ;
 
     : f>rgba8 ( f:r f:g f:b f:a - n )
-        255e f* f>s
-        255e f* f>s 8 << or
-        255e f* f>s 16 << or
-        255e f* f>s 24 << or ;
+        255e f* 0.5e f+ f>s
+        255e f* 0.5e f+ f>s 8 << or
+        255e f* 0.5e f+ f>s 16 << or
+        255e f* 0.5e f+ f>s 24 << or ;
 
     : eyedrop ( - )
         {: | fcolor[ 16 ] :}
         sw-albmp @ -exit
-        fcolor[ sw-albmp @ mouse>bmp 2>i al_get_pixel 
+        fcolor[ sw-albmp @ mouse>bmp 2>i al_get_pixel
         fcolor[ 4f@ f>rgba8 fgc ! ;
     
     :: _mousewheel ( n - )
@@ -276,7 +276,6 @@ class;
     you [:
         bmp @ *paint {
             you click-dims 2 -2 2/ x 2!
-            w 2@ 2p. cr
             corral
         }
     ;] s" Paint" option ;

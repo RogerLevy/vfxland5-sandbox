@@ -288,7 +288,7 @@
 								"class":	"%SPRITE",
 								"X":	284.5,
 								"Y":	514.5,
-								"FLAGS":	0,
+								"FLAGS":	2,
 								"EN":	-1,
 								"VAL":	1,
 								"DCY":	1,
@@ -297,20 +297,7 @@
 								"W":	0,
 								"H":	0,
 								"FLP":	1,
-								"forth":	"asdfasdf.png bmp !",
-								"children":	[{
-										"class":	"%PAINTER",
-										"X":	32,
-										"Y":	-486.5,
-										"FLAGS":	0,
-										"W":	512,
-										"H":	512,
-										"ZM":	8,
-										"EDITABLE":	-1,
-										"D":	1,
-										"BGC":	-522137376,
-										"forth":	"ASDFASDF.PNG init-sw-albmp"
-									}]
+								"forth":	"asdfasdf.png bmp !"
 							}]
 					}]
 			}, {
