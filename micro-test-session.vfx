@@ -53,17 +53,17 @@ class;
 
 : find-next-pic# ( - n )
     \ Find highest picNNN.png in current directory and return next number
-    {: | buf[ 256 ] max :}
-    0 to max
+    {: | buf[ 256 ] n :}
+    0 to n
     z" pic*.png" [: ( zpath - )
         zcount -path buf[ place          \ Get just filename
         buf[ count s" pic" strin? not if drop exit then  \ Must start with "pic"
-        buf[ 3 + c@  [char] 0 [char] 9 1+ within not if drop exit then  \ First digit must be 0-9
+        buf[ 3 + c@  [char] 0 [char] 9  1 + within not if drop exit then  \ First digit must be 0-9
         buf[ count 3 - 3 buf[ 3 + digit-string? if   \ Parse 3-digit number
-            max max to max
+            n max to n
         else drop then
     ;] find-files
-    max 1 + ;
+    n 1 + ;
 
 : newbmp ( w h - )
     {: w h | zbuf[ 1024 ] default[ 256 ] :}
