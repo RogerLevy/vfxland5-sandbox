@@ -36,6 +36,19 @@ ec-cell thickness
 : pixel ( - )
     at@f rgba@fds al_draw_pixel ;
 
+: f>c  255e f* 0.5e f+ f>s ;
+
+: f>rgba8 ( f:r f:g f:b f:a - n )
+    f>c
+    f>c 8 << or
+    f>c 16 << or
+    f>c 24 << or ;
+
+: pixel@ ( bitmap x y - rgba8 )
+    {: b x y | buf[ 16 ] :}
+    buf[ b x y al_get_pixel
+    buf[ 4f@ f>rgba8 ;
+
 \ \ c: %shape %drawable tr tg tb ta fil ;
 \ c: %shape %actor fil ;
 \ c: %circle %shape r ;
