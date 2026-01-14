@@ -6,8 +6,8 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	83.5,
-				"Y":	106,
+				"X":	154.5,
+				"Y":	118,
 				"FLAGS":	2,
 				"CLR":	532168959,
 				"forth":	"me to machines",
@@ -169,8 +169,8 @@
 						"forth":	"blackbeard.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	344.5,
-						"Y":	117.5,
+						"X":	356,
+						"Y":	-89.5,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -180,7 +180,22 @@
 						"W":	0,
 						"H":	0,
 						"FLP":	0,
-						"forth":	"asdf-body.png bmp !"
+						"forth":	"asdf-body.png bmp !",
+						"children":	[{
+								"class":	"%SPRITE",
+								"X":	-18,
+								"Y":	-79.5,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"RX":	0,
+								"RY":	0,
+								"W":	0,
+								"H":	0,
+								"FLP":	0,
+								"forth":	"asdf.png bmp !"
+							}]
 					}, {
 						"class":	"%SPRITE",
 						"X":	619,
@@ -196,23 +211,9 @@
 						"FLP":	0,
 						"forth":	"pic1.png bmp !"
 					}, {
-						"class":	"%SPRITE",
-						"X":	326.5,
-						"Y":	38,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"RX":	0,
-						"RY":	0,
-						"W":	0,
-						"H":	0,
-						"FLP":	0,
-						"forth":	"asdf.png bmp !"
-					}, {
 						"class":	"%DESKTOP-HUD",
-						"X":	-83.5,
-						"Y":	-106,
+						"X":	-154.5,
+						"Y":	-118,
 						"FLAGS":	0,
 						"children":	[{
 								"class":	"%TOGGLEBOX",
@@ -267,9 +268,9 @@
 								"X":	709,
 								"Y":	229,
 								"FLAGS":	2,
-								"W":	40,
+								"W":	48,
 								"H":	8,
-								"TXT":	"Paint",
+								"TXT":	"Window",
 								"CLR":	-1,
 								"EDITABLE":	-1,
 								"CLEAR-ON-EDIT":	0,
@@ -278,22 +279,10 @@
 										"class":	"%PANEL",
 										"X":	-4.5,
 										"Y":	14.5,
-										"FLAGS":	4,
+										"FLAGS":	6,
 										"W":	256,
 										"H":	256,
-										"CLR":	127,
-										"children":	[{
-												"class":	"%PAINTER",
-												"X":	84.769149780273438,
-												"Y":	88.313323974609375,
-												"FLAGS":	0,
-												"W":	0,
-												"H":	0,
-												"ZM":	5,
-												"EDITABLE":	-1,
-												"D":	1,
-												"forth":	"DUMMY.BMP init-sw-albmp"
-											}]
+										"CLR":	127
 									}]
 							}, {
 								"class":	"%SPRITE",

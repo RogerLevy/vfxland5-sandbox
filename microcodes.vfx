@@ -560,6 +560,8 @@ class;
 \     then
 \ ;
 
+: ?save  <s> pressed? ctrl? and -exit save-all ;
+
 : micros
     microcodes>> machines as 
     display al_hide_mouse_cursor
@@ -568,6 +570,7 @@ class;
         get-mouse 
         machines ?dup if decay then
         session ?dup if process-gui then 
+        ?save
     show> 
         session ?dup if 0 0 at draw then
         0 0 at gui-overlay 
@@ -621,12 +624,6 @@ micros
 ;
 
 \ -- Misc ---------------------------------------------------------------------
-
-: clear  
-    ['] unload machines each
-    going @ not if machines sweep then
-    0 to hovered
-    selection vacate ;
 
 [:
     default-sticky,

@@ -45,6 +45,8 @@ s" session.json" sessionpath$ place
     sessionpath$ count load-json >r 
     autoloads>json "autoloads" r@ add-item 
     r> sessionpath$ count save-json 
+
+    [: [ here ]   dup save   literal swap each ;] session each
 ;
 
 : load-all

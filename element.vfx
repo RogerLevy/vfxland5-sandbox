@@ -46,6 +46,8 @@ trait: %_element
     :: open ( - ) ;
     :: close ( - ) ;
     :: cursor-bmp ( - bmp ) stub ;
+    :: clear ( - ) stub ;
+    redef :: save ( - ) ;
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
@@ -160,6 +162,13 @@ defer _sweep
     vga-8x8 fnt!
 
     at-me  me _draw ['] draw me each ;
+
+%element :: clear
+    ['] unload me each
+    going @ not if me sweep then
+    0 to hovered
+    0 to focused
+    selection vacate ;
 
 \ -- Clone ---------------------------------------------------------------------
 
