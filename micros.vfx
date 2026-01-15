@@ -1,5 +1,5 @@
 \ ==============================================================================
-\ Micro-codes
+\ Micros
 \ ==============================================================================
 
 ((
@@ -467,15 +467,15 @@ class;
 
 \ -- Lifecycle ----------------------------------------------------------------
 
-0 0 at %desktop dmake value machines
-machines session push
+0 0 at %desktop dmake value desktop
+desktop session push
 hud session push
 
 %desktop :: active? ( - flag )
-    machines me = ;
+    desktop me = ;
 
 %desktop :: forth@ ( - a len )
-    machines me = if s" me to machines" else s" " then ;
+    desktop me = if s" me to desktop" else s" " then ;
 
 defer _delete-micro
 : delete-micro ( micro - )
@@ -485,100 +485,6 @@ defer _delete-micro
 ' delete-micro is _delete-micro
 
 %micro :: delete  me delete-micro ;
-
-\ -- Bookmark -----------------------------------------------------------------
-
-class: %bookmark
-    %label derive
-    prop dx :fixed <save
-    prop dy :fixed <save
-
-    || 2. constant m
-
-    :: click-box@ ( - x1 y1 x2 y2 )
-        abspos m m 2- w 2@ m m 2 2 2* 2+ box ;
-
-    :: _draw
-        _update-box
-        m >i negate dup +at
-        light-green w 2@ m m 2 2 2* 2+ rectf
-        black w 2@ m m 2 2 2* 2+ rect
-        m m 2>i +at
-        black _draw-text ;
-    
-    :: _mousedown ( btn - )
-        lmb = -exit
-        bolted? not shift? not and ?exit
-        dx 2@ machines >x 2! ;
-
-    : bookmark,
-        you [:
-            machines -> x 2@ dx 2!
-        ;] s" Bookmark" option ;
-
-    :: _context-menu ( menu - )
-        as>
-        bookmark,
-        common-options, ;
-class;
-
-\ -- Desktop HUD --------------------------------------------------------------
-
-: dhud ( - desktop-hud )
-    machines ?dup if
-        >highest @ dup %desktop-hud is? ?exit 
-        drop
-    then
-    %desktop-hud make dup machines push ;
-
-\ -- Main Loop ----------------------------------------------------------------
-
-\ : process-micros
-\     machines decay
-\     machines process-gui ;
-
-: draw-machines
-    machines -exit
-    0 0 at
-    machines draw ;
-    \ machines hints ;
-    
-\ : track-origin 
-\     <space> held? lmb held? and ?exit
-\     selection #items if
-\         selection peek %origin is? if
-\             selection peek to last-origin
-\         then
-\         last-origin {  
-\             abspos machines { abspos } 2- 
-\             2negate 
-\             \ winw winh 2>p 0.5 0.5 2p*   zoom @ >p dup 2p/   2+
-\             64. 64. 2+
-\             \ 2dup 2p. cr
-\             machines >x 2!
-\         }
-\     then
-\ ;
-
-: ?save  <s> pressed? ctrl? and -exit save-all save-bitmaps ;
-
-: micros
-    microcodes>> machines as 
-    display al_hide_mouse_cursor
-    2 user-zoom !
-    work> 
-        get-mouse 
-        machines ?dup if decay then
-        session ?dup if process-gui then 
-        ?save
-    show> 
-        session ?dup if 0 0 at draw then
-        0 0 at gui-overlay 
-        draw-cursor 
-;
-
-
-micros
 
 \ -- DSL Syntax ---------------------------------------------------------------
 
@@ -622,29 +528,3 @@ micros
     change,
     common-options,
 ;
-
-\ -- Misc ---------------------------------------------------------------------
-
-[:
-    default-sticky,
-    you { bolted? } ?exit
-    you >parent @ hud = ?exit
-    \ hud -exit
-    \ you >parent @ hud = if
-    \     you [: abspos me dup >root push x 2! ;] s" Unsticky" option
-    \ else
-        you [: abspos me dhud push x 2! ;] s" Desktop Sticky" option
-    \ then ;
-;] is sticky,
-
-[:
-    dup hud descendant? if
-        {
-            machines relpos
-            me machines push
-            x 2!
-        }
-    else 
-        drop
-    then
-;] is cloned

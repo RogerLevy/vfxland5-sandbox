@@ -1,0 +1,109 @@
+\ ==============================================================================
+\ Workspace IDE
+\ ==============================================================================
+
+\ -- Dependencies --------------------------------------------------------------
+
+REQUIRE %vfxland5%/forge/lib/dltree.vfx
+REQUIRE %vfxland5%/supershow/traits.vfx
+REQUIRE %vfxland5%/supershow/bitmap.vfx
+REQUIRE %vfxland5%/supershow/sprites.vfx
+REQUIRE %vfxland5%/supershow/tileset.vfx
+REQUIRE %vfxland5%/supershow/autoload.vfx
+REQUIRE %idir%/shapes.vfx
+REQUIRE %idir%/arrow.vfx
+REQUIRE %idir%/colors.vfx
+REQUIRE %idir%/micros.vfx
+REQUIRE %idir%/painter.vfx
+REQUIRE %idir%/togglebox.vfx
+
+\ -- Bookmark -----------------------------------------------------------------
+
+class: %bookmark
+    %label derive
+    prop dx :fixed <save
+    prop dy :fixed <save
+
+    || 2. constant m
+
+    :: click-box@ ( - x1 y1 x2 y2 )
+        abspos m m 2- w 2@ m m 2 2 2* 2+ box ;
+
+    :: _draw
+        _update-box
+        m >i negate dup +at
+        light-green w 2@ m m 2 2 2* 2+ rectf
+        black w 2@ m m 2 2 2* 2+ rect
+        m m 2>i +at
+        black _draw-text ;
+    
+    :: _mousedown ( btn - )
+        lmb = -exit
+        bolted? not shift? not and ?exit
+        dx 2@ desktop >x 2! ;
+
+    : bookmark,
+        you [:
+            desktop -> x 2@ dx 2!
+        ;] s" Bookmark" option ;
+
+    :: _context-menu ( menu - )
+        as>
+        bookmark,
+        common-options, ;
+class;
+
+\ -- Desktop HUD --------------------------------------------------------------
+
+: dhud ( - desktop-hud )
+    desktop ?dup if
+        >highest @ dup %desktop-hud is? ?exit 
+        drop
+    then
+    %desktop-hud make dup desktop push ;
+
+\ -- Main Loop ----------------------------------------------------------------
+
+: ?save  <s> pressed? ctrl? and -exit save-all save-bitmaps ;
+
+: workspace
+    display al_hide_mouse_cursor
+    2 user-zoom !
+    work> 
+        get-mouse 
+        desktop ?dup if decay then
+        session ?dup if process-gui then 
+        ?save
+    show> 
+        session ?dup if 0 0 at draw then
+        0 0 at gui-overlay 
+        draw-cursor 
+;
+
+workspace
+
+\ -- Misc ---------------------------------------------------------------------
+
+[:
+    default-sticky,
+    you { bolted? } ?exit
+    you >parent @ hud = ?exit
+    \ hud -exit
+    \ you >parent @ hud = if
+    \     you [: abspos me dup >root push x 2! ;] s" Unsticky" option
+    \ else
+        you [: abspos me dhud push x 2! ;] s" Desktop Sticky" option
+    \ then ;
+;] is sticky,
+
+[:
+    dup hud descendant? if
+        {
+            desktop relpos
+            me desktop push
+            x 2!
+        }
+    else 
+        drop
+    then
+;] is cloned

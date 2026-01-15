@@ -138,7 +138,7 @@ machines {{
 
 160 20 at 
 %panel make constant panel
-panel machines unshift
+panel desktop unshift
 panel {
     250. 150. w 2!
     10 10 at
@@ -162,7 +162,7 @@ panel {
     panel >y fixed-y >ra !
 
     -32 16 +at
-    s" rnd32 $ff or machines >clr !" *command drop
+    s" rnd32 $ff or desktop >clr !" *command drop
 
     0 16 +at
     150 *repl drop 
@@ -173,7 +173,7 @@ panel {
 \ -- Viewport Test -------------------------------------------------------------
 
 400 150 at  320 240 *viewport { 
-    [: red screen  at-me  machines { <at me render } ;] xt !
+    [: red screen  at-me  desktop { <at me render } ;] xt !
     me inspect
 } 
 

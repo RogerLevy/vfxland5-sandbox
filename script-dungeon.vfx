@@ -1,6 +1,8 @@
+REQUIRE %vfxland5%/supershow/stage.vfx
+
 me {
-    require %idir%/dungeon/main.vfx
-    micros
+    REQUIRE %idir%/dungeon/main.vfx
+    workspace
 }
 
 [: 

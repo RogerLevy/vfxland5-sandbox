@@ -7,6 +7,4 @@
 \ include %idir%/colors.vfx
 \ include %idir%/shapes.vfx
 
-\ include %idir%/microcodes.vfx
-\ include %idir%/micro-test.vfx
-include %idir%/micro-test2.vfx
+include %idir%/workspace-test.vfx
