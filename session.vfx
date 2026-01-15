@@ -38,7 +38,7 @@ also cjson2>>
     jarray ;
 
 cstring sessionpath$
-s" session.json" sessionpath$ place
+s" workspace.json" sessionpath$ place
 
 : save-all 
     session sessionpath$ count  save-tree 
@@ -61,3 +61,23 @@ s" session.json" sessionpath$ place
     to session 
 ;
 
+: loadws
+    {: | zbuf[ 1024 ] :}
+    0 z" Load Workspace" z" *.json" ALLEGRO_FILECHOOSER_FILE_MUST_EXIST file-dialog
+    dup if 
+        save-all
+        -ext f" %s.json" sessionpath$ place
+        load-all
+    else
+        2drop 
+    then ;
+    
+: savews
+    {: | zbuf[ 1024 ] :}
+    0 z" Save Workspace" z" *.json" ALLEGRO_FILECHOOSER_SAVE file-dialog
+    dup if 
+        -ext f" %s.json" sessionpath$ place
+        save-all
+    else  
+        2drop
+    then ;

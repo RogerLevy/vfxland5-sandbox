@@ -913,10 +913,10 @@ defer sticky,  ['] default-sticky, is sticky,
 
 : save-tree-dialog ( element - )
     0 z" Save JSON" z" *.json" ALLEGRO_FILECHOOSER_SAVE file-dialog
-    ?dup if 
+    dup if 
         -ext f" %s.json" save-tree
     else 
-        drop
+        2drop
     then ;
 
 : save,
