@@ -13,6 +13,7 @@ REQUIRE %vfxland5%/supershow/autoload.vfx
 REQUIRE %idir%/shapes.vfx
 REQUIRE %idir%/arrow.vfx
 REQUIRE %idir%/colors.vfx
+REQUIRE %idir%/gui.vfx
 REQUIRE %idir%/micros.vfx
 REQUIRE %idir%/painter.vfx
 REQUIRE %idir%/togglebox.vfx
@@ -88,12 +89,7 @@ workspace
     default-sticky,
     you { bolted? } ?exit
     you >parent @ hud = ?exit
-    \ hud -exit
-    \ you >parent @ hud = if
-    \     you [: abspos me dup >root push x 2! ;] s" Unsticky" option
-    \ else
-        you [: abspos me dhud push x 2! ;] s" Desktop Sticky" option
-    \ then ;
+    you [: abspos me dhud push x 2! ;] s" Desktop Sticky" option
 ;] is sticky,
 
 [:
