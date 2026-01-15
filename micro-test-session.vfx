@@ -1,3 +1,4 @@
+: 1x  1 user-zoom ! ;
 : 2x  2 user-zoom ! ;
 : 3x  3 user-zoom ! ;
 
@@ -51,32 +52,33 @@ class;
 
 \ -- Bitmap Creation and Loading -----------------------------------------------
 
+|| : center
+    machines { x 2@ 2>i 2negate } 
+    winw winh 2 2 2/ zoom @ dup 2/ 2+ ;
+
 : newbmp ( w h - )
     {: | zbuf[ 1024 ] :}
     0 z" New Bitmap" z" *.png" ALLEGRO_FILECHOOSER_SAVE file-dialog
-    ?dup if 
+    dup if 
         -ext f" %s.png" zbuf[ zplace
         al_create_bitmap zbuf[ swap al_save_bitmap 0= abort" Bitmap file create fail!"
         zbuf[ f" bitmap %z" .evaluate
-        machines { abspos 2>i 2negate } 
-        winw winh 2 2 2/ zoom @ dup 2/  
-        2+ at 
-        zbuf[ zcount -path evaluate machines { *sprite >bmp @ paint }
-    else 
+        
+        zbuf[ zcount -path evaluate machines { 
+            center at *sprite dup o. dup >bmp @ paint o. 
+        }
+    else  
         2drop
     then ;
 
 : loadbmp ( - )
     {: | zbuf[ 1024 ] :}
     0 z" Load Bitmap" z" *.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.pcx;*.gif" ALLEGRO_FILECHOOSER_FILE_MUST_EXIST file-dialog
-    ?dup if 
+    dup if 
         zbuf[ zplace
         zbuf[ f" bitmap %z" .evaluate
-        machines { abspos 2>i 2negate } 
-        winw winh 2 2 2/ zoom @ dup 2/  
-        2+ at 
-        zbuf[ zcount -path evaluate machines { *sprite drop }
+        zbuf[ zcount -path evaluate machines { center at *sprite drop }
     else
-        2drop
+        2drop 
     then ;
 
