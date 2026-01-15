@@ -1,4 +1,4 @@
-REQUIRE %idir%/workspace.vfx
+REQUIRE %idir%/../workspace/workspace.vfx
 
 \ -- Instructions---------------------------------------------------------------
 

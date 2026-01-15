@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "vfxland5"
+		},
+		{
+			"path": "../workspace"
 		}
 	],
 	"settings": {
