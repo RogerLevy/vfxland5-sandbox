@@ -767,14 +767,23 @@ defer _element-below
 
 : click-box  me click-box@ 2over atp 2swap 2- rect ;
 
+: click-fbox  
+    me %desktop is? ?exit
+    designing?   me handy? or if
+        get-blender add-mode
+        0.2 ppena! me click-box@ 2over atp 2swap 2- rectf 
+        set-blender 
+    then
+    1.0 ppena! click-box ;
+
 : gui-overlay ( - )
-    [: { light-green 0.5 ppena! click-box } ;] selection each
+    [: { light-green click-fbox } ;] selection each
     designing? if
         \ In designing mode, preview what would be selected on click
-        preview-selection ?dup if { bolted? if yellow else green then click-box } then
+        preview-selection ?dup if { bolted? if yellow else green then click-fbox } then
     else
         \ In using mode, show hover
-        hovered ?dup if { bolted? if yellow else green then click-box } then
+        hovered ?dup if { bolted? if yellow else green then click-fbox } then
     then
     focused ?dup if { cyan click-box } then ;
 

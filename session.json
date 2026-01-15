@@ -6,10 +6,10 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	-51.5,
-				"Y":	173.5,
+				"X":	-422,
+				"Y":	194,
 				"FLAGS":	2,
-				"CLR":	532168959,
+				"CLR":	1277887231,
 				"forth":	"me to machines",
 				"children":	[{
 						"class":	"%PANEL",
@@ -198,8 +198,8 @@
 							}]
 					}, {
 						"class":	"%SPRITE",
-						"X":	619,
-						"Y":	89.5,
+						"X":	701,
+						"Y":	46,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -212,8 +212,8 @@
 						"forth":	"pic1.png bmp !"
 					}, {
 						"class":	"%DESKTOP-HUD",
-						"X":	51.5,
-						"Y":	-173.5,
+						"X":	422,
+						"Y":	-194,
 						"FLAGS":	0,
 						"children":	[{
 								"class":	"%SPRITE",
@@ -228,7 +228,20 @@
 								"W":	0,
 								"H":	0,
 								"FLP":	0,
-								"forth":	"konoki.png bmp !"
+								"forth":	"konoki.png bmp !",
+								"children":	[{
+										"class":	"%PAINTER",
+										"X":	94.709579467773438,
+										"Y":	-280.12734985351562,
+										"FLAGS":	0,
+										"W":	192,
+										"H":	192,
+										"ZM":	3,
+										"EDITABLE":	-1,
+										"D":	1,
+										"BGC":	-522137376,
+										"forth":	"KONOKI.PNG init-sw-albmp"
+									}]
 							}, {
 								"class":	"%TOGGLEBOX",
 								"X":	4,
