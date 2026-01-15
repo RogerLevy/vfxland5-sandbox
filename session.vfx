@@ -8,7 +8,7 @@ also cjson2>>
 
 : asset>json ( asset - json|0 )
     as>
-    me .summary cr
+    \ me .summary cr
     [defined] %bitmap [if]
         me %bitmap is? if 
             srcpath$ count session-relpath f" bitmap %s" 

@@ -912,10 +912,55 @@ defer sticky,  ['] default-sticky, is sticky,
 : save,
     you [: me save-tree-dialog ;] s" Save" option ;
 
+|| 0 value capture-target
+|| 10000 %addr stack basket
+
+: _gather-captured ( element - )
+    [ here ]
+    as>
+    me active? not ?exit
+    me capture-target = ?exit  \ Skip target itself
+    me capture-target descendant? ?exit  \ Skip target's ancestors
+    me hud descendant? ?exit   \ Skip hud
+
+    \ Check if within bounds and move to target
+    bolted? not if
+        me click-box@ 1. 1. 2-  capture-target click-box@ 1. 1. 2- overlap? if
+            \ me .summary cr
+            abspos  capture-target { abspos } 2-  ( rx. ry. )
+            me basket push
+            x 2!
+        then
+    then
+
+    \ Recurse into children
+    ( [ xt ] ) literal me each ;
+
+: capture,
+    you [:
+        me to capture-target
+        ['] _gather-captured  me >parent @ each
+        \ [: .summary cr ;] basket each
+        [: capture-target push ;] basket each
+        basket vacate
+    ;]
+    s" Capture" option ;
+
+: release,
+    you [:
+        [: { 
+            abspos parent @ >parent @ { abspos } 2-
+            me parent @ >parent @ push 
+            x 2!
+        } ;] me each
+    ;]
+    s" Release" option ;
+
 : common-options,
-    
     designing? if clone, then
     designing? if attach, then
+    designing? if capture, then
+    designing? if release, then
     save,
     front,
     back,
