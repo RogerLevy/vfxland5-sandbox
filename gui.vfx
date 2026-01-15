@@ -403,6 +403,15 @@ class;
 : *repl ( w - repl )
     %repl add { >p w ! s" " me text! me } ;
 
+class: %doer
+    %element derive
+    prop txt :lstring <save
+    :: _draw  designing? -exit white 8. circf ;
+    :: click-box@  abspos 8. 8. 2- 16. 16. box ;
+    || redef : _evaluate  txt @ ?dup -exit lcount evaluate ;
+    :: _process  ['] _evaluate catch .throw ;
+class;
+
 \ -- Menu Item ----------------------------------------------------------------
 
 class: %menu-item

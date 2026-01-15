@@ -6,8 +6,8 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	-8,
-				"Y":	188.5,
+				"X":	159,
+				"Y":	290,
 				"FLAGS":	2,
 				"CLR":	1277887231,
 				"forth":	"me to machines",
@@ -186,34 +186,6 @@
 						"forth":	"ROGER.TS 132 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	271,
-						"Y":	105.5,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"RX":	0,
-						"RY":	0,
-						"W":	0,
-						"H":	0,
-						"FLP":	1,
-						"forth":	"ROGER.TS 132 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
-						"X":	293.5,
-						"Y":	84,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"RX":	0,
-						"RY":	0,
-						"W":	0,
-						"H":	0,
-						"FLP":	1,
-						"forth":	"ROGER.TS 132 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
 						"X":	140,
 						"Y":	96,
 						"FLAGS":	0,
@@ -256,49 +228,7 @@
 						"forth":	"ROGER.TS 132 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	304,
-						"Y":	124,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"RX":	0,
-						"RY":	0,
-						"W":	0,
-						"H":	0,
-						"FLP":	0,
-						"forth":	"ROGER.TS 132 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
-						"X":	276.5,
-						"Y":	133,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"RX":	0,
-						"RY":	0,
-						"W":	0,
-						"H":	0,
-						"FLP":	0,
-						"forth":	"ROGER.TS 132 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
-						"X":	310,
-						"Y":	105,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"RX":	0,
-						"RY":	0,
-						"W":	0,
-						"H":	0,
-						"FLP":	0,
-						"forth":	"ROGER.TS 132 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
-						"X":	338,
+						"X":	338.5,
 						"Y":	121.5,
 						"FLAGS":	0,
 						"EN":	-1,
@@ -314,20 +244,6 @@
 						"class":	"%SPRITE",
 						"X":	346.5,
 						"Y":	106,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"RX":	0,
-						"RY":	0,
-						"W":	0,
-						"H":	0,
-						"FLP":	0,
-						"forth":	"ROGER.TS 132 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
-						"X":	318.5,
-						"Y":	92,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -477,8 +393,8 @@
 						"forth":	"blackbeard.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	356,
-						"Y":	-89.5,
+						"X":	596.5,
+						"Y":	-200.5,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -545,20 +461,6 @@
 						"forth":	"ROGER.TS 132 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	319,
-						"Y":	113.5,
-						"FLAGS":	0,
-						"EN":	-1,
-						"VAL":	1,
-						"DCY":	1,
-						"RX":	0,
-						"RY":	0,
-						"W":	0,
-						"H":	0,
-						"FLP":	0,
-						"forth":	"ROGER.TS 132 tile bmp !"
-					}, {
-						"class":	"%SPRITE",
 						"X":	360,
 						"Y":	87.5,
 						"FLAGS":	0,
@@ -572,14 +474,17 @@
 						"FLP":	0,
 						"forth":	"ROGER.TS 132 tile bmp !"
 					}, {
-						"class":	"%DESKTOP-HUD",
-						"X":	8,
-						"Y":	-188.5,
+						"class":	"%PANEL",
+						"X":	542,
+						"Y":	-25.5,
 						"FLAGS":	0,
+						"W":	60,
+						"H":	60,
+						"CLR":	127,
 						"children":	[{
 								"class":	"%SPRITE",
-								"X":	284.5,
-								"Y":	514.5,
+								"X":	3.5,
+								"Y":	20.5,
 								"FLAGS":	0,
 								"EN":	-1,
 								"VAL":	1,
@@ -589,12 +494,26 @@
 								"W":	0,
 								"H":	0,
 								"FLP":	1,
-								"forth":	"asdfasdf.png bmp !"
+								"forth":	"ROGER.TS 132 tile bmp !"
 							}, {
 								"class":	"%SPRITE",
-								"X":	360,
-								"Y":	509.5,
-								"FLAGS":	2,
+								"X":	25.5,
+								"Y":	5,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"RX":	0,
+								"RY":	0,
+								"W":	0,
+								"H":	0,
+								"FLP":	1,
+								"forth":	"ROGER.TS 132 tile bmp !"
+							}, {
+								"class":	"%SPRITE",
+								"X":	26,
+								"Y":	40.5,
+								"FLAGS":	0,
 								"EN":	-1,
 								"VAL":	1,
 								"DCY":	1,
@@ -603,75 +522,151 @@
 								"W":	0,
 								"H":	0,
 								"FLP":	0,
-								"forth":	"konoki.png bmp !"
+								"forth":	"ROGER.TS 132 tile bmp !"
 							}, {
-								"class":	"%TOGGLEBOX",
-								"X":	4,
-								"Y":	529,
+								"class":	"%SPRITE",
+								"X":	8.5,
+								"Y":	48.5,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"RX":	0,
+								"RY":	0,
+								"W":	0,
+								"H":	0,
+								"FLP":	0,
+								"forth":	"ROGER.TS 132 tile bmp !"
+							}, {
+								"class":	"%SPRITE",
+								"X":	47,
+								"Y":	33,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"RX":	0,
+								"RY":	0,
+								"W":	0,
+								"H":	0,
+								"FLP":	0,
+								"forth":	"ROGER.TS 132 tile bmp !"
+							}, {
+								"class":	"%SPRITE",
+								"X":	50.5,
+								"Y":	13,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"RX":	0,
+								"RY":	0,
+								"W":	0,
+								"H":	0,
+								"FLP":	0,
+								"forth":	"ROGER.TS 132 tile bmp !"
+							}, {
+								"class":	"%SPRITE",
+								"X":	47.5,
+								"Y":	51.5,
+								"FLAGS":	0,
+								"EN":	-1,
+								"VAL":	1,
+								"DCY":	1,
+								"RX":	0,
+								"RY":	0,
+								"W":	0,
+								"H":	0,
+								"FLP":	0,
+								"forth":	"ROGER.TS 132 tile bmp !"
+							}]
+					}, {
+						"class":	"%DESKTOP-HUD",
+						"X":	-159,
+						"Y":	-290,
+						"FLAGS":	0,
+						"children":	[{
+								"class":	"%DOER",
+								"X":	167.5,
+								"Y":	501,
 								"FLAGS":	2,
-								"W":	72,
-								"H":	8,
-								"TXT":	"Bookmarks",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0,
-								"OPN":	0,
+								"TXT":	"winh zoom @ / >p y !",
 								"children":	[{
-										"class":	"%PANEL",
-										"X":	-5,
-										"Y":	-35,
+										"class":	"%TOGGLEBOX",
+										"X":	-165.5,
+										"Y":	-11.5,
 										"FLAGS":	2,
-										"W":	9999,
-										"H":	32,
-										"CLR":	127,
+										"W":	72,
+										"H":	8,
+										"TXT":	"Bookmarks",
+										"CLR":	-1,
+										"EDITABLE":	-1,
+										"CLEAR-ON-EDIT":	0,
+										"OPN":	0,
 										"children":	[{
-												"class":	"%BOOKMARK",
-												"X":	8,
-												"Y":	12,
+												"class":	"%PANEL",
+												"X":	-5,
+												"Y":	-35,
 												"FLAGS":	2,
-												"W":	32,
-												"H":	8,
-												"TXT":	"Test",
-												"CLR":	-1,
-												"EDITABLE":	-1,
-												"CLEAR-ON-EDIT":	0,
-												"DX":	441,
-												"DY":	145
-											}, {
-												"class":	"%BOOKMARK",
-												"X":	53,
-												"Y":	12,
-												"FLAGS":	2,
-												"W":	24,
-												"H":	8,
-												"TXT":	"Foo",
-												"CLR":	-1,
-												"EDITABLE":	-1,
-												"CLEAR-ON-EDIT":	0,
-												"DX":	395,
-												"DY":	-110
+												"W":	9999,
+												"H":	32,
+												"CLR":	127,
+												"children":	[{
+														"class":	"%BOOKMARK",
+														"X":	8,
+														"Y":	12,
+														"FLAGS":	2,
+														"W":	32,
+														"H":	8,
+														"TXT":	"Test",
+														"CLR":	-1,
+														"EDITABLE":	-1,
+														"CLEAR-ON-EDIT":	0,
+														"DX":	441,
+														"DY":	145
+													}, {
+														"class":	"%BOOKMARK",
+														"X":	53,
+														"Y":	12,
+														"FLAGS":	2,
+														"W":	24,
+														"H":	8,
+														"TXT":	"Foo",
+														"CLR":	-1,
+														"EDITABLE":	-1,
+														"CLEAR-ON-EDIT":	0,
+														"DX":	395,
+														"DY":	-110
+													}]
 											}]
-									}]
-							}, {
-								"class":	"%TOGGLEBOX",
-								"X":	709,
-								"Y":	229,
-								"FLAGS":	2,
-								"W":	48,
-								"H":	8,
-								"TXT":	"Window",
-								"CLR":	-1,
-								"EDITABLE":	-1,
-								"CLEAR-ON-EDIT":	0,
-								"OPN":	0,
-								"children":	[{
-										"class":	"%PANEL",
-										"X":	-4.5,
-										"Y":	14.5,
-										"FLAGS":	6,
-										"W":	256,
-										"H":	256,
-										"CLR":	127
+									}, {
+										"class":	"%SPRITE",
+										"X":	117,
+										"Y":	-25.5,
+										"FLAGS":	2,
+										"EN":	-1,
+										"VAL":	1,
+										"DCY":	1,
+										"RX":	0,
+										"RY":	0,
+										"W":	0,
+										"H":	0,
+										"FLP":	1,
+										"forth":	"asdfasdf.png bmp !"
+									}, {
+										"class":	"%SPRITE",
+										"X":	192.5,
+										"Y":	-30,
+										"FLAGS":	2,
+										"EN":	-1,
+										"VAL":	1,
+										"DCY":	1,
+										"RX":	0,
+										"RY":	0,
+										"W":	0,
+										"H":	0,
+										"FLP":	0,
+										"forth":	"konoki.png bmp !"
 									}]
 							}]
 					}]
@@ -1048,6 +1043,19 @@
 										"EDITABLE":	-1,
 										"CLEAR-ON-EDIT":	0,
 										"OPN":	-1
+									}, {
+										"class":	"%BOOKMARK",
+										"X":	-0.5,
+										"Y":	159.5,
+										"FLAGS":	0,
+										"W":	64,
+										"H":	8,
+										"TXT":	"Bookmark",
+										"CLR":	-1,
+										"EDITABLE":	-1,
+										"CLEAR-ON-EDIT":	0,
+										"DX":	395,
+										"DY":	-110
 									}]
 							}, {
 								"class":	"%TOGGLEBOX",
@@ -1193,10 +1201,17 @@
 												"CLEAR-ON-EDIT":	0
 											}]
 									}]
-							}, {
+							}]
+					}, {
+						"class":	"%DOER",
+						"X":	1909,
+						"Y":	-2,
+						"FLAGS":	2,
+						"TXT":	"winw zoom @ / >p x !",
+						"children":	[{
 								"class":	"%PANEL",
-								"X":	711.00007629394531,
-								"Y":	-1.9999237060546875,
+								"X":	-246.99992370605469,
+								"Y":	2.5000762939453125,
 								"FLAGS":	2,
 								"W":	250,
 								"H":	150,
@@ -1228,7 +1243,7 @@
 										"X":	7,
 										"Y":	135,
 										"FLAGS":	2,
-										"W":	96,
+										"W":	72,
 										"H":	8,
 										"TXT":	"",
 										"CLR":	-1,
@@ -1237,8 +1252,8 @@
 									}]
 							}, {
 								"class":	"%PAINTER",
-								"X":	702,
-								"Y":	152,
+								"X":	-255,
+								"Y":	157,
 								"FLAGS":	2,
 								"W":	256,
 								"H":	64,
@@ -1247,6 +1262,27 @@
 								"D":	1,
 								"BGC":	-522137376,
 								"forth":	"SONY-CXA.PNG init-sw-albmp"
+							}, {
+								"class":	"%TOGGLEBOX",
+								"X":	-51,
+								"Y":	228,
+								"FLAGS":	2,
+								"W":	48,
+								"H":	8,
+								"TXT":	"Window",
+								"CLR":	-1,
+								"EDITABLE":	-1,
+								"CLEAR-ON-EDIT":	0,
+								"OPN":	0,
+								"children":	[{
+										"class":	"%PANEL",
+										"X":	-204.5,
+										"Y":	13,
+										"FLAGS":	6,
+										"W":	256,
+										"H":	256,
+										"CLR":	127
+									}]
 							}]
 					}]
 			}]
