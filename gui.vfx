@@ -786,7 +786,7 @@ defer cloned ( element - ) ['] drop is cloned
 : process-gui ( element - )
     dup gui-input dup process sweep ;
 
-: click-box  me click-box@ 2over atp 2swap 2- rect ;
+: click-box  -1. thick me click-box@ 2over atp 2swap 2- rect ;
 
 : click-fbox  
     me %desktop is? ?exit
@@ -804,7 +804,8 @@ defer cloned ( element - ) ['] drop is cloned
         preview-selection ?dup if { bolted? if yellow else green then click-fbox } then
     else
         \ In using mode, show hover
-        hovered ?dup if { bolted? if yellow else green then click-fbox } then
+        \ hovered ?dup if { bolted? if yellow else green then click-fbox } then
+        hovered ?dup if { bolted? not if green click-box then } then
     then
     focused ?dup if { cyan click-box } then ;
 

@@ -65,7 +65,7 @@ trait;
 : at-me  abspos atp ;
 : box  2over 2+ ;
 : ?push  2dup contains? if 2drop exit then push ;
-: see-thru   0.5 ppena! ;
+: see-thru   0.6 ppena! ;
 : click-dims  click-box@ 2swap 2- ;
 
 : load-script ( path len - )
