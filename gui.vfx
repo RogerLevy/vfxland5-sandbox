@@ -957,7 +957,7 @@ defer sticky,  ['] default-sticky, is sticky,
     s" Release" option ;
 
 : common-options,
-    designing? if clone, then
+    \ designing? if clone, then
     designing? if attach, then
     designing? if capture, then
     designing? if release, then
