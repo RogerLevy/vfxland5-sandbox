@@ -926,7 +926,6 @@ defer sticky,  ['] default-sticky, is sticky,
     \ Check if within bounds and move to target
     bolted? not if
         me click-box@ 1. 1. 2-  capture-target click-box@ 1. 1. 2- overlap? if
-            \ me .summary cr
             abspos  capture-target { abspos } 2-  ( rx. ry. )
             me basket push
             x 2!
@@ -940,7 +939,6 @@ defer sticky,  ['] default-sticky, is sticky,
     you [:
         me to capture-target
         ['] _gather-captured  me >parent @ each
-        \ [: .summary cr ;] basket each
         [: capture-target push ;] basket each
         basket vacate
     ;]
@@ -948,11 +946,12 @@ defer sticky,  ['] default-sticky, is sticky,
 
 : release,
     you [:
-        [: { 
+        [: as>
+            bolted? ?exit
             abspos parent @ >parent @ { abspos } 2-
             me parent @ >parent @ push 
             x 2!
-        } ;] me each
+        ;] me each
     ;]
     s" Release" option ;
 
