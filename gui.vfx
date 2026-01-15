@@ -649,17 +649,28 @@ defer _element-below
     this to click-candidate
     true ;
 
+defer cloned ( element - ) ['] drop is cloned
+
 : handle-lmb
     <space> held? ?exit
     lmb pressed? if
         0 to click-candidate
         hovered if
+            \ Clone if holding <CTRL>
+            ctrl? if 
+                hovered deep-clone dup hovered insert-over 
+                to hovered
+                hovered { -bolted }
+                hovered cloned
+            then
+
             \ Handy elements: always draggable regardless of mode (unless bolted)
             hovered handy? hovered { bolted? } not and if
                 try-cycle-select if
                     lmb begin-drag
                 else
-                    hovered ctrl? if +select else select then
+                    \ hovered ctrl? if +select else select then
+                    hovered select
                     lmb begin-drag
                 then
                 record-click-position
@@ -676,7 +687,8 @@ defer _element-below
                 try-cycle-select if
                     this { bolted? } not if lmb begin-drag then
                 else
-                    hovered ctrl? if +select else select then
+                    \ hovered ctrl? if +select else select then
+                    hovered select
                     selection #items if lmb begin-drag then
                 then
                 record-click-position
@@ -770,7 +782,7 @@ defer _element-below
 : click-fbox  
     me %desktop is? ?exit
     designing?   me handy? or if
-        get-blender add-mode
+        get-blender additive-mode
         0.2 ppena! me click-box@ 2over atp 2swap 2- rectf 
         set-blender 
     then

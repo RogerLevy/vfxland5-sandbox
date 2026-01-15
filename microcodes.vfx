@@ -636,3 +636,15 @@ micros
         you [: abspos me dhud push x 2! ;] s" Desktop Sticky" option
     \ then ;
 ;] is sticky,
+
+[:
+    dup hud descendant? if
+        {
+            machines relpos
+            me machines push
+            x 2!
+        }
+    else 
+        drop
+    then
+;] is cloned
