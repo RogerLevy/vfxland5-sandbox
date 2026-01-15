@@ -197,20 +197,7 @@
 						"W":	0,
 						"H":	0,
 						"FLP":	0,
-						"forth":	"ROGER.TS 132 tile bmp !",
-						"children":	[{
-								"class":	"%PAINTER",
-								"X":	8,
-								"Y":	-8,
-								"FLAGS":	0,
-								"W":	128,
-								"H":	128,
-								"ZM":	8,
-								"EDITABLE":	-1,
-								"D":	1,
-								"BGC":	-522137376,
-								"forth":	"361378819 init-sw-albmp"
-							}]
+						"forth":	"ROGER.TS 132 tile bmp !"
 					}, {
 						"class":	"%SPRITE",
 						"X":	137,
