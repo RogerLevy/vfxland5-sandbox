@@ -76,7 +76,7 @@ class;
         ?save
     show> 
         session ?dup if 0 0 at draw then
-        0 0 at gui-overlay 
+        0 0 at session gui-overlay 
         draw-cursor 
 ;
 

@@ -622,7 +622,7 @@ defer _element-below
     selection #items 0= if hovered exit then
     \ If selected element is under mouse and mouse hasn't moved, show cycle target
     mouse this { in-me? } if
-        this me element-below ?dup if exit then
+        this me element-below ?dup ?exit
         topmost-selectable exit
     then
     hovered ;
@@ -797,7 +797,8 @@ defer cloned ( element - ) ['] drop is cloned
     then
     1.0 ppena! click-box ;
 
-: gui-overlay ( - )
+: gui-overlay ( element - )
+    as>
     [: { light-green click-fbox } ;] selection each
     designing? if
         \ In designing mode, preview what would be selected on click
