@@ -707,6 +707,10 @@ defer cloned ( element - ) ['] drop is cloned
         then
     then
     drag-btn @ letgo? if
+        \ In using mode, call click on release without movement
+        using? drag-moved @ not and if
+            hovered ?dup if lmb swap click then
+        then
         \ If released without actual movement and had a cycle candidate, cycle
         drag-moved @ not click-candidate and if
             cycle-select
