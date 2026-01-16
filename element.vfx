@@ -130,7 +130,7 @@ class;
     0 to hovered ;
 
 defer _sweep
-: sweep ( iterable - )
+redef : sweep ( iterable - )
     [: dup _sweep { unloaded? if me delete then } ;] swap each ;
 ['] sweep is _sweep
 
