@@ -19,6 +19,7 @@ defer _element>json
         new-array to children-arr
         el >lowest @
         el #children for
+            dup .summary cr
             dup _element>json 0 children-arr add-object
             >next @
         loop

@@ -65,14 +65,14 @@ ec-cell thickness
 \ %rect :: draw  at-me w 2@ fil @ if rectf else rect then ;
 \ %pixel :: draw  at-me pixel ;
 
-\ : *circle  %circle add { r ! me } ;
+\ : *circle  %circle  *add { r ! me } ;
 \ : *circlef *circle { fil on me } ;    
-\ : *oval    %oval add { rx 2! me } ;
+\ : *oval    %oval  *add { rx 2! me } ;
 \ : *ovalf   *oval { fil on me } ;
-\ : *line    %line add { dx 2! me } ;
-\ : *rect    %rect add { w 2! me } ;
+\ : *line    %line  *add { dx 2! me } ;
+\ : *rect    %rect  *add { w 2! me } ;
 \ : *rectf   *rect { fil on me } ;
-\ : *pixel   %pixel add ;
+\ : *pixel   %pixel  *add ;
 
 \ 0 0 at
 \ create test-shapes

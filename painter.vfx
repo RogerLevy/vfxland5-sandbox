@@ -262,7 +262,7 @@ class;
 
 \ Factory: create editor for a bitmap ID
 : *paint ( bmpid - editor )
-    %painter add { init-sw-albmp me } ;
+    %painter make { init-sw-albmp me } ;
 
 \ -- Add "Paint" to %SPRITE context menu --------------------------------------
 

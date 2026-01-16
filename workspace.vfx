@@ -70,15 +70,15 @@ class;
 : workspace
     display al_hide_mouse_cursor
     2 user-zoom !
+    show> 
+        session ?dup if 0 0 at draw then
+        0 0 at session gui-overlay 
+        draw-cursor 
     work> 
         get-mouse 
         desktop ?dup if decay then
         session ?dup if process-gui then 
         ?save
-    show> 
-        session ?dup if 0 0 at draw then
-        0 0 at session gui-overlay 
-        draw-cursor 
 ;
 
 workspace
