@@ -813,7 +813,10 @@ defer cloned ( element - ) ['] drop is cloned
     [: { light-green click-fbox } ;] selection each
     designing? if
         \ In designing mode, preview what would be selected on click
-        preview-selection ?dup if { bolted? if yellow else green then click-fbox } then
+        preview-selection ?dup if { 
+            bolted? if yellow else green then click-box 
+            parent @ { bolted? if yellow else green then see-thru click-box }  
+        } then
     else
         \ In using mode, show hover
         \ hovered ?dup if { bolted? if yellow else green then click-fbox } then
