@@ -6,8 +6,8 @@
 		"FLAGS":	0,
 		"children":	[{
 				"class":	"%DESKTOP",
-				"X":	-28.5,
-				"Y":	176,
+				"X":	-271,
+				"Y":	206,
 				"FLAGS":	2,
 				"CLR":	1277887231,
 				"forth":	"me to desktop",
@@ -309,8 +309,8 @@
 						"forth":	"blackbeard.png bmp !"
 					}, {
 						"class":	"%SPRITE",
-						"X":	694.5,
-						"Y":	-220.5,
+						"X":	705.5,
+						"Y":	-20,
 						"FLAGS":	0,
 						"EN":	-1,
 						"VAL":	1,
@@ -598,8 +598,8 @@
 						"forth":	"aweofij.png bmp !"
 					}, {
 						"class":	"%DESKTOP-HUD",
-						"X":	28.5,
-						"Y":	-176,
+						"X":	271,
+						"Y":	-206,
 						"FLAGS":	0,
 						"children":	[{
 								"class":	"%DOER",
@@ -1303,5 +1303,5 @@
 					}]
 			}]
 	},
-	"autoloads":	["bitmap .\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap .\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap .\\painter-cursors.png", "PAINTER-CURSORS.PNG 32 32 tileset-from PAINTER-CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap .\\asdf.png", "bitmap ..\\player2\\dat\\gfx\\blackbeard.png", "bitmap .\\asdf-body.png", "bitmap .\\sony-cxa.png", "bitmap .\\pic1.png", "bitmap .\\asdfasdf.png", "bitmap .\\konoki.png", "bitmap .\\aweofij.png"]
+	"autoloads":	["bitmap ..\\workspace\\micro-icons.png", "MICRO-ICONS.PNG 20 20 tileset-from MICRO-ICONS.TS", "bitmap ..\\workspace\\cursors.png", "CURSORS.PNG 32 32 tileset-from CURSORS.TS", "bitmap ..\\workspace\\painter-cursors.png", "PAINTER-CURSORS.PNG 32 32 tileset-from PAINTER-CURSORS.TS", "bitmap .\\owl.png", "bitmap .\\roger.png", "ROGER.PNG 16 16 tileset-from ROGER.TS", "bitmap .\\heyyy.png", "bitmap .\\obj\\kvn\\kvn.png", "KVN.PNG 8 8 tileset-from KVN.TS", "bitmap .\\obj\\blobby\\blobby.png", "bitmap .\\dungeon\\dungeon_moss_INDEX.png", "DUNGEON_MOSS_INDEX.PNG 32 32 tileset-from DUNGEON.TS", "bitmap .\\asdf.png", "bitmap ..\\player2\\dat\\gfx\\blackbeard.png", "bitmap .\\asdf-body.png", "bitmap .\\sony-cxa.png", "bitmap .\\pic1.png", "bitmap .\\asdfasdf.png", "bitmap .\\konoki.png", "bitmap .\\aweofij.png"]
 }

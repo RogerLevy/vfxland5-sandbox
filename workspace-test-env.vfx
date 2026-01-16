@@ -10,13 +10,13 @@ redef : switch ( n - )
     mouse at hud { *paint drop } ;
 
 : *kpress ( key xt - ability )
-    %ability add { kp ! k ! me } ;
+    %ability  *add { kp ! k ! me } ;
 
 c: %gravity %move [non-decaying] ;
 %gravity >template { 90. ang ! 0.03 acc ! }
 
 : *sprite ( bmp - sprite )
-    %sprite add { bmp ! me } ;
+    %sprite  *add { bmp ! me } ;
 
 \ -- Viewport (experimental) ---------------------------------------------------
 
@@ -44,7 +44,7 @@ class: %viewport %ui-box derive
 class;
 
 : *viewport ( w h - viewport )
-    %viewport add { 2>p w 2! me } ;
+    %viewport *add { 2>p w 2! me } ;
 
 class: %owl
     %actor derive

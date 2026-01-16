@@ -15,7 +15,7 @@ roger.png 16 16 TILESET-FROM roger.ts
     mouse at hud { *paint drop } ;
 
 : *kpress ( key xt - ability )
-    %ability add { kp ! k ! me } ;
+    %ability  *add { kp ! k ! me } ;
 
 c: %gravity %move [non-decaying] ;
 %gravity >template { 90. ang ! 0.03 acc ! }
@@ -24,32 +24,32 @@ c: %rando %origin startx starty ;
 0 %rando :construct micro:construct x 2@ startx 2! ;
 
 : *rando
-    %rando add {{
+    %rando  *add {{
         \ 0 ICON_SPACING at
         <del> [: me unload ;] *kpress {{ }}
         <enter> [: startx 2@ x 2! ;] *kpress {{ }}   \ couples this to a rando
-        \ %gravity add { }
-        %move add {{ 
-            %rep add {{
+        \ %gravity  *add { }
+        %move  *add {{ 
+            %rep  *add {{
                 [: 1.0 val ! 360. rnd ang ! ;] xt !
-                %ability add {{
+                %ability  *add {{
                     <enter> k !
                     [: 0. val ! ;] kp !
                     [: 1. val ! dur @ t ! ;] kr !
                 }}
             }}
-            %ability add {{
+            %ability  *add {{
                 <enter> k !
                 [: 1. val ! ;] kh !
             }}
         }}
-        %micro add {{
-            %micro add {{ }}
+        %micro  *add {{
+            %micro  *add {{ }}
         }}
     me }} ;
 
 : *sprite ( bmp - sprite )
-    %sprite add { bmp ! me } ;
+    %sprite  *add { bmp ! me } ;
 
 \ -- Viewport (experimental) ---------------------------------------------------
 
@@ -77,7 +77,7 @@ class: %viewport %ui-box derive
 class;
 
 : *viewport ( w h - viewport )
-    %viewport add { 2>p w 2! me } ;
+    %viewport  *add { 2>p w 2! me } ;
 
 \ -- Test ----------------------------------------------------------------------
 
@@ -87,45 +87,45 @@ machines {{
     \     *rando {{ }}
     \ }}
     100 230 at
-    %origin add {{ 
+    %origin  *add {{ 
         50. 50. rx 2!
         e{ 
             64 -64 at 
-            %origin add {
+            %origin  *add {
                 -8 -8 at
-                %hitbox add {{ }}                 
+                %hitbox  *add {{ }}                 
                 0 0 at 
                 owl.png *sprite { } 
                 roger.ts 0 tile *sprite { } 
             }
         e}
         -50 0 +at
-        %move add {{ 
+        %move  *add {{ 
             0.9 dcy !
-            %rng add {{ 
+            %rng  *add {{ 
                 en off
                 \ noi on
-                %rep add {{ }}
+                %rep  *add {{ }}
             }}
         }}
-        %move add {{ 
+        %move  *add {{ 
             0.9 dcy !
             90. ang !
-            %rng add {{
+            %rng  *add {{
                 en off 
                 \ noi on 
-                %rep add {{ }}
+                %rep  *add {{ }}
             }}
         }}
-        %ability add {{ }}
-        %rep add {{ }}
-        %timeout add {{ }}
-        %neuron add {{ 
-            %rng add {{
+        %ability  *add {{ }}
+        %rep  *add {{ }}
+        %timeout  *add {{ }}
+        %neuron  *add {{ 
+            %rng  *add {{
                 0.2 val !
                 noi on
             }}
-            \ %rep add {{ 
+            \ %rep  *add {{ 
             \     trg off
             \     0.2 dur ! 
             \     [: 0.4 val +! ;] xt !
