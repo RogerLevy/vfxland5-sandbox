@@ -37,7 +37,7 @@ REQUIRE %idir%/colors.vfx
 
 \ -- Variables------------------------------------------------------------------
 
-BITMAP micro-icons.png
+BITMAP %idir%/micro-icons.png
 micro-icons.png 20 20 TILESET-FROM micro-icons.ts
 
 8.5 constant ICON_RADIUS

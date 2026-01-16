@@ -29,7 +29,7 @@ variable using-mode   \ false = designing (default), true = using
 
 \ -- Cursors -------------------------------------------------------------------
 
-BITMAP cursors.png
+BITMAP %idir%/cursors.png
 cursors.png 32 32 TILESET-FROM cursors.ts
 \ variable use-cursor
 \ variable design-cursor   

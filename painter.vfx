@@ -7,8 +7,8 @@ REQUIRE %idir%/shapes.vfx
 REQUIRE %vfxland5%/supershow/bitmap.vfx
 REQUIRE %idir%/flood.vfx
 
-bitmap painter-cursors.png
-painter-cursors.png 32 32 tileset-from painter-cursors.ts
+BITMAP %idir%/painter-cursors.png
+painter-cursors.png 32 32 TILESET-FROM painter-cursors.ts
 
 variable fgc
 

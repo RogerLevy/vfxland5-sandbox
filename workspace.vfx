@@ -13,7 +13,7 @@ REQUIRE %vfxland5%/supershow/autoload.vfx
 REQUIRE %idir%/shapes.vfx
 REQUIRE %idir%/arrow.vfx
 REQUIRE %idir%/colors.vfx
-REQUIRE %idir%/gui.vfx
+\ REQUIRE %idir%/gui.vfx    \ For now, rely on micros.vfx to load this due to a current limitation of NIBS
 REQUIRE %idir%/micros.vfx
 REQUIRE %idir%/painter.vfx
 REQUIRE %idir%/togglebox.vfx

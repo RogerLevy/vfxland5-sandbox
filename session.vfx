@@ -37,8 +37,10 @@ also cjson2>>
     loop drop 
     jarray ;
 
-cstring sessionpath$
-s" workspace.json" sessionpath$ place
+[undefined] sessionpath$ [if]
+    cstring sessionpath$
+    s" workspace.json" sessionpath$ place
+[then]
 
 : save-all 
     session sessionpath$ count  save-tree 
