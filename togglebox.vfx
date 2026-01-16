@@ -1,7 +1,7 @@
 class: %togglebox
     %label derive
     prop opn <save
-    template { opn on }
+    template { opn on editable off }
 
     :: opened?  opn @ ;
     :: open     opn on ;
@@ -19,16 +19,17 @@ class: %togglebox
         opn @ if ['] draw me each then ;
 
     :: _mousedown ( btn - )
-        dup rmb = shift? and if 
-            opn on
-            drop exit
-        then
-        lmb = -exit
-        <space> held? ?exit
-        designing? shift? and 
-        using? or 
-        designing? bolted? and or -exit
-        opn toggle ;
+        drop ;
+        \ dup rmb = shift? and if 
+        \     opn on
+        \     drop exit
+        \ then
+        \ lmb = -exit
+        \ <space> held? ?exit
+        \ designing? shift? and 
+        \ using? or 
+        \ designing? bolted? and or -exit
+        \ opn toggle ;
 
     :: click ( btn - )
         lmb = -exit
@@ -42,7 +43,7 @@ class: %togglebox
     :: _draw
         _update-box  
         m >i negate dup +at
-        white w 2@ m m 2 2 2* 2+ rectf 
+        beige w 2@ m m 2 2 2* 2+ rectf 
         black w 2@ m m 2 2 2* 2+ rect 
         m m 2>i +at
         black _draw-text
