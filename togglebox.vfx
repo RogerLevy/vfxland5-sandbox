@@ -30,6 +30,10 @@ class: %togglebox
         designing? bolted? and or -exit
         opn toggle ;
 
+    :: click ( btn - )
+        lmb = -exit
+        opn toggle ;
+
     || 4. constant m
 
     :: click-box@ ( - x1 y1 x2 y2 )
@@ -48,4 +52,4 @@ class: %togglebox
 class;
 
 : *togglebox ( a len - togglebox )
-    %togglebox add { me text! ( you { rgba8@ } clr ! ) me } ;
+    %togglebox make { me text! ( you { rgba8@ } clr ! ) me } ;
