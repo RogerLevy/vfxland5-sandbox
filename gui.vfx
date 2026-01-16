@@ -48,9 +48,9 @@ cursors.png 32 32 TILESET-FROM cursors.ts
     <space> held? if
         cursors.ts hand tile
     else
-        hovered ?dup 0<> 
+        hovered 0<> 
         using? and
-        if cursor-bmp else default-cursor-bmp then 
+        if hovered cursor-bmp else default-cursor-bmp then 
     then
     cput ;
 
