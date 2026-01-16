@@ -463,7 +463,7 @@ class: %hud
     :: forth@  s" me to hud" ;
 class;
 
-%hud dmake value hud
+0 0 at %hud dmake value hud
 
 : draw-hud
     hud -exit
