@@ -345,11 +345,13 @@ class: %command
         m m 2>i +at
         black _draw-text ;
 
-    :: _mousedown ( btn - )
+    :: click ( btn - )
         lmb = -exit
         bolted? not shift? not and ?exit
         obj @ ?dup if as> then
         me text@ evaluate ;
+
+    :: _mousedown ( btn - ) drop ;
 class;
 
 : *command ( a len - command )
