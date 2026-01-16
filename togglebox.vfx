@@ -43,7 +43,8 @@ class: %togglebox
     :: _draw
         _update-box  
         m >i negate dup +at
-        beige w 2@ m m 2 2 2* 2+ rectf 
+        bolted? if beige else light-red then
+        w 2@ m m 2 2 2* 2+ rectf 
         black w 2@ m m 2 2 2* 2+ rect 
         m m 2>i +at
         black _draw-text
