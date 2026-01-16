@@ -417,8 +417,9 @@ class;
     val @ advance-animation bmp ! ;
 
 %sprite :: forth@ ( - a len )
+    bmp @ 0= if s" " exit then 
     bmp @ is-tile? if 
-        bmp @ bmp>parent bmp>ts 
+        bmp @ bmp>parent bmp>ts$
         dup 0 tile bmp @ swap -`
         swap body>name``
         f" %s %n tile bmp !"
