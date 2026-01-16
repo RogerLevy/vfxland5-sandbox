@@ -7,6 +7,8 @@ ECONTEXT gui-ec
 0 value focused   \ Element with keyboard focus
 1024 %addr stack selection
 
+: this ( - element ) selection peek ;
+
 redef : *lstring ( a n - a' )
     dup cell+ 256 max allocate throw >r r@ lplace r> ;
 
@@ -95,8 +97,16 @@ trait;
     dup to focused
     ?dup if on-focus then ;
 
-: unfocus ( - ) 
+: unfocus ( - )
     0 focus ;
+
+: unfocus-if-descendant ( ancestor - )
+    focused 0= if drop exit then
+    focused swap descendant? if unfocus then ;
+
+: deselect-if-descendant ( ancestor - )
+    selection #items 0= if drop exit then
+    this swap descendant? if selection vacate then ;
 
 \ -- Element Class -------------------------------------------------------------
 

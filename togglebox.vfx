@@ -5,7 +5,7 @@ class: %togglebox
 
     :: opened?  opn @ ;
     :: open     opn on ;
-    :: close    opn off ;
+    :: close    opn off  me unfocus-if-descendant  me deselect-if-descendant ;
     :: handy?   true ;
 
     :: process
@@ -33,7 +33,7 @@ class: %togglebox
 
     :: click ( btn - )
         lmb = -exit
-        opn toggle ;
+        opn @ if me close else me open then ;
 
     || 4. constant m
 

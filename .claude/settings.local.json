@@ -10,7 +10,8 @@
       "Bash(xxd:*)",
       "WebFetch(domain:liballeg.org)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

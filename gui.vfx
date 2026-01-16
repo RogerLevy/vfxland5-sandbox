@@ -92,7 +92,6 @@ class;
 
 : +select  ( element - ) selection ?push ;
 : select   ( element - ) selection vacate selection push ;
-: this     ( - element ) selection peek ;
 
 \ -- Panel ---------------------------------------------------------------------
 
