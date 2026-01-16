@@ -689,6 +689,8 @@ defer cloned ( element - ) ['] drop is cloned
             \ In using mode, all elements "use" on click
             hovered { bolted? } using? or if
                 lmb hovered _mousedown
+                lmb drag-btn ! drag-moved off  \ track for click detection, but don't enable dragging
+                record-click-position
             else
                 \ Designing mode + not bolted = drag behavior
                 lmb hovered _mousedown
@@ -707,9 +709,13 @@ defer cloned ( element - ) ['] drop is cloned
         then
     then
     drag-btn @ letgo? if
-        \ In using mode, call click on release without movement
-        using? drag-moved @ not and if
-            hovered ?dup if lmb swap click then
+        \ Call click on release without movement (using mode or bolted elements)
+        using? hovered ?dup if { bolted? } else false then or
+        drag-moved @ not and if
+            hovered ?dup if 
+                lmb swap click 
+                \ exit
+            then
         then
         \ If released without actual movement and had a cycle candidate, cycle
         drag-moved @ not click-candidate and if
