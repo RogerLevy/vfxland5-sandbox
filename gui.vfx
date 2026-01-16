@@ -221,7 +221,7 @@ class: %label
 class;
 
 : *label ( a len - label )
-    %label add { me text! you { rgba8@ } clr ! me } ;
+    %label  *add { me text! you { rgba8@ } clr ! me } ;
 
 %label :: click-box@ ( - x1 y1 x2 y2 )
     abspos w @ 16. max h @ box ;
@@ -281,8 +281,8 @@ class: %numberfield
 
 class;
 
-: *int  %numberfield add { val ! TYPE_INT val-type ! me } ;
-: *fixed  %numberfield add { val ! TYPE_FIXED val-type ! me } ;
+: *int  %numberfield  *add { val ! TYPE_INT val-type ! me } ;
+: *fixed  %numberfield  *add { val ! TYPE_FIXED val-type ! me } ;
 
 \ -- String Field --------------------------------------------------------------
 
@@ -326,7 +326,7 @@ class: %stringfield
 class;
 
 : *stringfield ( str-type - stringfield )
-    %stringfield add { str-type ! s" " me text! me } ;
+    %stringfield  *add { str-type ! s" " me text! me } ;
 
 \ -- Forth elements -----------------------------------------------------------
 
@@ -354,7 +354,7 @@ class: %command
 class;
 
 : *command ( a len - command )
-    %command add { me text! me } ;
+    %command  *add { me text! me } ;
 
 class: %repl
     %label derive
@@ -401,7 +401,7 @@ class: %repl
 class;
 
 : *repl ( w - repl )
-    %repl add { >p w ! s" " me text! me } ;
+    %repl  *add { >p w ! s" " me text! me } ;
 
 class: %doer
     %element derive
@@ -443,11 +443,11 @@ class;
 c: %menu %panel ;
 
 : *menu ( - menu )
-    %menu add { 4 4 at me 50. 8. w 2! } ;
+    %menu  *add { 4 4 at me 50. 8. w 2! } ;
 
 : *menu-item ( object|0 xt text len - menu-item )
     9. h +!        \ grow menu height 
-    %menu-item add { 
+    %menu-item  *add { 
         me text! xt ! obj ! +bolted 
         w @ 8. + you >w @ max you >w ! \ expand width to fit
     me } 
