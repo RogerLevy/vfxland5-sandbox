@@ -216,12 +216,7 @@ redef : icon
 class: %origin  %micro derive  non-decaying
     prop rx :fixed <save  \ remote x,y
     prop ry :fixed <save
-    prop w :fixed <save
-    prop h :fixed <save
 class;
-
-\ : rabspos ( - x. y. )
-\     rx 2@ me begin >parent @ ?dup while { rx 2@ 2+ me } repeat ;
 
 : origin@ ( - origin|0 )
     me begin dup %origin is? not while >parent @ dup -exit repeat ;
@@ -288,7 +283,6 @@ class;
 %rep >template { 1.0 dur ! trg on }
 %timeout >template { 1.0 dur ! trg on }
 %move >template { 0 val ! }
-%origin >template { 100. 100. w 2! }
 
 \ -- Icon Configuration --------------------------------------------------------
 
@@ -308,13 +302,11 @@ class;
 \ -- Class Draw Methods --------------------------------------------------------
 
 %origin :: click-box@
-    abspos w 2@ 2 2 2/ 2-`` w 2@`` box ;
+    abspos 50. 50. 2-`` 100. 100.`` box ;
 
 %origin :: _draw  
-    w 2@ 2>i -2 -2 2/ +at 
-    black see-thru w 2@ rectf
-    at-me
-    icon-bmp @ cput
+    me click-box@ 2over 2- 2swap atp black see-thru rectf
+    at-me icon-bmp @ cput
     connectors ;
 
 || : ?flip  flp @ 24 << or ; 
