@@ -76,10 +76,11 @@ class;
         draw-cursor 
     work> 
         get-mouse 
-        desktop ?dup if decay then
+        desktop ?dup if decay-gui then
         session ?dup if process-gui then 
         ?save
 ;
+
 
 workspace
 

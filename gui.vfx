@@ -685,6 +685,7 @@ defer cloned ( element - ) ['] drop is cloned
     lmb pressed? if
         0 to click-candidate
         hovered if
+            hovered %desktop is? if  selection vacate  unfocus  else
             \ Clone if holding <CTRL>
             ctrl? if 
                 hovered deep-clone dup hovered insert-over 
@@ -724,8 +725,9 @@ defer cloned ( element - ) ['] drop is cloned
                 then
                 record-click-position
             then
+            then  \ desktop check
         else
-            selection vacate
+            selection vacate  unfocus
         then
     then
     drag-btn @ letgo? if

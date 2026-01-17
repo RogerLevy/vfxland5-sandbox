@@ -119,8 +119,8 @@ class;
 : pulse- ( val. - val'. ) 
     dup 0> if ps - 0 max else ps + 0 min then ;
 
-defer _decay
-: decay ( micro - )
+: decay-gui ( _micro - )    
+    [ here ]
     as> 
         me %micro is? if
             en @ -exit
@@ -131,8 +131,7 @@ defer _decay
             \ lpul @ pulse- lpul !
             rpul @ pulse- rpul !
         then
-        ['] _decay me each ;
-['] decay is _decay
+        literal me each ;
 
 : non-decaying  template { 1.0 dcy ! } ;
 
@@ -178,7 +177,7 @@ defer _decay
 
 : pulse@  upul @ ( dpul @ + ) ( lpul @ + ) rpul @ + 1.0 min ;
 
-: hint ( element - )
+|| : hint ( element - )
     {: me | a len :} 
     me _hint to len to a
     len -exit
