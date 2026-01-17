@@ -422,16 +422,25 @@ class: %menu-item
     prop _clr <readonly
     template { editable off }
 
+    || 2. constant padding
+
+    :: click-box@ ( - x1 y1 x2 y2 )
+        abspos w 2@ box ;
+
+    :: _draw
+        clr @ rgba8 0 0 w 2@ rectf
+        padding padding +atp black _draw-text ;
+
     :: _enter  clr @ _clr ! valof white clr ! ;
     :: _leave  _clr @ clr ! ;
 
     : trigger-menu-item ( menu-item - )
-        xt @ 
+        xt @
         obj @ ?dup if as> then
         ?execute ;
 
     :: _mousedown ( btn - )
-        lmb = -exit 
+        lmb = -exit
         me trigger-menu-item ;
 
 class;
@@ -443,16 +452,25 @@ class;
 
 c: %menu %panel ;
 
+|| 12. constant item-h  \ menu item height (text + padding)
+
 : *menu ( - menu )
-    %menu  *add { 4 4 at me 50. 8. w 2! } ;
+    %menu  *add { 0 0 at me 0. 0. w 2! } ;
 
 : *menu-item ( object|0 xt text len - menu-item )
-    9. h +!        \ grow menu height 
-    %menu-item  *add { 
-        me text! xt ! obj ! +bolted 
-        w @ 8. + you >w @ max you >w ! \ expand width to fit
-    me } 
-    0 9 +at ;
+    item-h h +!        \ grow menu height
+    %menu-item  *add {
+        me text! xt ! obj ! +bolted
+        you >w @ w @ 4. + max you >w ! \ expand menu width to fit
+        you >w @ w !  \ set item width to menu width
+        item-h h !    \ set item height
+    me }
+    0 item-h +atp ;
+
+: fill-menu-width ( menu - )
+    dup >w @ swap
+    [: { dup w ! } ;] swap each 
+    drop ;
 
 : option ( object|0 xt text len - )
     *menu-item { designing? if valof light-red clr ! then } ;
@@ -497,6 +515,7 @@ class;
         *menu to context-menu
         context-menu swap _context-menu
         context-menu #children 0= if close-context-menu exit then
+        context-menu fill-menu-width
         context-menu ?dup if { corral } then
     } ;
 
