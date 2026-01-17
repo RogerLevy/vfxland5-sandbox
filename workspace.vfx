@@ -103,3 +103,19 @@ workspace
         drop
     then
 ;] is cloned
+
+
+\ -- Instructions---------------------------------------------------------------
+
+cr
+cr
+." Workspace Controls: " cr
+."  Tab - Toggle using/designing mode (hold+click for temporary toggle)" cr
+."  Tilde - Toggle the global HUD" cr
+."  LMB - designing: select, drag   using: use" cr
+."  Ctrl + LMB - clone" cr
+."  Shift + LMB - designing: use  (deprecated)" cr
+."  RMB - designing: context menu" cr
+."  Shift+RMB - designing: inspect" cr
+."  Del - designing: delete selected elements" cr
+cr
