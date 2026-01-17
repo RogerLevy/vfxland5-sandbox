@@ -31,9 +31,11 @@ class: %togglebox
         \ designing? bolted? and or -exit
         \ opn toggle ;
 
+    || : _toggle  opn @ if me close else me open then ;
+    || : ?front   opn @ if me dup >parent @ push then ;
+
     :: click ( btn - )
-        lmb = -exit
-        opn @ if me close else me open then ;
+        lmb = -exit   _toggle  ?front ;
 
     || 4. constant m
 
