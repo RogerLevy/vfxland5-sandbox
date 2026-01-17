@@ -842,18 +842,56 @@ variable temp-mode-active
 
 : click-box  -1. thick me click-box@ 2over atp 2swap 2- rect ;
 
-: click-fbox  
+: click-fbox
     me %desktop is? ?exit
     designing?   me handy? or if
         get-blender additive-mode
-        0.2 ppena! me click-box@ 2over atp 2swap 2- rectf 
-        set-blender 
+        0.2 ppena! me click-box@ 2over atp 2swap 2- rectf
+        set-blender
     then
     1.0 ppena! click-box ;
 
+\ Compute clipping rectangle from all clipped ancestors
+: ancestor-clip-bounds ( element - x1 y1 x2 y2 )
+    {: elem | x1 y1 x2 y2  ex1 ey1 ex2 ey2 :}
+    0 to x1  0 to y1  winw to x2  winh to y2
+    elem begin
+        >parent @ dup while
+        dup { clipped? } if
+            dup click-box@ 2>i zoom* 2swap 2>i zoom* 2swap
+            to ey2 to ex2 to ey1 to ex1
+            x1 ex1 max to x1  y1 ey1 max to y1
+            x2 ex2 min to x2  y2 ey2 min to y2
+        then
+    repeat drop
+    x1 y1 x2 y2 ;
+
+: with-ancestor-clip ( xt element - )
+    \ Save current clipping
+    0 0 0 0 sp@ 3 cells + dup cell- dup cell- dup cell- al_get_clipping_rectangle
+    2>r 2>r
+    \ Set ancestor clipping (convert x1 y1 x2 y2 to x y w h)
+    ancestor-clip-bounds 2over 2- al_set_clipping_rectangle
+    execute
+    \ Restore clipping
+    2r> 2r> al_set_clipping_rectangle ;
+
+: clipped-click-fbox
+    me %desktop is? ?exit
+    [: designing? me handy? or if
+            get-blender additive-mode
+            0.2 ppena! me click-box@ 2over atp 2swap 2- rectf
+            set-blender
+        then
+        1.0 ppena! click-box
+    ;] me with-ancestor-clip ;
+
+: clipped-click-box
+    [: click-box ;] me with-ancestor-clip ;
+
 : gui-overlay ( element - )
     as>
-    [: { light-green click-fbox } ;] selection each
+    [: { light-green clipped-click-fbox } ;] selection each
     designing? if
         \ In designing mode, preview what would be selected on click
         preview-selection ?dup if { 
@@ -865,7 +903,7 @@ variable temp-mode-active
         \ hovered ?dup if { bolted? if yellow else green then click-fbox } then
         hovered ?dup if { bolted? not if green click-box then } then
     then
-    focused ?dup if { cyan click-box } then ;
+    focused ?dup if { cyan clipped-click-box } then ;
 
 \ -- Inspection ----------------------------------------------------------------
 
