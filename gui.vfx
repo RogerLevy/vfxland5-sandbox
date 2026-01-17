@@ -792,6 +792,18 @@ variable temp-mode-active
         temp-mode-active off
     then ;
 
+: any-hud-children-open? ( - flag )
+    false [: opened? or ;] hud each ;
+
+: handle-hud-toggle
+    <tilde> pressed? -exit
+    hud -exit
+    any-hud-children-open? if
+        ['] close hud each
+    else
+        ['] open hud each
+    then ;
+
 : handle-focused-keys
     focused -exit
     ALLEGRO_EVENT_KEY_DOWN happened? if
@@ -815,6 +827,7 @@ variable temp-mode-active
     do-drag
     handle-context-menu
     handle-mode-toggle
+    handle-hud-toggle
     begin event? while
         handle-focused-keys
         handle-focused-mouse-wheel
