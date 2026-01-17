@@ -7,7 +7,7 @@ ECONTEXT gui-ec
 0 value focused   \ Element with keyboard focus
 1024 %addr stack selection
 
-: this ( - element ) selection peek ;
+: this ( - element|0 ) selection #items dup -exit drop selection peek ;
 
 redef : *lstring ( a n - a' )
     dup cell+ 256 max allocate throw >r r@ lplace r> ;
