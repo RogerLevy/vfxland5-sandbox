@@ -105,6 +105,14 @@ workspace
     then
 ;] is cloned
 
+: wide
+    display ALLEGRO_FRAMELESS true al_set_display_flag drop
+    display -1920 0 al_set_window_position
+    display ALLEGRO_MAXIMIZED true al_set_display_flag drop
+    display 1920 2 * 1060 al_resize_display drop
+    display ALLEGRO_FRAMELESS true al_set_display_flag drop
+;
+
 
 \ -- Instructions---------------------------------------------------------------
 
@@ -120,3 +128,4 @@ cr
 ."  Shift+RMB - designing: inspect" cr
 ."  Del - designing: delete selected elements" cr
 cr
+
