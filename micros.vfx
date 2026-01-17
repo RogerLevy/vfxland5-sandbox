@@ -271,6 +271,7 @@ class;
 
 class: %sprite  %origin derive  non-decaying   \ val modulates speed
     is-a %animator 
+    is-a %_bitmap
     prop bmp 
     prop flp <save
 class;
