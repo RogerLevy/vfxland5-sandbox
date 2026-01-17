@@ -46,6 +46,38 @@ variable fgc
     again
 ;
 
+: revert-bmp ( bmpid - )
+    {: bmpid | temp-albmp :}
+    bmpid is-subbmp? if
+        \ Sub-bitmap: load parent file, copy just this region
+        bmpid bitmap-file expand >zpad al_load_bitmap
+        dup 0= abort" Failed to load bitmap file"
+        to temp-albmp
+        bmpid id>albmp al_set_target_bitmap
+        get-blender replace-mode
+            temp-albmp
+            bmpid id>albmp al_get_bitmap_x s>f
+            bmpid id>albmp al_get_bitmap_y s>f
+            bmpid bmpwh 2s>f
+            0e 0e 0 al_draw_bitmap_region
+        set-blender
+        display al_get_backbuffer al_set_target_bitmap
+        temp-albmp al_destroy_bitmap
+    else
+        \ Regular bitmap: load and copy over
+        bmpid bitmap-file expand >zpad al_load_bitmap
+        dup 0= abort" Failed to load bitmap file"
+        to temp-albmp
+        bmpid id>albmp al_set_target_bitmap
+        get-blender replace-mode
+            temp-albmp 0e 0e 0 al_draw_bitmap
+        set-blender
+        display al_get_backbuffer al_set_target_bitmap
+        temp-albmp al_destroy_bitmap
+    then ;
+
+: revert, ( - )
+    you [: me revert ;] s" Revert" option ;
 
 class: %painter
     %ui-box derive
@@ -94,6 +126,11 @@ class: %painter
             sw-albmp @ 0e 0e 0 al_draw_bitmap
         set-blender  \ Restore old blending mode
         display al_get_backbuffer al_set_target_bitmap ;
+
+    \ Revert to disk version
+    :: revert ( - )
+        hw-bmp @ revert-bmp
+        hw-bmp @ init-sw-albmp ;
 
     \ Navigate bitmaps in registry
     || : ?*  shift? if 10 * then ;
@@ -222,6 +259,7 @@ class: %painter
     :: _keydown ( key - )
         using? not if drop exit then
         \ dup <s> = ctrl? and if drop save-bitmap exit then
+        dup <z> = ctrl? and if drop me revert exit then
         dup <f> = if flood then
         drop ;
 
@@ -244,15 +282,16 @@ class: %painter
 
     || : clear, ( - )
         you [:
-            sw-albmp @ al_set_target_bitmap 
+            sw-albmp @ al_set_target_bitmap
             black 0 ppena! screen
-            display al_get_backbuffer al_set_target_bitmap 
+            display al_get_backbuffer al_set_target_bitmap
             sync
         ;] s" Clear" option ;
 
     :: _context-menu ( menu - )
         as>
-        clear, 
+        revert,
+        clear,
         common-options, ;
 
     \ :: save ( - )
@@ -274,7 +313,22 @@ class;
         }
     ;] s" Paint" option ;
 
+\ Recursively refresh painters editing a given bitmap
+: (refresh-painters) ( bmpid element - bmpid )
+    [ here ]
+    { 
+        me %painter is? if dup hw-bmp @ = if hw-bmp @ init-sw-albmp then then 
+        literal me each 
+    } ;
+
+: refresh-painters ( bmpid - )
+    session ?dup if (refresh-painters) then drop ;
+
+%sprite :: revert ( - )
+    bmp @ dup revert-bmp refresh-painters ;
+
 %sprite :: _context-menu ( menu - )
     as>
+    revert,
     paint,
     common-options, ;
