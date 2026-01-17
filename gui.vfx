@@ -761,8 +761,17 @@ defer cloned ( element - ) ['] drop is cloned
         selection vacate
     then ;
 
+variable temp-mode-active
+
 : handle-mode-toggle
-    <tab> pressed? if toggle-mode then ;
+    <tab> pressed? if toggle-mode then
+    \ If Tab held and click, enter temp mode (will revert on Tab release)
+    <tab> held? lmb pressed? and if temp-mode-active on then
+    \ On Tab release, if temp mode was active, toggle back
+    <tab> letgo? temp-mode-active @ and if
+        toggle-mode
+        temp-mode-active off
+    then ;
 
 : handle-focused-keys
     focused -exit
