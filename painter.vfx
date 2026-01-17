@@ -48,33 +48,24 @@ variable fgc
 
 : revert-bmp ( bmpid - )
     {: bmpid | temp-albmp :}
-    bmpid is-subbmp? if
-        \ Sub-bitmap: load parent file, copy just this region
-        bmpid bitmap-file expand >zpad al_load_bitmap
-        dup 0= abort" Failed to load bitmap file"
-        to temp-albmp
-        bmpid id>albmp al_set_target_bitmap
-        get-blender replace-mode
+    bmpid bitmap-file expand >zpad al_load_bitmap
+    dup 0= abort" Failed to load bitmap file"
+    to temp-albmp
+    bmpid id>albmp al_set_target_bitmap
+    get-blender replace-mode
+        bmpid is-subbmp? if
+            \ Sub-bitmap: copy just the region
             temp-albmp
-            bmpid id>albmp al_get_bitmap_x s>f
-            bmpid id>albmp al_get_bitmap_y s>f
+            bmpid bmpxy 2s>f 
             bmpid bmpwh 2s>f
             0e 0e 0 al_draw_bitmap_region
-        set-blender
-        display al_get_backbuffer al_set_target_bitmap
-        temp-albmp al_destroy_bitmap
-    else
-        \ Regular bitmap: load and copy over
-        bmpid bitmap-file expand >zpad al_load_bitmap
-        dup 0= abort" Failed to load bitmap file"
-        to temp-albmp
-        bmpid id>albmp al_set_target_bitmap
-        get-blender replace-mode
+        else
+            \ Regular bitmap: copy over
             temp-albmp 0e 0e 0 al_draw_bitmap
-        set-blender
-        display al_get_backbuffer al_set_target_bitmap
-        temp-albmp al_destroy_bitmap
-    then ;
+        then 
+    set-blender
+    temp-albmp al_destroy_bitmap 
+    display al_get_backbuffer al_set_target_bitmap ;
 
 : revert, ( - )
     you [: me revert ;] s" Revert" option ;
@@ -89,7 +80,7 @@ class: %painter
     prop d :fixed <save                \ Brush diameter
     prop bgc <save
 
-    template { 8 zm ! 1. d ! $FFFFFFFF fgc ! editable on  $e0e0d0e0 bgc ! }
+    template { 8 zm ! 1. d ! $FFFFFFFF fgc ! editable on  $808080e0 bgc ! }
 
     :: cursor-bmp ( - bmp ) 
         using? if  
@@ -329,6 +320,6 @@ class;
 
 %sprite :: _context-menu ( menu - )
     as>
-    revert,
     paint,
+    revert,
     common-options, ;
