@@ -1029,13 +1029,13 @@ defer sticky,  ['] default-sticky, is sticky,
     me hud descendant? ?exit   \ Skip hud
 
     \ Check if within bounds and move to target
-    bolted? not if
+    \ bolted? not if
         me click-box@ 1. 1. 2-  capture-target click-box@ 1. 1. 2- overlap? if
             abspos  capture-target { abspos } 2-  ( rx. ry. )
             me basket push
             x 2!
         then
-    then
+    \ then
 
     \ Recurse into children
     ( [ xt ] ) literal me each ;
