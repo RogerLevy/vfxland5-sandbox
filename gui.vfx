@@ -681,6 +681,8 @@ defer _element-below
     mouse-moved-since-click? if false exit then
     selection #items 0= if false exit then
     mouse this { in-me? } not if false exit then
+    \ Don't cycle if the element has a custom click handler
+    this >CLA @ -> click @  %element -> click @  <> if false exit then
     \ Selected element is under mouse and mouse hasn't moved - set up cycling
     this to click-candidate
     true ;

@@ -11,7 +11,8 @@
       "WebFetch(domain:liballeg.org)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(cat:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
