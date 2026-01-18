@@ -1068,15 +1068,23 @@ defer sticky,  ['] default-sticky, is sticky,
     ;]
     s" Release" option ;
 
+: clipped,
+    you { clipped? } if
+        you [: -clipped ;] s" -Clipped" option
+    else
+        you [: +clipped ;] s" +Clipped" option
+    then ;
+
 : common-options,
     \ designing? if clone, then
-    designing? if attach, then
-    designing? if capture, then
-    designing? if release, then
+    attach,
+    designing? if bolt, then
     save,
     front,
     back,
-    designing? if bolt, then
+    designing? if clipped, then
+    designing? if capture, then
+    designing? if release, then
     designing? if sticky, then
     designing? if clear, then
     delete, ;

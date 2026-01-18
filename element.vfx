@@ -189,8 +189,6 @@ redef : sweep ( iterable - )
     then 
 ;
 
-
-
 %element :: clear
     ['] unload me each
     going @ not if me sweep then
