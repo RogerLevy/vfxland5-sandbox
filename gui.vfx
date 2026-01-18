@@ -19,10 +19,41 @@ variable drag-btn
 variable dragging
 variable drag-moved  \ true if mouse actually moved during drag
 
+|| 0 value click-candidate  \ element that might receive a cycle-click
+|| 0 value last-click-x
+|| 0 value last-click-y
+|| 0 value aligned-axis      \ 0=none, 1=horizontal (lock Y), 2=vertical (lock X)
+
 : being-dragged? ( element - flag )
     dragging @ not if drop false exit then
     drag-moved @ not if drop false exit then
     selection contains? ;
+
+: mouse-moved-since-click? ( - flag )
+    mouse last-click-y <> swap last-click-x <> or ;
+
+: record-click-position ( - )
+    mouse to last-click-y to last-click-x ;
+
+\ -- Aligned Drag Helpers -----------------------------------------------------
+
+: 2= rot = >r = r> and ;
+
+: calc-drag-axis ( - axis )
+    \ Calculate which axis to lock based on mouse displacement from drag start
+    \ Returns: 1 = horizontal (lock Y), 2 = vertical (lock X)
+    pmouse last-click-x last-click-y 2>p dist 5. < if 0 exit then
+    mouse                               \ current mouse x y
+    last-click-y - abs >r               \ |dy|
+    last-click-x - abs r>               \ |dx| |dy|
+    > if 1 else 2 then ;                \ if |dx| > |dy| then horizontal else vertical
+
+: apply-axis-constraint ( dx. dy. - dx'. dy'. )
+    \ Zero out the locked axis delta
+    aligned-axis case
+        1 of drop 0. endof   \ horizontal: zero Y delta
+        2 of nip 0. swap endof  \ vertical: zero X delta
+    endcase ;
 
 \ -- Mode Toggle (F12) ---------------------------------------------------------
 
@@ -71,9 +102,22 @@ class: %desktop
     template { valof dark-grey clr ! +bolted }
 
     :: click-box@ 0 0 winw winh 2>p ;
-    :: _process 
+    :: _process
         <space> held? if
-            lmb? if pmickey x 2+! then 
+            lmb? if
+                lmb pressed? if
+                    record-click-position
+                    0 to aligned-axis
+                then
+                pmickey
+                shift? if
+                    aligned-axis 0= if calc-drag-axis to aligned-axis then
+                    apply-axis-constraint
+                else
+                    0 to aligned-axis
+                then
+                x 2+!
+            then
         then ;
     :: _draw 0 0 at clr @ rgba8 winw winh 2>p rectf ;
 class;
@@ -617,16 +661,6 @@ defer _element-below
     then
     hovered ;
 
-|| 0 value click-candidate  \ element that might receive a cycle-click
-|| 0 value last-click-x
-|| 0 value last-click-y
-
-: mouse-moved-since-click? ( - flag )
-    mouse last-click-y <> swap last-click-x <> or ;
-
-: record-click-position ( - )
-    mouse to last-click-y to last-click-x ;
-
 : preview-selection ( - element|0 )
     \ In designing mode, preview what would be selected on click
     designing? not if hovered exit then
@@ -644,7 +678,8 @@ defer _element-below
     drag-btn ! dragging on drag-moved off ;
 
 : end-drag ( -- )
-    dragging off drag-moved off ;
+    dragging off drag-moved off
+    0 to aligned-axis ;
 
 : handle-rmb
     rmb pressed? if
@@ -781,6 +816,13 @@ defer cloned ( element - ) ['] drop is cloned
     dragging @ -exit
     pmickey                             \ get mouse delta
     2dup or if drag-moved on then       \ track if any movement
+    \ Aligned drag: if shift pressed, lock to axis
+    shift? if
+        aligned-axis 0= if calc-drag-axis to aligned-axis then
+        apply-axis-constraint
+    else
+        0 to aligned-axis               \ reset when shift released
+    then
     [: { 2dup x 2+! } ;] selection each \ apply to all selected
     2drop ;
 
