@@ -557,7 +557,8 @@ defer _topmost-element
 ;] is _topmost-element
 
 : topmost-element ( - element|0 )
-    0 me _topmost-element ;
+    me { mouse in-me? } if me else 0 then
+    me _topmost-element ;
 
 \ Same as topmost-element but skips root and desktops (for cycling)
 || 0 value top-selectable
