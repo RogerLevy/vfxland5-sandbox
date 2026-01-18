@@ -19,6 +19,11 @@ variable drag-btn
 variable dragging
 variable drag-moved  \ true if mouse actually moved during drag
 
+: being-dragged? ( element - flag )
+    dragging @ not if drop false exit then
+    drag-moved @ not if drop false exit then
+    selection contains? ;
+
 \ -- Mode Toggle (F12) ---------------------------------------------------------
 
 variable using-mode   \ false = designing (default), true = using
@@ -545,8 +550,11 @@ defer _topmost-element
     dup active? not if drop exit then
     [: {
         me active? mouse in-me? and if
-            \ Check if mouse is within all clipped ancestors
-            me clipped-ancestor? not if drop me then
+            \ Skip elements being dragged so we can see what's underneath
+            me being-dragged? not if
+                \ Check if mouse is within all clipped ancestors
+                me clipped-ancestor? not if drop me then
+            then
         then
         me opened? if
             me _topmost-element
@@ -677,6 +685,12 @@ defer _element-below
     this to click-candidate
     true ;
 
+: attach-to ( source target - )
+    2dup = if 2drop exit then                   \ can't attach to self
+    over >parent @ over = if 2drop exit then    \ already a child of target
+    over { dup relpos x 2! }                    \ calc source's relative position to target
+    push ;                                      \ push source onto target
+
 defer cloned ( element - ) ['] drop is cloned
 
 : handle-lmb
@@ -730,11 +744,18 @@ defer cloned ( element - ) ['] drop is cloned
         then
     then
     drag-btn @ letgo? if
+        \ Quick-attach: CTRL+release attaches dragged element(s) to hovered element
+        ctrl? drag-moved @ and selection #items 0<> and hovered 0<> and if
+            \ hovered %desktop is? not if
+                ." QUICK ATTACH" cr
+                [: hovered attach-to ;] selection each
+            \ then
+        then
         \ Call click on release without movement (using mode or bolted elements)
         using? hovered ?dup if { bolted? } else false then or
         drag-moved @ not and if
-            hovered ?dup if 
-                lmb swap click 
+            hovered ?dup if
+                lmb swap click
                 \ exit
             then
         then
@@ -942,12 +963,11 @@ class;
     else
         exit
     then
-    you [: 
-        selection #items -exit 
+    you [:
+        selection #items -exit
         this me = ?exit
-        this { you relpos x 2! }
-        this me push 
-    ;] 
+        this me attach-to
+    ;]
     s" Attach" option ;
 
 : delete,
