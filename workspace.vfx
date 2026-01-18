@@ -54,15 +54,6 @@ class: %bookmark
         common-options, ;
 class;
 
-\ -- Desktop HUD --------------------------------------------------------------
-
-: dhud ( - desktop-hud )
-    desktop ?dup if
-        >highest @ dup %desktop-hud is? ?exit 
-        drop
-    then
-    %desktop-hud make dup desktop push ;
-
 \ -- Main Loop ----------------------------------------------------------------
 
 : ?save  <s> pressed? ctrl? and -exit save-all save-bitmaps ;
@@ -74,10 +65,11 @@ class;
         session ?dup if 0 0 at draw then
         0 0 at session gui-overlay 
         draw-cursor 
-    work> 
-        get-mouse 
+    work>
+        get-mouse
         desktop ?dup if decay-gui then
-        session ?dup if process-gui then 
+        session ?dup if process-gui then
+        update-dhud
         ?save
 ;
 

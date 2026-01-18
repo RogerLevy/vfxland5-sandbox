@@ -463,7 +463,6 @@ class;
 
 \ -- Lifecycle ----------------------------------------------------------------
 
-0 0 at %desktop dmake value desktop
 desktop session push
 hud session push
 
@@ -509,6 +508,13 @@ defer _delete-micro
     me %origin is? not >r
     e} }
     r> if ICON_SPACING 0 +at then ;
+
+: *sprite ( bmp - sprite )
+    %sprite  *add { bmp ! me } ;
+
+: center ( - x y )
+    x 2@ 2>i 2negate
+    winw winh 2 2 2/ zoom @ dup 2/ 2+ ;
 
 \ -- Micro Context Menus -------------------------------------------------------
 
