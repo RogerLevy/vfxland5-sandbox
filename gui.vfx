@@ -75,28 +75,24 @@ variable using-mode   \ false = designing (default), true = using
 
 BITMAP %idir%/cursors.png
 cursors.png 32 32 TILESET-FROM cursors.ts
-\ variable use-cursor
-\ variable design-cursor   
 0 constant pointer
-1 constant hammer  \ hammer design-cursor !
+1 constant hammer
 2 constant hand
 
-: default-cursor-bmp ( - bmp )
-    cursors.ts using? if pointer else hammer then tile ;
+: default-cursor ( - )
+    cursors.ts using? if pointer else hammer then tile cput ;
 
-%element :: cursor-bmp ( - bmp )
-    default-cursor-bmp ;
+%element :: cursor ( - )
+    default-cursor ;
 
-: draw-cursor  
-    mouse at 
+: draw-cursor
+    mouse at
     <space> held? if
-        cursors.ts hand tile
+        cursors.ts hand tile cput
     else
-        hovered 0<> 
-        using? and
-        if hovered cursor-bmp else default-cursor-bmp then 
-    then
-    cput ;
+        hovered 0<> using? and
+        if hovered { <at me cursor } else default-cursor then
+    then ;
 
 \ -- Desktop -------------------------------------------------------------------
 

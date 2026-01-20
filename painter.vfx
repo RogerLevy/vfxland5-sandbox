@@ -82,15 +82,16 @@ class: %painter
 
     template { 8 zm ! 1. d ! $FFFFFFFF fgc ! editable on  $808080e0 bgc ! }
 
-    :: cursor-bmp ( - bmp ) 
-        using? if  
-            rmb held?  
-            editable @ not or if 
-                painter-cursors.ts 1 tile 
+    :: cursor ( - )
+        using? if
+            rmb held?
+            editable @ not or if
+                painter-cursors.ts 1 tile cput
                 exit
             then
         then
-        painter-cursors.ts 0 tile ;
+        painter-cursors.ts 0 tile cput 
+        21 21 +at  fgc @ rgba8  5. circf  grey 5. circ ;
 
     || : update-box
         \ Set size based on bitmap dimensions * zm
@@ -145,8 +146,7 @@ class: %painter
                 hw-bmp @ bmpwh 2 2 2/ at hw-bmp @ cput
             e} m}
         then
-        grey w 2@ rect
-        6 -6 +at  fgc @ rgba8  5. circf  grey 5. circ ;
+        grey w 2@ rect ;        
 
     \ Mouse -> bitmap coordinates
     : mouse>bmp ( - x. y. )

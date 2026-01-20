@@ -46,7 +46,7 @@ trait: %_element
     :: _keychar ( key - ) drop ;  \ Key with repeat
     :: open ( - ) ;
     :: close ( - ) ;
-    :: cursor-bmp ( - bmp ) stub ;
+    redef :: cursor ( - ) stub ;
     :: clear ( - ) stub ;
     redef :: save ( - ) ;
     :: revert ( - ) ;
