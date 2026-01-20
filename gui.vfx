@@ -111,15 +111,16 @@ class: %desktop
                 lmb pressed? if
                     record-click-position
                     0 to aligned-axis
-                then
-                pmickey
-                shift? if
-                    aligned-axis 0= if calc-drag-axis to aligned-axis then
-                    apply-axis-constraint
                 else
-                    0 to aligned-axis
+                    pmickey
+                    shift? if
+                        aligned-axis 0= if calc-drag-axis to aligned-axis then
+                        apply-axis-constraint
+                    else
+                        0 to aligned-axis
+                    then
+                    x 2+!
                 then
-                x 2+!
             then
         then ;
     :: _draw 0 0 at clr @ rgba8 winw winh 2>p rectf ;
@@ -194,11 +195,19 @@ class: %window
         <space> held? lmb? and if
             window-panning me = if
                 pmickey
+                shift? if
+                    aligned-axis 0= if calc-drag-axis to aligned-axis then
+                    apply-axis-constraint
+                else
+                    0 to aligned-axis
+                then
                 [: { 2dup x 2+! } ;] me each
                 2drop
             else
                 lmb pressed? mouse in-me? and if
                     me to window-panning
+                    record-click-position
+                    0 to aligned-axis
                 then
             then
         else
