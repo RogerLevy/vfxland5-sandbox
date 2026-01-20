@@ -314,7 +314,7 @@ class;
 %sprite :: _draw
     bmp @ if 
         bmp @ ?flip cput 
-        designing? if e{ me click-box@ 2over 2- 2swap atp white 0.25 ppena! rect e} then 
+        bmp @ id>bmp >touched @ if e{ me click-box@ 2over 2- 2swap atp white 0.25 ppena! rect e} then 
     else icon then ;
     \ connectors ;
 

@@ -295,6 +295,8 @@ class;
 \ -- Bitmap Creation and Loading -----------------------------------------------
 
 || create zbuf[ 1024 allot
+|| : touch  >bmp @ id>bmp >touched on ;
+
 : newbmp ( w h - )
     {: w h :}
     0 z" New Bitmap" z" *.png" ALLEGRO_FILECHOOSER_SAVE file-dialog
@@ -302,7 +304,8 @@ class;
         -ext f" %s.png" zbuf[ zplace
         w h al_create_bitmap zbuf[ swap al_save_bitmap 0= abort" Bitmap file create fail!"
         zbuf[ f" bitmap %z" .evaluate
-        zbuf[ zcount -path evaluate desktop { center at *sprite } paint
+        zbuf[ zcount -path evaluate desktop { center at *sprite dup touch } paint
+        using-mode on
     else 2drop then ;
 
 : loadbmp ( - )
