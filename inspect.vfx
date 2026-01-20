@@ -88,28 +88,26 @@ class: %inspector
 class;
 
 : *inspector ( object - inspector )
-    session {
-        %inspector make { obj !
-            obj @ %_element is? if
-                \ position to the left of the element
-                obj @ { abspos } w @ 8. + 0 2- x 2!
-            else
-                mouse 2>p x 2!
-            then
-            corral
-        me }
-    } ;
+    %inspector *add { obj !
+        obj @ %_element is? if
+            \ position to the left of the element
+            obj @ { abspos } w @ 8. + 0 2- x 2!
+        else
+            mouse 2>p x 2!
+        then
+        corral
+    me } ;
 
 || 0 value obj0
 : find-inspector ( object - inspector|0 )
     to obj0
-    0 [: { me %inspector is? if me >obj @ obj0 = if drop me then then } ;] hud each ;
+    0 [: { me %inspector is? if me >obj @ obj0 = if drop me then then } ;] session each ;
 
 : inspect ( object - )
     {: obj :}
     obj %inspector is? ?exit
     obj find-inspector ?dup if unload then
-    obj *inspector drop ;
+    session { obj *inspector drop } ;
 
 : toggle-inspector ( object - )
     dup find-inspector ?dup if
