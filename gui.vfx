@@ -59,6 +59,16 @@ variable drag-moved  \ true if mouse actually moved during drag
         2 of nip 0. swap endof  \ vertical: zero X delta
     endcase ;
 
+: pan-delta ( - dx. dy. )
+    \ Get mouse delta with ctrl speed multiplier and shift axis constraint
+    pmickey ctrl? if 3 3 2* then
+    shift? if
+        aligned-axis 0= if calc-drag-axis to aligned-axis then
+        apply-axis-constraint
+    else
+        0 to aligned-axis
+    then ;
+
 \ -- Mode Toggle (F12) ---------------------------------------------------------
 
 variable using-mode   \ false = designing (default), true = using
@@ -105,22 +115,13 @@ class: %desktop
 
     :: click-box@ 0 0 winw winh 2>p ;
     :: _process
-        <space> held? if
-            lmb? if
-                window-panning ?exit
-                lmb pressed? if
-                    record-click-position
-                    0 to aligned-axis
-                else
-                    pmickey ctrl? if 3 3 2* then
-                    shift? if
-                        aligned-axis 0= if calc-drag-axis to aligned-axis then
-                        apply-axis-constraint
-                    else
-                        0 to aligned-axis
-                    then
-                    x 2+!
-                then
+        <space> held? lmb? and if
+            window-panning ?exit
+            lmb pressed? if
+                record-click-position
+                0 to aligned-axis
+            else
+                pan-delta x 2+!
             then
         then ;
     :: _draw 0 0 at clr @ rgba8 winw winh 2>p rectf ;
@@ -194,15 +195,7 @@ class: %window
         +clipped
         <space> held? lmb? and if
             window-panning me = if
-                pmickey ctrl? if 3 3 2* then
-                shift? if
-                    aligned-axis 0= if calc-drag-axis to aligned-axis then
-                    apply-axis-constraint
-                else
-                    0 to aligned-axis
-                then
-                [: { 2dup x 2+! } ;] me each
-                2drop
+                pan-delta [: { 2dup x 2+! } ;] me each 2drop
             else
                 lmb pressed? mouse in-me? and if
                     me to window-panning
