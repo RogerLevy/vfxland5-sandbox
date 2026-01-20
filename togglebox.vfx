@@ -1,22 +1,8 @@
 class: %togglebox
     %label derive
-    prop opn <save
-    template { opn on editable off }
+    template { editable off }
 
-    :: opened?  opn @ ;
-    :: open     opn on ;
-    :: close    opn off  me unfocus-if-descendant  me deselect-if-descendant ;
     :: handy?   true ;
-
-    :: process
-        me active? -exit
-        me _process 
-        opn @ if ['] process me each then ;
-        
-    :: draw
-        me active? -exit
-        at-me  me _draw 
-        opn @ if ['] draw me each then ;
 
     :: _mousedown ( btn - )
         drop ;
@@ -31,8 +17,8 @@ class: %togglebox
         \ designing? bolted? and or -exit
         \ opn toggle ;
 
-    || : _toggle  opn @ if me close else me open then ;
-    || : ?front   opn @ if me dup >parent @ push then ;
+    || : _toggle  opened? if me close else me open then ;
+    || : ?front   opened? if me dup >parent @ push then ;
 
     :: click ( btn - )
         lmb = -exit   _toggle  ?front ;

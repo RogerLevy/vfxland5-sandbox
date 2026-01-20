@@ -25,6 +25,8 @@ class: %bookmark
     prop dx :fixed <save
     prop dy :fixed <save
 
+    :: handy?  true ;
+
     || 2. constant m
 
     :: click-box@ ( - x1 y1 x2 y2 )
@@ -38,9 +40,11 @@ class: %bookmark
         m m 2>i +at
         black _draw-text ;
     
-    :: _mousedown ( btn - )
+    :: _mousedown ( btn - ) drop ;
+
+    :: click ( btn - )
         lmb = -exit
-        bolted? not shift? not and ?exit
+        \ bolted? not shift? not and ?exit
         dx 2@ desktop >x 2! ;
 
     : bookmark,

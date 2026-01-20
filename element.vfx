@@ -44,7 +44,6 @@ trait: %_element
     :: on-blur ( - ) ;        \ Called when element loses keyboard focus
     :: _keydown ( key - ) drop ;  \ Single key press (no repeat)
     :: _keychar ( key - ) drop ;  \ Key with repeat
-    :: opened? ( - flag ) true ;
     :: open ( - ) ;
     :: close ( - ) ;
     :: cursor-bmp ( - bmp ) stub ;
@@ -64,6 +63,10 @@ trait;
 : +clipped   2 flags set-bit ;
 : -clipped   2 flags reset-bit ;
 : clipped?   2 flags test-bit ;
+: +closed    3 flags set-bit ;
+: -closed    3 flags reset-bit ;
+: closed?    3 flags test-bit ;
+: opened?    closed? not ;
 
 : abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
 : at-me  abspos atp ;
@@ -116,6 +119,9 @@ class: %element
     template { gui-ec ecp! in-heap }
 class;
 
+%element :: open     -closed ;
+%element :: close    +closed  me unfocus-if-descendant  me deselect-if-descendant ;
+
 %element :: .summary  
     object:.summary x 2p? ;
 
@@ -166,7 +172,9 @@ redef : sweep ( iterable - )
 
 %element :: process ( - )
     me active? -exit
-    me _process ['] process me each ;
+    me _process
+    opened? -exit
+    ['] process me each ;
 
 : zoom*  zoom @ dup 2* ;
 
@@ -177,6 +185,7 @@ redef : sweep ( iterable - )
     at-me  
     me _draw 
 
+    opened? -exit
     clipped? if
         0 0 0 0 sp@ 3 cells + dup cell- dup cell- dup cell- al_get_clipping_rectangle
         me click-box@ 2>i zoom* 2swap 2>i zoom* 2swap    2over 2- al_set_clipping_rectangle
