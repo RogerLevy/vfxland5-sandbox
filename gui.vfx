@@ -15,6 +15,8 @@ REQUIRE %idir%/save.vfx
     abspos atp 1.0 thick $ffffff44 rgba8
     { abspos } ->line ;
 
+0 0 at %element dmake value session
+
 variable drag-btn
 variable dragging
 variable drag-moved  \ true if mouse actually moved during drag
@@ -569,7 +571,7 @@ class;
 
 : open-context-menu ( element - )
     close-context-menu
-    hud {
+    session {
         mouse 2>p atp
         *menu to context-menu
         context-menu swap _context-menu
@@ -870,7 +872,7 @@ variable temp-mode-active
     false [: { opened? } or ;] hud each ;
 
 : handle-hud-toggle
-    <tilde> pressed? -exit
+    <tilde> pressed? shift? not and -exit
     hud -exit
     hud { opened? if me close else me open then } ;
 

@@ -88,10 +88,8 @@ class: %inspector
 class;
 
 : *inspector ( object - inspector )
-    hud -exit
-    hud {
+    session {
         %inspector make { obj !
-            me hud push
             obj @ %_element is? if
                 \ position to the left of the element
                 obj @ { abspos } w @ 8. + 0 2- x 2!
@@ -104,7 +102,6 @@ class;
 
 || 0 value obj0
 : find-inspector ( object - inspector|0 )
-    hud 0= if drop 0 exit then
     to obj0
     0 [: { me %inspector is? if me >obj @ obj0 = if drop me then then } ;] hud each ;
 

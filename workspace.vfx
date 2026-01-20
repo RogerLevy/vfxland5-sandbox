@@ -60,6 +60,11 @@ class;
 
 \ -- Main Loop ----------------------------------------------------------------
 
+: handle-dhud-toggle
+    <tilde> pressed? shift? and -exit
+    dhud -exit
+    dhud { opened? if me close else me open then } ;
+
 : ?save  <s> pressed? ctrl? and -exit save-all save-bitmaps ;
 
 : workspace
@@ -73,6 +78,7 @@ class;
         get-mouse
         desktop ?dup if decay-gui then
         session ?dup if process-gui then
+        handle-dhud-toggle 
         update-dhud
         ?save
 ;
@@ -85,7 +91,7 @@ workspace
 [:
     default-sticky,
     you { bolted? } ?exit
-    you >parent @ hud = ?exit
+    you dhud descendant? ?exit
     you [: abspos me dhud push x 2! ;] s" Desktop Sticky" option
 ;] is sticky,
 
