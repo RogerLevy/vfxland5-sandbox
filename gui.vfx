@@ -112,7 +112,7 @@ class: %desktop
                     record-click-position
                     0 to aligned-axis
                 else
-                    pmickey
+                    pmickey ctrl? if 3 3 2* then
                     shift? if
                         aligned-axis 0= if calc-drag-axis to aligned-axis then
                         apply-axis-constraint
@@ -194,7 +194,7 @@ class: %window
         +clipped
         <space> held? lmb? and if
             window-panning me = if
-                pmickey
+                pmickey ctrl? if 3 3 2* then
                 shift? if
                     aligned-axis 0= if calc-drag-axis to aligned-axis then
                     apply-axis-constraint
