@@ -127,17 +127,20 @@ class;
 0 0 at %desktop dmake value desktop
 
 \ -- Desktop-specific HUDs -----------------------------------------------------
-    
+
 class: %desktop-hud
     %element derive
     :: active? parent @ ?dup if active? else false then ;
 class;
 
+0 value the-dhud
+
 : dhud ( - desktop-hud )
+    the-dhud ?dup ?exit
     desktop ?dup 0= abort" DHUD : DESKTOP is null."
-    >highest @ dup %desktop-hud is? ?exit
-    drop
-    desktop { %desktop-hud *add } ;
+    0 [: { me %desktop-hud is? if drop me then } ;] desktop each
+    ?dup 0= if desktop { %desktop-hud *add } then
+    dup to the-dhud ;
 
 : update-dhud ( - )
     dhud as>

@@ -115,6 +115,10 @@ workspace
     display ALLEGRO_FRAMELESS true al_set_display_flag drop
 ;
 
+redef : switch ( n - )
+    0 9 clamp session el@ to desktop
+    0 to the-dhud ; 
+
 
 \ -- Instructions---------------------------------------------------------------
 
