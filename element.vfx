@@ -67,6 +67,9 @@ trait;
 : -closed    3 flags reset-bit ;
 : closed?    3 flags test-bit ;
 : opened?    closed? not ;
+: +temporary 4 flags set-bit ;
+: -temporary 4 flags reset-bit ;
+: temporary? 4 flags test-bit ;
 
 : abspos  x 2@ me begin >parent @ ?dup while { x 2@ 2+ me } repeat ;
 : at-me  abspos atp ;

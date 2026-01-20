@@ -107,7 +107,7 @@ class;
     {: obj :}
     obj %inspector is? ?exit
     obj find-inspector ?dup if unload then
-    session { obj *inspector drop } ;
+    session { obj *inspector { +temporary } } ;
 
 : toggle-inspector ( object - )
     dup find-inspector ?dup if
