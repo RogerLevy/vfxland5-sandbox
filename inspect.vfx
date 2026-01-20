@@ -17,7 +17,9 @@ class: %inspector
             else drop then
         then ;
 
-    :: on-attach
+    || : obj! ( object - )
+        obj ! 
+
         {: | obj0 n property0 type0 readonly? :}
 
         ['] delete me each
@@ -88,7 +90,7 @@ class: %inspector
 class;
 
 : *inspector ( object - inspector )
-    %inspector *add { obj !
+    %inspector *add { obj!
         obj @ %_element is? if
             \ position to the left of the element
             obj @ { abspos } w @ 8. + 0 2- x 2!
