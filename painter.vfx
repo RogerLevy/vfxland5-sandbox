@@ -82,7 +82,8 @@ class: %painter
 
     template { 8 zm ! 1. d ! $FFFFFFFF fgc ! editable on  $808080e0 bgc ! }
 
-    :: cursor ( - )
+    || : swatch  21 21 +at  fgc @ rgba8  5. circf  grey 5. circ ;
+    || : ?cursor
         using? if
             rmb held?
             editable @ not or if
@@ -90,8 +91,10 @@ class: %painter
                 exit
             then
         then
-        painter-cursors.ts 0 tile cput 
-        21 21 +at  fgc @ rgba8  5. circf  grey 5. circ ;
+        painter-cursors.ts 0 tile cput ;
+
+    :: cursor ( - )
+        ?cursor swatch ;
 
     || : update-box
         \ Set size based on bitmap dimensions * zm
