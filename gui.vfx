@@ -11,6 +11,8 @@ REQUIRE %idir%/colors.vfx
 REQUIRE %idir%/element.vfx
 REQUIRE %idir%/save.vfx
 
+: in-me?  2>p 2dup me click-box@ overlap? ;
+
 : white-connector ( element - )
     abspos atp 1.0 thick $ffffff44 rgba8
     { abspos } ->line ;
@@ -98,6 +100,8 @@ cursors.png 32 32 TILESET-FROM cursors.ts
 
 \ -- Desktop -------------------------------------------------------------------
 
+0 value window-panning  \ Set to window element during space+drag panning
+
 class: %desktop
     %element derive
     prop clr <save
@@ -107,6 +111,7 @@ class: %desktop
     :: _process
         <space> held? if
             lmb? if
+                window-panning ?exit
                 lmb pressed? if
                     record-click-position
                     0 to aligned-axis
@@ -181,6 +186,28 @@ class: %panel
     template { black see-thru rgba8@ clr ! }
     :: handy? true ;
     :: _draw  clr @ rgba8 w 2@ rectf ;
+class;
+
+\ -- Window ---------------------------------------------------------------------
+
+class: %window
+    %panel derive
+    template { +clipped }
+    :: _process
+        +clipped
+        <space> held? lmb? and if
+            window-panning me = if
+                pmickey
+                [: { 2dup x 2+! } ;] me each
+                2drop
+            else
+                lmb pressed? mouse in-me? and if
+                    me to window-panning
+                then
+            then
+        else
+            window-panning me = if 0 to window-panning then
+        then ;
 class;
 
 \ -- Textual Trait -------------------------------------------------------------
@@ -588,8 +615,6 @@ class;
     0 to hovered ;
 
 \ -- Mouse ---------------------------------------------------------------------
-
-: in-me?  2>p 2dup me click-box@ overlap? ;
 
 : clipped-ancestor? ( element - flag )
     \ Check if mouse is outside any clipped ancestor's bounds
