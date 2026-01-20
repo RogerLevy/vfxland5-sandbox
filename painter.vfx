@@ -75,7 +75,7 @@ class: %painter
 
     prop sw-albmp :addr         \ Software bitmap (memory) for editing
     prop hw-bmp <readonly       \ Hardware bitmap ID in registry
-    prop zm <save
+    prop zm :int <save
     prop editable <save
     prop d :fixed <save                \ Brush diameter
     prop bgc <save
@@ -128,21 +128,29 @@ class: %painter
     : prev-bitmap ( - ) hw-bmp @ 1 ?* - 1 max init-sw-albmp ;
     : next-bitmap ( - ) hw-bmp @ 1 ?* + init-sw-albmp ;
 
+    || : middle  w 2@ 2 2 2/ ;
+
+    :: click-box@ ( - x1. y1. x2. y2. )
+        abspos middle 2- w 2@ box ;
+
+    || : canvas  
+        bgc @ rgba8  w 2@ rectf ;
+
     :: _draw
-        bgc @ rgba8
-        w 2@ rectf 
+        middle 2negate +atp
+        canvas
         sw-albmp @ if
-            m{ at@p
-                abspos 2p>f zm @ s>f fdup 0e transform
-                0 0 at hw-bmp @ put
-            atp m}
+            m{ e{
+                at@f zm @ s>f fdup 0e transform
+                hw-bmp @ bmpwh 2 2 2/ at hw-bmp @ cput
+            e} m}
         then
-        grey w 2@ rect 
-        4 -6 +at  fgc @ rgba8  5. circf  grey 5. circ ;
+        grey w 2@ rect
+        6 -6 +at  fgc @ rgba8  5. circf  grey 5. circ ;
 
     \ Mouse -> bitmap coordinates
     : mouse>bmp ( - x. y. )
-        pmouse abspos 2- zm @ >p dup 2p/ 2pfloor ;
+        pmouse abspos 2- middle 2+ zm @ >p dup 2p/ 2pfloor ;
 
     \ very raggedy:
     \ || : stroke ( - )
