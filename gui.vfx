@@ -1018,8 +1018,9 @@ require %idir%/inspect.vfx
 
 : detach,
     you { bolted? } ?exit
+    you >parent @ desktop = ?exit
     you [: 
-        abspos me dup >root push x 2! 
+        me desktop attach-to
     ;] s" Detach" option ;
 
 : attach,
@@ -1152,6 +1153,7 @@ defer sticky,  ['] default-sticky, is sticky,
 : common-options,
     \ designing? if clone, then
     attach,
+    detach,
     designing? if bolt, then
     save,
     front,
