@@ -16,7 +16,7 @@ class: %tile-picker
         2>p box ;
 
     :: _process
-        using? bolted? not and -exit
+        using? bolted? not or -exit
         me hovered = -exit
         lmb held? <space> held? not and if
             pmouse abspos 2- 2>i ts @ xy>tile tile# !
