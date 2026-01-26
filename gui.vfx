@@ -465,13 +465,14 @@ class: %repl
         yellow _draw-text ;
 
     : _evaluate
+        me text@ 
         obj @ ?dup if
-            { me text@ evaluate }
+            { evaluate }
         else
-            me text@ evaluate
+            desktop { evaluate }
         then ;
 
-    :: _keychar ( key - )
+    || : __keychar
         editing-me? not if drop exit then
         dup <enter> = if
             drop _stop-editing ['] _evaluate catch .throw
@@ -484,10 +485,18 @@ class: %repl
         then
         drop the-char me add-char ;
 
+    :: _keychar ( key - )
+        w @ >r __keychar r> w ! ;
+
     :: text! ( a len - )
         w 2@ 2>r
         textual:text!
         2r> w 2! ;
+
+    :: _mousedown ( btn - )
+        w @ >r
+        label:_mousedown
+        r> w ! ;
 class;
 
 : *repl ( w - repl )
@@ -1076,6 +1085,15 @@ require %idir%/inspect.vfx
     ;] 
     you { bolted? } if s" Unbolt" else s" Bolt" then option ;
 
+: bolt-all,
+    you { opened? } -exit
+    false [: { bolted? not } or ;] you each if
+        you [: [: { +bolted } ;] me each ;] s" Bolt All" option
+    then
+    false [: { bolted? } or ;] you each if
+        you [: [: { -bolted } ;] me each ;] s" Unbolt All" option
+    then ;
+
 : default-sticky,
     you { bolted? } ?exit
     hud -exit
@@ -1155,6 +1173,7 @@ defer sticky,  ['] default-sticky, is sticky,
     attach,
     detach,
     designing? if bolt, then
+    designing? if bolt-all, then
     save,
     front,
     back,
