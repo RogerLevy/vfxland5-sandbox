@@ -282,7 +282,8 @@ class: %painter
         parent @ >bmp @ init-sw-albmp ;
 
     :: forth@ ( - a len )
-        hw-bmp @ id>bmp body>name f" %s init-sw-albmp" ;
+        hw-bmp @ 0= if s" " exit then
+        hw-bmp @ bmp>set$ f" %s me select" ;
 
     || : clear, ( - )
         you [:

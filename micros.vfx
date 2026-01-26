@@ -411,17 +411,20 @@ class;
     anm @ -exit
     val @ advance-animation bmp ! ;
 
-%sprite :: forth@ ( - a len )
-    bmp @ 0= if s" " exit then 
-    bmp @ is-tile? if 
-        bmp @ bmp>parent bmp>ts$
-        dup 0 tile bmp @ swap -`
-        swap body>name``
-        f" %s %n tile bmp !"
+: bmp>set$ ( bmp - prefix len )
+    {: bmp :}
+    bmp is-tile? if
+        bmp bmp>parent 
+        dup bmp>ts 0 tile   bmp swap -`
+        swap bmp>ts$``
+        f" %s %n tile"
         exit
-    then  
-    bmp @ bitmap-file -path
-    f" %s bmp !" ;
+    then
+    bmp bitmap-file -path ;
+
+%sprite :: forth@ ( - a len )
+    bmp @ 0= if s" " exit then
+    bmp @ bmp>set$ f" %s bmp !" ;
 
 : calc-vel ( element - vx. vy. )
     >x 2@ px 2@ 2- ;
