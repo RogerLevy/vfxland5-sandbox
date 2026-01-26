@@ -383,3 +383,17 @@ class;
     clear,
     common-options, ;
 
+REQUIRE %idir%/togglebox.vfx
+
+: container?  dup %panel is? swap %togglebox is? or ;
+
+: ?container ( - panel|0 )
+    [: container? ;] me find-ancestor ;
+
+: ?painter ( - painter|0 )
+    parent @ dup -exit
+    dup %painter is? ?exit drop
+    ?container dup -exit
+    [: dup %painter is? swap focused = and ;] over find-descendant
+    ?dup if nip exit then
+    [: %painter is? ;] swap find-descendant ;
