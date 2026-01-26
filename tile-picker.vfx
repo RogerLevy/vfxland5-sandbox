@@ -1,0 +1,48 @@
+REQUIRE %idir%/painter.vfx
+REQUIRE %idir%/togglebox.vfx
+
+class: %tile-picker
+    %element derive
+    prop ts :ref %tileset
+    prop tile#
+    
+    : container?  dup %panel is? swap %togglebox is? or ;
+
+    || : ?container ( - panel|0 )
+        [: container? ;] me find-ancestor ;
+
+    || : ?painter ( - painter|0 )
+        parent @ dup -exit
+        dup %painter is? ?exit drop
+        ?container dup -exit
+        [: %painter is? ;] swap find-descendant ;
+
+    || : the-bmp  ts @ dup if >bmp @ then ;
+    || : the-tile  ts @ dup if tile# @ tile then ;
+
+    :: click-box@
+        abspos the-bmp bmpwh 2>p box ;
+
+    :: _process
+        using? bolted? not and -exit
+        me hovered = -exit
+        lmb held? <space> held? not and if
+            pmouse abspos 2- 2>i ts @ xy>tile tile# !
+            ?painter ?dup if the-tile swap select then
+        then ;
+
+    :: _draw
+        the-bmp put
+        the-tile bmpxy +at  
+        ts @ >tw 2@ 2>p white 0.25 ppena! rect
+        \ the-bmp id>bmp ?dup -exit >touched @ if  
+            e{ me click-box@ 2over 2- 2swap atp white 0.25 ppena! rect e} ;
+        \ then ;
+
+    :: forth@ ( - a len )
+        ts @ body>name f" %s ts !" ;
+
+class;
+
+: *tile-picker ( tileset - %tile-picker )
+    %tile-picker *add { ts ! me } ;

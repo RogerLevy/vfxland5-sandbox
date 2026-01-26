@@ -16,6 +16,7 @@ REQUIRE %idir%/colors.vfx
 \ REQUIRE %idir%/gui.vfx    \ For now, rely on micros.vfx to load this due to a current limitation of NIBS
 REQUIRE %idir%/micros.vfx
 REQUIRE %idir%/painter.vfx
+REQUIRE %idir%/tile-picker.vfx
 REQUIRE %idir%/togglebox.vfx
 
 \ -- Bookmark -----------------------------------------------------------------
@@ -119,6 +120,8 @@ redef : switch ( n - )
     0 9 clamp session el@ to desktop
     0 to the-dhud ; 
 
+: absmouse ( - x y ) 
+    pmouse desktop >x 2@ 2- 2>i ;
 
 \ -- Instructions---------------------------------------------------------------
 

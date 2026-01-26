@@ -173,8 +173,8 @@ class;
 
 \ -- Selection -----------------------------------------------------------------
 
-: +select  ( element - ) selection ?push ;
-: select   ( element - ) selection vacate selection push ;
+|| : +select  ( element - ) selection ?push ;
+|| : select   ( element - ) selection vacate selection push ;
 
 \ -- Panel ---------------------------------------------------------------------
 

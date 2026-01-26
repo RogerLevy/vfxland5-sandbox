@@ -51,6 +51,7 @@ trait: %_element
     redef :: save ( - ) ;
     :: revert ( - ) ;
     :: click ( btn - ) drop ;
+    :: select ( ? - ) stub ;
 trait;
 
 \ -- Helpers -------------------------------------------------------------------
@@ -129,7 +130,7 @@ class;
     object:.summary x 2p? ;
 
 0 %element :construct ( - )
-    at@p x 2!  gui-ec ecp! in-heap ;
+    at@p x 2!  ; \ gui-ec ecp! in-heap ;
 
 : delete-element ( element - )
     dup hovered = if 0 to hovered then
