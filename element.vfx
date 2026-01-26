@@ -130,17 +130,19 @@ class;
     object:.summary x 2p? ;
 
 0 %element :construct ( - )
-    at@p x 2!  ; \ gui-ec ecp! in-heap ;
+    at@p x 2!  gui-ec ecp! in-heap ;
+
+: ?free ?dup if ['] free catch 2drop then ;
 
 : delete-element ( element - )
+    dup focused = if 0 to focused then 
     dup hovered = if 0 to hovered then
-    dup { ['] delete me each }   \ recursively delete children
+    dup ['] delete swap each
     \ dup selection contains? if dup selection remove then
-    dup >script @ free drop      \ free script lstring
-    dup dlremove free drop ;
+    dup >script @ ?free
+    dup dlremove ?free ;
 
 %element :: delete
-    me focused = if 0 to focused then 
     me delete-element ;
 
 \ -- Element Methods -----------------------------------------------------------
@@ -176,6 +178,7 @@ redef : sweep ( iterable - )
 
 %element :: process ( - )
     me active? -exit
+    unloaded? ?exit
     me _process
     opened? -exit
     ['] process me each ;

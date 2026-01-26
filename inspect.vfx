@@ -100,10 +100,9 @@ class;
         corral
     me } ;
 
-|| 0 value obj0
 : find-inspector ( object - inspector|0 )
-    to obj0
-    0 [: { me %inspector is? if me >obj @ obj0 = if drop me then then } ;] session each ;
+    0 [: { me %inspector is? if over obj @ = if drop me enough then then } ;] session each 
+    nip ;
 
 : inspect ( object - )
     {: obj :}
@@ -113,7 +112,7 @@ class;
 
 : toggle-inspector ( object - )
     dup find-inspector ?dup if
-        nip unload 
+        unload drop
     else
         inspect
     then ;
