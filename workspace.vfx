@@ -124,7 +124,7 @@ redef : switch ( n - )
     pmouse desktop >x 2@ 2- 2>i ;
 
 : tidy 
-    [: [ here ]  { me %inspector is? if me unload then  literal me each } ;] session each ;
+    [: [ here ]  { temporary? if me unload then  literal me each } ;] session each ;
 
 \ -- Instructions---------------------------------------------------------------
 
