@@ -44,10 +44,42 @@ ec-cell thickness
     f>c 16 << or
     f>c 24 << or ;
 
-: pixel@ ( bitmap x y - rgba8 )
+: pixel@ ( bmp x y - rgba8 )
     {: b x y | buf[ 16 ] :}
     buf[ b x y al_get_pixel
     buf[ 4f@ f>rgba8 ;
+
+: 2sf!+ ( a f:x f:y - a' )
+    fswap sf!+ sf!+ ;
+
+ec-cell ppenu
+ec-cell ppenv
+
+: uv ( u. v. - )
+    ppenv! ppenu! ;
+
+: vertex ( a - a' )
+    at@f 2sf!+ 
+    0e sf!+
+    ppenu@ p>f sf!+ ppenv@ p>f sf!+
+    ppenr@ p>f sf!+ ppeng@ p>f sf!+ ppenb@ p>f sf!+ ppena@ p>f sf!+ ;
+
+: vdump ( a n - )
+    for 
+        9 for sf@+ f. loop cr
+    loop ;
+
+: texrectf ( bmp w. h. - )
+    {: bmp w h | u v vtxs[ 256 ] :}
+    ppenu@ ppenv@ to v to u 
+    vtxs[
+        vertex
+        0 h +atp         u v h + uv vertex
+        w 0 +atp         u w + v h + uv vertex
+        0 h negate +atp  u w + v uv vertex
+    drop 
+    vtxs[ 0 bmp id>albmp 0 4 ALLEGRO_PRIM_TRIANGLE_FAN al_draw_prim 
+    0= abort" al_draw_prim failure" ;
 
 \ \ c: %shape %drawable tr tg tb ta fil ;
 \ c: %shape %actor fil ;

@@ -411,17 +411,6 @@ class;
     anm @ -exit
     val @ advance-animation bmp ! ;
 
-: bmp>set$ ( bmp - prefix len )
-    {: bmp :}
-    bmp is-tile? if
-        bmp bmp>parent 
-        dup bmp>ts 0 tile   bmp swap -`
-        swap bmp>ts$``
-        f" %s %n tile"
-        exit
-    then
-    bmp bitmap-file -path ;
-
 %sprite :: forth@ ( - a len )
     bmp @ 0= if s" " exit then
     bmp @ bmp>set$ f" %s bmp !" ;
@@ -468,12 +457,6 @@ class;
 
 desktop session push
 hud session push
-
-%desktop :: active? ( - flag )
-    desktop me = ;
-
-%desktop :: forth@ ( - a len )
-    desktop me = if s" me to desktop" else s" " then ;
 
 defer _delete-micro
 : delete-micro ( micro - )

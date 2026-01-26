@@ -108,12 +108,29 @@ cursors.png 32 32 TILESET-FROM cursors.ts
 
 0 value window-panning  \ Set to window element during space+drag panning
 
+bitmap %idir%/wallpaper-default.png
+bitmap %idir%/wallpaper-wood2.png
+bitmap %idir%/work___space.png
+
+: bmp>set$ ( bmp - prefix len )
+    {: bmp :}
+    bmp is-tile? if
+        bmp bmp>parent 
+        dup bmp>ts 0 tile   bmp swap -`
+        swap bmp>ts$``
+        f" %s %n tile"
+        exit
+    then
+    bmp bitmap-file -path ;
+
 class: %desktop
     %element derive
     prop clr <save
-    template { valof dark-grey clr ! +bolted }
+    prop bmp 
+    template { valof dark-grey clr ! +bolted  wallpaper-wood2.png bmp ! }
 
     :: click-box@ 0 0 winw winh 2>p ;
+
     :: _process
         <space> held? lmb? and if
             window-panning ?exit
@@ -124,10 +141,23 @@ class: %desktop
                 pan-delta x 2+!
             then
         then ;
-    :: _draw 0 0 at clr @ rgba8 winw winh 2>p rectf ;
+
+    :: _draw
+        0 0 at 
+        x 2@ 2negate uv
+        clr @ rgba8 
+        bmp @ winw winh 2>p texrectf ;
+    
 class;
 
 0 0 at %desktop dmake value desktop
+
+%desktop :: active? ( - flag )
+    desktop me = ;
+
+%desktop :: forth@ ( - a len )
+    desktop me = if s" me to desktop" else s" " then 
+    bmp @ bmp>set$ 2swap f" %s   %s bmp !" ;
 
 \ -- Desktop-specific HUDs -----------------------------------------------------
 
