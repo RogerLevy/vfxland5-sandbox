@@ -334,11 +334,10 @@ class;
 \ -- Context menus -------------------------------------------------------------
 
 : paint, ( - )
-    
     focused ?dup if %painter is? if
         you [:
             focused -exit
-            bmp @ focused { init-sw-albmp }
+            bmp @ focused select
         ;] s" Paint" option 
         exit
     then then
@@ -373,7 +372,7 @@ class;
 : painter-paint, ( - )
     this %_bitmap is? -exit
     you [:
-        this ?dup -exit >bmp @ ?dup if init-sw-albmp then
+        this ?dup -exit >bmp @ ?dup me select  me focus
     ;] s" Paint" option ;
 
 %painter :: _context-menu ( menu - )
